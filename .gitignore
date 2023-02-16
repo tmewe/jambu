@@ -45,3 +45,4 @@ app.*.map.json
 
 # Firebase
 firebase_options.dart
+firebase-messaging-sw.js
