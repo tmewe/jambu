@@ -27,18 +27,21 @@ void main() async {
     sound: true,
   );
 
+  String? fcmToken;
   if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-    final fcmToken = await messaging.getToken(
+    fcmToken = await messaging.getToken(
       vapidKey: 'BDwDEXNpZUq9IJQ60LNTt3At9ctSWMBiEo5BMXzB9X2VojyfM0En84zNMr328DhLhruGVJQPCjo2lTJ3YCZhGoY',
     );
     print(fcmToken);
   }
 
-  runApp(const MyApp());
+  runApp(MyApp(fcmToken: fcmToken));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({this.fcmToken, super.key});
+
+  final String? fcmToken;
 
   @override
   Widget build(BuildContext context) {
@@ -47,13 +50,15 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const HomePage(),
+      home: HomePage(fcmToken: fcmToken),
     );
   }
 }
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+  const HomePage({this.fcmToken, super.key});
+
+  final String? fcmToken;
 
   @override
   Widget build(BuildContext context) {
@@ -61,20 +66,9 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Home'),
       ),
-      body: SignInScreen(
-        actions: [
-          AuthStateChangeAction<SignedIn>((context, state) {
-            final loggedIn = !state.user!.emailVerified;
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (_) => LoggedInPage(
-                  isLoggedIn: loggedIn,
-                ),
-              ),
-            );
-          })
-        ],
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: SelectableText(fcmToken ?? 'No token'),
       ),
     );
   }
