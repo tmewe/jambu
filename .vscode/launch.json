@@ -4,18 +4,21 @@
         {
             "name": "jambu",
             "request": "launch",
-            "type": "dart"
+            "type": "dart",
+            "program": "lib/main/main.dart"
         },
         {
             "name": "jambu (profile mode)",
             "request": "launch",
             "type": "dart",
+            "program": "lib/main/main.dart",
             "flutterMode": "profile"
         },
         {
             "name": "jambu (release mode)",
             "request": "launch",
             "type": "dart",
+            "program": "lib/main/main.dart",
             "flutterMode": "release"
         },
         {
