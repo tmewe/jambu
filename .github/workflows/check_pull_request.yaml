@@ -1,0 +1,25 @@
+name: Check pull request
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+    branches: [ main ]
+
+jobs:
+  build:
+    name: Build APK
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+      - run: flutter --version
+      - name: Format
+        run: dart format --set-exit-if-changed lib test
+      - name: Analyze
+        run: flutter analyze
+      - name: Test
+        run: flutter test
