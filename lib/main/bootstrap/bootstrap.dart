@@ -1,10 +1,13 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jambu/firebase_options.dart';
+import 'package:jambu/main/bootstrap/app_bloc_observer.dart';
 
 typedef AppBuilder = Future<Widget> Function(
   FirebaseMessaging firebaseMessaging,
@@ -16,6 +19,7 @@ Future<void> bootstrap(AppBuilder builder) async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  Bloc.observer = AppBlocObserver();
 
   await runZonedGuarded<Future<void>>(
     () async {
@@ -27,7 +31,7 @@ Future<void> bootstrap(AppBuilder builder) async {
       );
     },
     (error, stacktrace) {
-      print(error);
+      log('An error occured', error: error, stackTrace: stacktrace);
     },
   );
 }
