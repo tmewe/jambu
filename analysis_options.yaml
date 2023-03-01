@@ -1,9 +1,10 @@
 include: package:very_good_analysis/analysis_options.yaml
+
 analyzer:
   exclude:
-    - lib/firebase_options.dart
     - lib/main/main_old.dart
 
 linter:
   rules:
     public_member_api_docs: false
+    no_default_cases: false

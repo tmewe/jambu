@@ -44,6 +44,4 @@ app.*.map.json
 /android/app/release
 
 # Firebase
-firebase_options.dart
-firebase-messaging-sw.js
 .firebase/
