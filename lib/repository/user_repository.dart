@@ -2,13 +2,16 @@ import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
+import 'package:jambu/storage/storage.dart';
 import 'package:rxdart/subjects.dart';
 
 class UserRepository {
   UserRepository({
     required FirebaseAuth firebaseAuth,
+    required TokenStorage tokenStorage,
     bool isWeb = kIsWeb,
   })  : _firebaseAuth = firebaseAuth,
+        _tokenStorage = tokenStorage,
         _isWeb = isWeb {
     _firebaseAuth.authStateChanges().listen((user) {
       log('User changed: ${user?.displayName}');
@@ -17,6 +20,7 @@ class UserRepository {
   }
 
   final FirebaseAuth _firebaseAuth;
+  final TokenStorage _tokenStorage;
   final bool _isWeb;
 
   final BehaviorSubject<User?> _userSubject = BehaviorSubject.seeded(null);
@@ -24,7 +28,7 @@ class UserRepository {
   Stream<User?> get userStream => _userSubject.stream;
 
   /// Login using ms azure
-  Future<UserCredential> login() async {
+  Future<void> login() async {
     final msProvider = MicrosoftAuthProvider()
       ..addScope('profile')
       ..addScope('user.read')
@@ -32,10 +36,24 @@ class UserRepository {
       ..setCustomParameters(
         {'tenant': 'e6dbe219-77ef-4b6a-af83-f9de7de08923'},
       );
+    final UserCredential userCredential;
     if (_isWeb) {
-      return _firebaseAuth.signInWithPopup(msProvider);
+      userCredential = await _firebaseAuth.signInWithPopup(msProvider);
     } else {
-      return _firebaseAuth.signInWithProvider(msProvider);
+      userCredential = await _firebaseAuth.signInWithProvider(msProvider);
+    }
+    _saveCredential(userCredential);
+  }
+
+  void _saveCredential(UserCredential userCredential) {
+    final accessToken = userCredential.credential?.accessToken;
+    if (accessToken != null) {
+      _tokenStorage.saveAccessToken(accessToken);
+    }
+
+    final refreshToken = userCredential.user?.refreshToken;
+    if (refreshToken != null) {
+      _tokenStorage.saveRefreshToken(refreshToken);
     }
   }
 }
