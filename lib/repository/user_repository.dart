@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:rxdart/subjects.dart';
@@ -8,7 +10,10 @@ class UserRepository {
     bool isWeb = kIsWeb,
   })  : _firebaseAuth = firebaseAuth,
         _isWeb = isWeb {
-    _firebaseAuth.authStateChanges().listen(_userSubject.add);
+    _firebaseAuth.authStateChanges().listen((user) {
+      log('User changed: ${user?.displayName}');
+      _userSubject.add(user);
+    });
   }
 
   final FirebaseAuth _firebaseAuth;
