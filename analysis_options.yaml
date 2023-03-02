@@ -3,6 +3,7 @@ include: package:very_good_analysis/analysis_options.yaml
 analyzer:
   exclude:
     - lib/main/main_old.dart
+    - lib/ms_graph/api/ms_graph_api.chopper.dart
 
 linter:
   rules:
