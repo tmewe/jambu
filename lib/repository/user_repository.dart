@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 
-class LoginRepository {
-  LoginRepository({required this.firebaseAuth});
+class UserRepository {
+  UserRepository({required this.firebaseAuth});
 
   final FirebaseAuth firebaseAuth;
 

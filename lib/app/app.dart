@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jambu/login/login.dart';
+import 'package:jambu/repository/repository.dart';
 
 class App extends StatelessWidget {
   const App({
-    required LoginRepository loginRepository,
+    required UserRepository userRepository,
     super.key,
-  }) : _loginRepository = loginRepository;
+  }) : _userRepository = userRepository;
 
-  final LoginRepository _loginRepository;
+  final UserRepository _userRepository;
 
   @override
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
       providers: [
-        RepositoryProvider.value(value: _loginRepository),
+        RepositoryProvider.value(value: _userRepository),
       ],
       child: const AppView(),
     );
