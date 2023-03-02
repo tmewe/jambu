@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jambu/home/home.dart';
 import 'package:jambu/login/bloc/login_bloc.dart';
-import 'package:jambu/login/repository/repository.dart';
+import 'package:jambu/repository/repository.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -12,7 +12,7 @@ class LoginPage extends StatelessWidget {
     return Scaffold(
       body: BlocProvider(
         create: (_) => LoginBloc(
-          loginRepository: context.read<LoginRepository>(),
+          userRepository: context.read<UserRepository>(),
         )..add(LoginRequested()),
         child: const LoginView(),
       ),
