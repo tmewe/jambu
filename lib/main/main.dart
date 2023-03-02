@@ -5,10 +5,13 @@ import 'package:jambu/ms_graph/api/interceptor/interceptor.dart';
 import 'package:jambu/ms_graph/ms_graph.dart';
 import 'package:jambu/repository/repository.dart';
 import 'package:jambu/storage/storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   bootstrap((firebaseMessaging, firebaseAuth) async {
-    final tokenStorage = InMemoryTokenStorage();
+    // TODO(tim): Replace with secure storage
+    final sharedPrefs = await SharedPreferences.getInstance();
+    final tokenStorage = SharedPrefsTokenStorage(sharedPrefs: sharedPrefs);
 
     final userRepository = UserRepository(
       firebaseAuth: firebaseAuth,
