@@ -22,13 +22,17 @@ class InMemoryTokenStorage implements TokenStorage {
   }
 
   @override
-  String? readAccessToken() => _accessToken;
+  String? readAccessToken() {
+    return _accessToken;
+  }
 
   @override
   String? readRefreshToken() => _refreshToken;
 
   @override
-  void saveAccessToken(String token) => _accessToken = token;
+  void saveAccessToken(String token) {
+    _accessToken = token;
+  }
 
   @override
   void saveRefreshToken(String token) => _refreshToken = token;
