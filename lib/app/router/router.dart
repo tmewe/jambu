@@ -13,11 +13,15 @@ final goRouter = GoRouter(
     ),
     GoRoute(
       path: '/home',
-      builder: (context, state) => const HomePage(),
+      pageBuilder: (context, state) => const NoTransitionPage(
+        child: HomePage(),
+      ),
     ),
     GoRoute(
       path: '/login',
-      builder: (context, state) => const LoginPage(),
+      pageBuilder: (context, state) => const NoTransitionPage(
+        child: LoginPage(),
+      ),
     ),
   ],
 );
