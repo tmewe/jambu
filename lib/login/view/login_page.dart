@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jambu/home/home.dart';
+import 'package:go_router/go_router.dart';
 import 'package:jambu/login/bloc/login_bloc.dart';
 import 'package:jambu/repository/repository.dart';
 
@@ -29,18 +29,14 @@ class LoginView extends StatelessWidget {
     return BlocListener<LoginBloc, LoginState>(
       listener: (context, state) {
         if (state.status == LoginStatus.success) {
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute<HomePage>(
-              builder: (_) => const HomePage(),
-            ),
-          );
+          context.pushReplacement('/home');
         }
       },
       child: Center(
         child: (loginStatus == LoginStatus.initial ||
                 loginStatus == LoginStatus.loading)
             ? const CircularProgressIndicator()
-            : const Text(''),
+            : const Text('Ein Fehler ist aufgetreten.'),
       ),
     );
   }
