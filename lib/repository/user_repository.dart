@@ -48,6 +48,7 @@ class UserRepository {
   void _saveCredential(UserCredential userCredential) {
     final accessToken = userCredential.credential?.accessToken;
     if (accessToken != null) {
+      debugPrint(accessToken, wrapWidth: 1024);
       _tokenStorage.saveAccessToken(accessToken);
     }
 
