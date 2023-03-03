@@ -12,4 +12,11 @@ class MSGraphRepository {
     final response = await _msGraphAPI.me();
     debugPrint('$response');
   }
+
+  Future<void> events() async {
+    final response = await _msGraphAPI.calendarEvents(
+      filter: "start/dateTime ge '2023-03-03'",
+    );
+    debugPrint('$response');
+  }
 }
