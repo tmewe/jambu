@@ -1,2 +1,3 @@
 export 'api/api.dart';
-export 'repository/respository.dart';
+export 'datasource/datasource.dart';
+export 'model/model.dart';

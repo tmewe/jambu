@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jambu/ms_graph/repository/respository.dart';
+import 'package:jambu/repository/repository.dart';
 
 class PlaygroundPage extends StatelessWidget {
   const PlaygroundPage({super.key});
