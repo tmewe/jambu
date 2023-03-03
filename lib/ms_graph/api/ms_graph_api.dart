@@ -16,5 +16,11 @@ abstract class MSGraphAPI extends ChopperService {
         '''subject, showAs, isOnlineMeeting, start, end, location, responseStatus, isAllDay''',
   });
 
+  @Post(
+    path: 'me/calendar/events',
+    headers: {'content-type': 'application/json'},
+  )
+  Future<Response<dynamic>> createEvent(@Body() String data);
+
   static MSGraphAPI create([ChopperClient? client]) => _$MSGraphAPI(client);
 }
