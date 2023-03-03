@@ -1,7 +1,6 @@
 import 'package:chopper/chopper.dart';
 import 'package:jambu/app/app.dart';
 import 'package:jambu/main/bootstrap/bootstrap.dart';
-import 'package:jambu/ms_graph/api/interceptor/interceptor.dart';
 import 'package:jambu/ms_graph/ms_graph.dart';
 import 'package:jambu/repository/repository.dart';
 import 'package:jambu/storage/storage.dart';
@@ -26,7 +25,10 @@ void main() {
       ],
     );
     final msGraphAPI = MSGraphAPI.create(msGraphChopperClient);
-    final msGraphRepository = MSGraphRepository(msGraphAPI: msGraphAPI);
+    final msGraphDataSource = MSGraphDataSource(msGraphAPI: msGraphAPI);
+    final msGraphRepository = MSGraphRepository(
+      msGraphDataSource: msGraphDataSource,
+    );
 
     return App(
       userRepository: userRepository,
