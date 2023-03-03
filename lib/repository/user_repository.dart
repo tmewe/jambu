@@ -33,9 +33,12 @@ class UserRepository {
       ..addScope('profile')
       ..addScope('user.read')
       ..addScope('user.readwrite')
+      ..addScope('calendars.read')
+      ..addScope('calendars.readwrite')
       ..setCustomParameters(
         {'tenant': 'e6dbe219-77ef-4b6a-af83-f9de7de08923'},
       );
+      
     final UserCredential userCredential;
     if (_isWeb) {
       userCredential = await _firebaseAuth.signInWithPopup(msProvider);

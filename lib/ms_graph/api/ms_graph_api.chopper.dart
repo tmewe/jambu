@@ -26,4 +26,24 @@ class _$MSGraphAPI extends MSGraphAPI {
     );
     return client.send<dynamic, dynamic>($request);
   }
+
+  @override
+  Future<Response<dynamic>> calendarEvents({
+    required String filter,
+    String select =
+        '''subject, showAs, isOnlineMeeting, start, end, location, responseStatus, isAllDay''',
+  }) {
+    final Uri $url = Uri.parse('/v1.0/me/calendar/events');
+    final Map<String, dynamic> $params = <String, dynamic>{
+      'filter': filter,
+      'select': select,
+    };
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      parameters: $params,
+    );
+    return client.send<dynamic, dynamic>($request);
+  }
 }

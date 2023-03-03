@@ -18,6 +18,12 @@ class PlaygroundPage extends StatelessWidget {
               },
               child: const Text('Me'),
             ),
+            TextButton(
+              onPressed: () {
+                context.read<MSGraphRepository>().events();
+              },
+              child: const Text('Events'),
+            ),
           ],
         ),
       ),
