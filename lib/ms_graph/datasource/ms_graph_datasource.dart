@@ -34,4 +34,11 @@ class MSGraphDataSource {
     final events = eventsJsonList.map(MSEvent.fromJson).toList();
     return events;
   }
+
+  Future<void> create({required MSEvent event}) async {
+    final jsonEvent = jsonEncode(event.toJson());
+    debugPrint(jsonEvent);
+    final response = await _msGraphAPI.createEvent(jsonEvent);
+    debugPrint('$response');
+  }
 }

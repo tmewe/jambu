@@ -1,3 +1,5 @@
+// ignore_for_file: invalid_annotation_target
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:jambu/ms_graph/model/model.dart';
 
@@ -6,15 +8,16 @@ part 'ms_event.g.dart';
 
 @freezed
 class MSEvent with _$MSEvent {
+  @JsonSerializable(includeIfNull: false)
   const factory MSEvent({
-    required String id,
     required String subject,
     required bool isAllDay,
     required bool isOnlineMeeting,
     required MSDate start,
     required MSDate end,
-    required MSEventLocation location,
     required EventStatus showAs,
+    String? id,
+    MSEventLocation? location,
     bool? isReminderOn,
     MSEventResponseStatus? responseStatus,
   }) = _MSEvent;

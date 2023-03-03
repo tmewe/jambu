@@ -6,6 +6,7 @@ analyzer:
     - lib/ms_graph/api/ms_graph_api.chopper.dart
     - '**.g.dart'
     - '**.freezed.dart'
+    - '**.chopper.dart'
 
 linter:
   rules:

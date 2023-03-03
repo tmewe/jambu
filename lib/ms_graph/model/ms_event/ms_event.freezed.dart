@@ -20,14 +20,14 @@ MSEvent _$MSEventFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$MSEvent {
-  String get id => throw _privateConstructorUsedError;
   String get subject => throw _privateConstructorUsedError;
   bool get isAllDay => throw _privateConstructorUsedError;
   bool get isOnlineMeeting => throw _privateConstructorUsedError;
   MSDate get start => throw _privateConstructorUsedError;
   MSDate get end => throw _privateConstructorUsedError;
-  MSEventLocation get location => throw _privateConstructorUsedError;
   EventStatus get showAs => throw _privateConstructorUsedError;
+  String? get id => throw _privateConstructorUsedError;
+  MSEventLocation? get location => throw _privateConstructorUsedError;
   bool? get isReminderOn => throw _privateConstructorUsedError;
   MSEventResponseStatus? get responseStatus =>
       throw _privateConstructorUsedError;
@@ -43,20 +43,20 @@ abstract class $MSEventCopyWith<$Res> {
       _$MSEventCopyWithImpl<$Res, MSEvent>;
   @useResult
   $Res call(
-      {String id,
-      String subject,
+      {String subject,
       bool isAllDay,
       bool isOnlineMeeting,
       MSDate start,
       MSDate end,
-      MSEventLocation location,
       EventStatus showAs,
+      String? id,
+      MSEventLocation? location,
       bool? isReminderOn,
       MSEventResponseStatus? responseStatus});
 
   $MSDateCopyWith<$Res> get start;
   $MSDateCopyWith<$Res> get end;
-  $MSEventLocationCopyWith<$Res> get location;
+  $MSEventLocationCopyWith<$Res>? get location;
   $MSEventResponseStatusCopyWith<$Res>? get responseStatus;
 }
 
@@ -73,22 +73,18 @@ class _$MSEventCopyWithImpl<$Res, $Val extends MSEvent>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
     Object? subject = null,
     Object? isAllDay = null,
     Object? isOnlineMeeting = null,
     Object? start = null,
     Object? end = null,
-    Object? location = null,
     Object? showAs = null,
+    Object? id = freezed,
+    Object? location = freezed,
     Object? isReminderOn = freezed,
     Object? responseStatus = freezed,
   }) {
     return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
       subject: null == subject
           ? _value.subject
           : subject // ignore: cast_nullable_to_non_nullable
@@ -109,14 +105,18 @@ class _$MSEventCopyWithImpl<$Res, $Val extends MSEvent>
           ? _value.end
           : end // ignore: cast_nullable_to_non_nullable
               as MSDate,
-      location: null == location
-          ? _value.location
-          : location // ignore: cast_nullable_to_non_nullable
-              as MSEventLocation,
       showAs: null == showAs
           ? _value.showAs
           : showAs // ignore: cast_nullable_to_non_nullable
               as EventStatus,
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      location: freezed == location
+          ? _value.location
+          : location // ignore: cast_nullable_to_non_nullable
+              as MSEventLocation?,
       isReminderOn: freezed == isReminderOn
           ? _value.isReminderOn
           : isReminderOn // ignore: cast_nullable_to_non_nullable
@@ -146,8 +146,12 @@ class _$MSEventCopyWithImpl<$Res, $Val extends MSEvent>
 
   @override
   @pragma('vm:prefer-inline')
-  $MSEventLocationCopyWith<$Res> get location {
-    return $MSEventLocationCopyWith<$Res>(_value.location, (value) {
+  $MSEventLocationCopyWith<$Res>? get location {
+    if (_value.location == null) {
+      return null;
+    }
+
+    return $MSEventLocationCopyWith<$Res>(_value.location!, (value) {
       return _then(_value.copyWith(location: value) as $Val);
     });
   }
@@ -174,14 +178,14 @@ abstract class _$$_MSEventCopyWith<$Res> implements $MSEventCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {String id,
-      String subject,
+      {String subject,
       bool isAllDay,
       bool isOnlineMeeting,
       MSDate start,
       MSDate end,
-      MSEventLocation location,
       EventStatus showAs,
+      String? id,
+      MSEventLocation? location,
       bool? isReminderOn,
       MSEventResponseStatus? responseStatus});
 
@@ -190,7 +194,7 @@ abstract class _$$_MSEventCopyWith<$Res> implements $MSEventCopyWith<$Res> {
   @override
   $MSDateCopyWith<$Res> get end;
   @override
-  $MSEventLocationCopyWith<$Res> get location;
+  $MSEventLocationCopyWith<$Res>? get location;
   @override
   $MSEventResponseStatusCopyWith<$Res>? get responseStatus;
 }
@@ -205,22 +209,18 @@ class __$$_MSEventCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
     Object? subject = null,
     Object? isAllDay = null,
     Object? isOnlineMeeting = null,
     Object? start = null,
     Object? end = null,
-    Object? location = null,
     Object? showAs = null,
+    Object? id = freezed,
+    Object? location = freezed,
     Object? isReminderOn = freezed,
     Object? responseStatus = freezed,
   }) {
     return _then(_$_MSEvent(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
       subject: null == subject
           ? _value.subject
           : subject // ignore: cast_nullable_to_non_nullable
@@ -241,14 +241,18 @@ class __$$_MSEventCopyWithImpl<$Res>
           ? _value.end
           : end // ignore: cast_nullable_to_non_nullable
               as MSDate,
-      location: null == location
-          ? _value.location
-          : location // ignore: cast_nullable_to_non_nullable
-              as MSEventLocation,
       showAs: null == showAs
           ? _value.showAs
           : showAs // ignore: cast_nullable_to_non_nullable
               as EventStatus,
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      location: freezed == location
+          ? _value.location
+          : location // ignore: cast_nullable_to_non_nullable
+              as MSEventLocation?,
       isReminderOn: freezed == isReminderOn
           ? _value.isReminderOn
           : isReminderOn // ignore: cast_nullable_to_non_nullable
@@ -262,25 +266,24 @@ class __$$_MSEventCopyWithImpl<$Res>
 }
 
 /// @nodoc
-@JsonSerializable()
+
+@JsonSerializable(includeIfNull: false)
 class _$_MSEvent implements _MSEvent {
   const _$_MSEvent(
-      {required this.id,
-      required this.subject,
+      {required this.subject,
       required this.isAllDay,
       required this.isOnlineMeeting,
       required this.start,
       required this.end,
-      required this.location,
       required this.showAs,
+      this.id,
+      this.location,
       this.isReminderOn,
       this.responseStatus});
 
   factory _$_MSEvent.fromJson(Map<String, dynamic> json) =>
       _$$_MSEventFromJson(json);
 
-  @override
-  final String id;
   @override
   final String subject;
   @override
@@ -292,9 +295,11 @@ class _$_MSEvent implements _MSEvent {
   @override
   final MSDate end;
   @override
-  final MSEventLocation location;
-  @override
   final EventStatus showAs;
+  @override
+  final String? id;
+  @override
+  final MSEventLocation? location;
   @override
   final bool? isReminderOn;
   @override
@@ -302,7 +307,7 @@ class _$_MSEvent implements _MSEvent {
 
   @override
   String toString() {
-    return 'MSEvent(id: $id, subject: $subject, isAllDay: $isAllDay, isOnlineMeeting: $isOnlineMeeting, start: $start, end: $end, location: $location, showAs: $showAs, isReminderOn: $isReminderOn, responseStatus: $responseStatus)';
+    return 'MSEvent(subject: $subject, isAllDay: $isAllDay, isOnlineMeeting: $isOnlineMeeting, start: $start, end: $end, showAs: $showAs, id: $id, location: $location, isReminderOn: $isReminderOn, responseStatus: $responseStatus)';
   }
 
   @override
@@ -310,7 +315,6 @@ class _$_MSEvent implements _MSEvent {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_MSEvent &&
-            (identical(other.id, id) || other.id == id) &&
             (identical(other.subject, subject) || other.subject == subject) &&
             (identical(other.isAllDay, isAllDay) ||
                 other.isAllDay == isAllDay) &&
@@ -318,9 +322,10 @@ class _$_MSEvent implements _MSEvent {
                 other.isOnlineMeeting == isOnlineMeeting) &&
             (identical(other.start, start) || other.start == start) &&
             (identical(other.end, end) || other.end == end) &&
+            (identical(other.showAs, showAs) || other.showAs == showAs) &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.location, location) ||
                 other.location == location) &&
-            (identical(other.showAs, showAs) || other.showAs == showAs) &&
             (identical(other.isReminderOn, isReminderOn) ||
                 other.isReminderOn == isReminderOn) &&
             (identical(other.responseStatus, responseStatus) ||
@@ -331,14 +336,14 @@ class _$_MSEvent implements _MSEvent {
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      id,
       subject,
       isAllDay,
       isOnlineMeeting,
       start,
       end,
-      location,
       showAs,
+      id,
+      location,
       isReminderOn,
       responseStatus);
 
@@ -358,21 +363,19 @@ class _$_MSEvent implements _MSEvent {
 
 abstract class _MSEvent implements MSEvent {
   const factory _MSEvent(
-      {required final String id,
-      required final String subject,
+      {required final String subject,
       required final bool isAllDay,
       required final bool isOnlineMeeting,
       required final MSDate start,
       required final MSDate end,
-      required final MSEventLocation location,
       required final EventStatus showAs,
+      final String? id,
+      final MSEventLocation? location,
       final bool? isReminderOn,
       final MSEventResponseStatus? responseStatus}) = _$_MSEvent;
 
   factory _MSEvent.fromJson(Map<String, dynamic> json) = _$_MSEvent.fromJson;
 
-  @override
-  String get id;
   @override
   String get subject;
   @override
@@ -384,9 +387,11 @@ abstract class _MSEvent implements MSEvent {
   @override
   MSDate get end;
   @override
-  MSEventLocation get location;
-  @override
   EventStatus get showAs;
+  @override
+  String? get id;
+  @override
+  MSEventLocation? get location;
   @override
   bool? get isReminderOn;
   @override
