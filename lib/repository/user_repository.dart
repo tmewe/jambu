@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:jambu/storage/storage.dart';
@@ -14,7 +12,7 @@ class UserRepository {
         _tokenStorage = tokenStorage,
         _isWeb = isWeb {
     _firebaseAuth.authStateChanges().listen((user) {
-      log('User changed: ${user?.displayName}');
+      debugPrint('User changed: ${user?.displayName}');
       _userSubject.add(user);
     });
   }
@@ -26,6 +24,8 @@ class UserRepository {
   final BehaviorSubject<User?> _userSubject = BehaviorSubject.seeded(null);
 
   Stream<User?> get userStream => _userSubject.stream;
+
+  User? get currentUser => _userSubject.value;
 
   /// Login using ms azure
   Future<void> login() async {
@@ -46,6 +46,11 @@ class UserRepository {
       userCredential = await _firebaseAuth.signInWithProvider(msProvider);
     }
     _saveCredential(userCredential);
+  }
+
+  Future<void> logout() async {
+    await _firebaseAuth.signOut();
+    _tokenStorage.clearTokens();
   }
 
   void _saveCredential(UserCredential userCredential) {
