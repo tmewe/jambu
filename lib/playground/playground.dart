@@ -16,7 +16,7 @@ class PlaygroundPage extends StatelessWidget {
               onPressed: () {
                 context.read<MSGraphRepository>().me();
               },
-              child: const Text('Me'),
+              child: const Text('Meine Daten'),
             ),
             TextButton(
               onPressed: () {
@@ -30,7 +30,13 @@ class PlaygroundPage extends StatelessWidget {
                       dateTime: DateTime.now(),
                     );
               },
-              child: const Text('Create event'),
+              child: const Text('Event erstellen'),
+            ),
+            TextButton(
+              onPressed: () {
+                context.read<UserRepository>().logout();
+              },
+              child: const Text('Abmelden'),
             ),
           ],
         ),

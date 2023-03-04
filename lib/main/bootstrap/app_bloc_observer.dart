@@ -1,6 +1,5 @@
-import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
 
 class AppBlocObserver extends BlocObserver {
   @override
@@ -10,18 +9,20 @@ class AppBlocObserver extends BlocObserver {
   ) {
     super.onTransition(bloc, transition);
     // ignore: lines_longer_than_80_chars
-    log('${bloc.runtimeType} transition: From ${transition.currentState} to ${transition.nextState}');
+    debugPrint(
+      '''${bloc.runtimeType} transition: From ${transition.currentState} to ${transition.nextState}''',
+    );
   }
 
   @override
   void onError(BlocBase<dynamic> bloc, Object error, StackTrace stackTrace) {
     super.onError(bloc, error, stackTrace);
-    log('${bloc.runtimeType} error', error: error, stackTrace: stackTrace);
+    debugPrint('${bloc.runtimeType} error');
   }
 
   @override
   void onEvent(Bloc<dynamic, dynamic> bloc, Object? event) {
     super.onEvent(bloc, event);
-    log('${bloc.runtimeType} event: $event');
+    debugPrint('${bloc.runtimeType} event: $event');
   }
 }

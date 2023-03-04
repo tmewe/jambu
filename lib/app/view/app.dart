@@ -31,8 +31,9 @@ class AppView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final userStream = context.read<UserRepository>().userStream;
     return MaterialApp.router(
-      routerConfig: goRouter,
+      routerConfig: getRouter(userStream: userStream),
     );
   }
 }
