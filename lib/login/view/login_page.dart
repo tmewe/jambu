@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:jambu/login/bloc/login_bloc.dart';
 import 'package:jambu/repository/repository.dart';
 
@@ -13,7 +12,7 @@ class LoginPage extends StatelessWidget {
       body: BlocProvider(
         create: (_) => LoginBloc(
           userRepository: context.read<UserRepository>(),
-        )..add(LoginRequested()),
+        ),
         child: const LoginView(),
       ),
     );
@@ -26,17 +25,56 @@ class LoginView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final loginStatus = context.select((LoginBloc bloc) => bloc.state.status);
-    return BlocListener<LoginBloc, LoginState>(
-      listener: (context, state) {
-        if (state.status == LoginStatus.success) {
-          context.pushReplacement('/home');
-        }
-      },
-      child: Center(
-        child: (loginStatus == LoginStatus.initial ||
-                loginStatus == LoginStatus.loading)
-            ? const CircularProgressIndicator()
-            : const Text('Ein Fehler ist aufgetreten.'),
+    if (loginStatus == LoginStatus.initial) {
+      return const WelcomeView();
+    } else if (loginStatus == LoginStatus.loading) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+    return const ErrorView();
+  }
+}
+
+class WelcomeView extends StatelessWidget {
+  const WelcomeView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Text('Willkommen bei jambu.'),
+          TextButton(
+            onPressed: () {
+              context.read<LoginBloc>().add(LoginRequested());
+            },
+            child: const Text('Anmelden'),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class ErrorView extends StatelessWidget {
+  const ErrorView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Text('Ein Fehler ist aufgetreten.'),
+          TextButton(
+            onPressed: () {
+              context.read<LoginBloc>().add(LoginRequested());
+            },
+            child: const Text('Nochmal versuchen'),
+          ),
+        ],
       ),
     );
   }
