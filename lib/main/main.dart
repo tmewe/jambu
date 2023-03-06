@@ -19,6 +19,10 @@ void main() {
 
     final msGraphChopperClient = ChopperClient(
       baseUrl: Uri.parse('https://graph.microsoft.com'),
+      authenticator: AuthChallengeAuthenticator(
+        tokenStorage: tokenStorage,
+        userRepository: userRepository,
+      ),
       interceptors: [
         LoggingInterceptor(),
         AuthInterceptor(tokenStorage: tokenStorage),
