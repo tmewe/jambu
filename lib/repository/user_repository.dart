@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:jambu/storage/storage.dart';
 import 'package:rxdart/subjects.dart';
@@ -45,6 +48,7 @@ class UserRepository {
     } else {
       userCredential = await _firebaseAuth.signInWithProvider(msProvider);
     }
+    unawaited(_requestNotifications());
     _saveCredential(userCredential);
   }
 
@@ -63,6 +67,22 @@ class UserRepository {
     final refreshToken = userCredential.user?.refreshToken;
     if (refreshToken != null) {
       _tokenStorage.saveRefreshToken(refreshToken);
+    }
+  }
+
+  // TODO(tim): Refactor later
+  Future<void> _requestNotifications() async {
+    final notificationSettings =
+        await FirebaseMessaging.instance.getNotificationSettings();
+    final status = notificationSettings.authorizationStatus;
+
+    if (status == AuthorizationStatus.notDetermined) {
+      await FirebaseMessaging.instance.requestPermission();
+      final fcmToken = await FirebaseMessaging.instance.getToken(
+        vapidKey:
+            '''BDwDEXNpZUq9IJQ60LNTt3At9ctSWMBiEo5BMXzB9X2VojyfM0En84zNMr328DhLhruGVJQPCjo2lTJ3YCZhGoY''',
+      );
+      debugPrint(fcmToken);
     }
   }
 }

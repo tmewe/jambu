@@ -25,8 +25,6 @@ class MSGraphDataSource {
       return [];
     }
 
-    debugPrint('${response.body}');
-
     final jsonBody =
         jsonDecode(response.body.toString()) as Map<String, dynamic>;
     final eventsJson = jsonBody['value'] as List<dynamic>;
