@@ -30,18 +30,18 @@ class UserRepository {
 
   User? get currentUser => _userSubject.value;
 
+  final msProvider = MicrosoftAuthProvider()
+    ..addScope('profile')
+    ..addScope('user.read')
+    ..addScope('user.readwrite')
+    ..addScope('calendars.read')
+    ..addScope('calendars.readwrite')
+    ..setCustomParameters(
+      {'tenant': 'e6dbe219-77ef-4b6a-af83-f9de7de08923'},
+    );
+
   /// Login using ms azure
   Future<void> login() async {
-    final msProvider = MicrosoftAuthProvider()
-      ..addScope('profile')
-      ..addScope('user.read')
-      ..addScope('user.readwrite')
-      ..addScope('calendars.read')
-      ..addScope('calendars.readwrite')
-      ..setCustomParameters(
-        {'tenant': 'e6dbe219-77ef-4b6a-af83-f9de7de08923'},
-      );
-
     final UserCredential userCredential;
     if (_isWeb) {
       userCredential = await _firebaseAuth.signInWithPopup(msProvider);
@@ -49,6 +49,17 @@ class UserRepository {
       userCredential = await _firebaseAuth.signInWithProvider(msProvider);
     }
     unawaited(_requestNotifications());
+    _saveCredential(userCredential);
+  }
+
+  /// Gets called to obtain a fresh access token
+  Future<void> reauthenticate() async {
+    final UserCredential userCredential;
+    if (_isWeb) {
+      userCredential = await _firebaseAuth.signInWithPopup(msProvider);
+    } else {
+      userCredential = await _firebaseAuth.signInWithProvider(msProvider);
+    }
     _saveCredential(userCredential);
   }
 
@@ -60,17 +71,12 @@ class UserRepository {
   void _saveCredential(UserCredential userCredential) {
     final accessToken = userCredential.credential?.accessToken;
     if (accessToken != null) {
-      debugPrint(accessToken, wrapWidth: 1024);
+      debugPrint('Access token: $accessToken', wrapWidth: 1024);
       _tokenStorage.saveAccessToken(accessToken);
-    }
-
-    final refreshToken = userCredential.user?.refreshToken;
-    if (refreshToken != null) {
-      _tokenStorage.saveRefreshToken(refreshToken);
     }
   }
 
-  // TODO(tim): Refactor later
+  // TODO(tim): Refactor
   Future<void> _requestNotifications() async {
     final notificationSettings =
         await FirebaseMessaging.instance.getNotificationSettings();

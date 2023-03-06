@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:chopper/chopper.dart';
 import 'package:jambu/storage/storage.dart';
@@ -14,8 +15,11 @@ class AuthInterceptor implements RequestInterceptor {
   Future<Request> onRequest(Request request) async {
     final accessToken = await _tokenStorage.readAccessToken();
     if (accessToken != null) {
-      final authRequest =
-          applyHeader(request, 'Authorization', 'Bearer $accessToken');
+      final authRequest = applyHeader(
+        request,
+        HttpHeaders.authorizationHeader,
+        'Bearer $accessToken',
+      );
       return authRequest;
     }
     return request;
