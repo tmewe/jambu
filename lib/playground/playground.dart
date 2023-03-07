@@ -22,13 +22,22 @@ class PlaygroundPage extends StatelessWidget {
               onPressed: () {
                 context.read<MSGraphRepository>().calendars();
               },
-              child: const Text('Calendars'),
+              child: const Text('Kalender'),
+            ),
+            TextButton(
+              onPressed: () {
+                context.read<MSGraphRepository>().createCalendar(
+                      name: 'Anwesenheiten',
+                      color: Colors.orange,
+                    );
+              },
+              child: const Text('Kalender erstellen'),
             ),
             TextButton(
               onPressed: () {
                 context.read<MSGraphRepository>().events();
               },
-              child: const Text('Events'),
+              child: const Text('Termine'),
             ),
             TextButton(
               onPressed: () {
@@ -36,7 +45,7 @@ class PlaygroundPage extends StatelessWidget {
                       dateTime: DateTime.now(),
                     );
               },
-              child: const Text('Event erstellen'),
+              child: const Text('Termin erstellen'),
             ),
             TextButton(
               onPressed: () {

@@ -32,6 +32,13 @@ class MSGraphDataSource {
     return calendars;
   }
 
+  Future<void> createCalendar(MSCalendar calendar) async {
+    final jsonCalendar = jsonEncode(calendar.toJson());
+    debugPrint(jsonCalendar);
+    final response = await _msGraphAPI.createCalendar(jsonCalendar);
+    debugPrint('$response');
+  }
+
   Future<List<MSEvent>> events() async {
     final response = await _msGraphAPI.calendarEvents(
       filter: "start/dateTime ge '2023-03-03'",
@@ -49,7 +56,7 @@ class MSGraphDataSource {
     return events;
   }
 
-  Future<void> create({required MSEvent event}) async {
+  Future<void> createEvent(MSEvent event) async {
     final jsonEvent = jsonEncode(event.toJson());
     debugPrint(jsonEvent);
     final response = await _msGraphAPI.createEvent(jsonEvent);

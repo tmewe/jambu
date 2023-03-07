@@ -19,6 +19,12 @@ class MSGraphRepository {
     debugPrint('$calendars');
   }
 
+  Future<void> createCalendar({required String name, Color? color}) async {
+    final hexColor = color != null ? '#${color.value.toRadixString(16)}' : null;
+    final msCalendar = MSCalendar(name: name, hexColor: hexColor);
+    await _msGraphDataSource.createCalendar(msCalendar);
+  }
+
   Future<void> events() async {
     final events = await _msGraphDataSource.events();
     debugPrint('$events');
@@ -41,6 +47,6 @@ class MSGraphRepository {
       showAs: EventStatus.free,
       isReminderOn: false,
     );
-    await _msGraphDataSource.create(event: msEvent);
+    await _msGraphDataSource.createEvent(msEvent);
   }
 }
