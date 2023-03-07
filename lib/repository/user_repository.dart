@@ -44,7 +44,7 @@ class UserRepository {
     );
 
   /// Login using ms azure
-  Future<void> login() async {
+  Future<UserCredential> login() async {
     final UserCredential userCredential;
     if (_isWeb) {
       userCredential = await _firebaseAuth.signInWithPopup(msProvider);
@@ -53,6 +53,7 @@ class UserRepository {
     }
     unawaited(_notificationsRespository.requestNotifications());
     _saveCredential(userCredential);
+    return userCredential;
   }
 
   /// Gets called to obtain a fresh access token

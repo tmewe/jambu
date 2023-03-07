@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jambu/backend/backend.dart';
 import 'package:jambu/repository/repository.dart';
 
 class PlaygroundPage extends StatelessWidget {
@@ -12,6 +13,15 @@ class PlaygroundPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            TextButton(
+              onPressed: () {
+                context.read<FirestoreRepository>().updateAttendanceAt(
+                      date: DateTime.now(),
+                      isAttending: true,
+                    );
+              },
+              child: const Text('Ich bin heute im Büro'),
+            ),
             TextButton(
               onPressed: () {
                 context.read<MSGraphRepository>().me();

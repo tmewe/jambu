@@ -1,5 +1,6 @@
 import 'package:chopper/chopper.dart';
 import 'package:jambu/app/app.dart';
+import 'package:jambu/backend/backend.dart';
 import 'package:jambu/main/bootstrap/bootstrap.dart';
 import 'package:jambu/ms_graph/ms_graph.dart';
 import 'package:jambu/repository/repository.dart';
@@ -7,7 +8,7 @@ import 'package:jambu/storage/storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
-  bootstrap((firebaseMessaging, firebaseAuth) async {
+  bootstrap((firebaseMessaging, firebaseAuth, firebaseFirestore) async {
     // TODO(tim): Replace with secure storage
     final sharedPrefs = await SharedPreferences.getInstance();
     final tokenStorage = SharedPrefsTokenStorage(sharedPrefs: sharedPrefs);
@@ -20,6 +21,14 @@ void main() {
       firebaseAuth: firebaseAuth,
       tokenStorage: tokenStorage,
       notificationsRespository: notificationsRespository,
+    );
+
+    final firestoreDatasource = FirestoreDatasource(
+      firestore: firebaseFirestore,
+    );
+
+    final firestoreRepository = FirestoreRepository(
+      firestoreDatasource: firestoreDatasource,
     );
 
     final msGraphChopperClient = ChopperClient(
@@ -42,6 +51,7 @@ void main() {
     return App(
       userRepository: userRepository,
       msGraphRepository: msGraphRepository,
+      firestoreRepository: firestoreRepository,
     );
   });
 }
