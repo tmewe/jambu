@@ -1,6 +1,7 @@
 // ignore_for_file: cascade_invocations
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:jambu/repository/repository.dart';
 import 'package:jambu/storage/storage.dart';
@@ -8,23 +9,30 @@ import 'package:mocktail/mocktail.dart';
 
 class MockFirebaseAuth extends Mock implements FirebaseAuth {}
 
+class MockFirebaseMessaging extends Mock implements FirebaseMessaging {}
+
 class MockUserCredential extends Mock implements UserCredential {}
 
 class MockAuthCredential extends Mock implements AuthCredential {}
 
 class MockAuthProvider extends Mock implements MicrosoftAuthProvider {}
 
-class MockUser extends Mock implements User {}
+class MockNotificationsRepository extends Mock
+    implements NotificationsRespository {}
 
 void main() {
   final firebaseAuth = MockFirebaseAuth();
   final tokenStorage = InMemoryTokenStorage();
+  final notificationsRespository = MockNotificationsRepository();
 
   setUpAll(
     () {
       when(firebaseAuth.authStateChanges).thenAnswer(
         (_) => Stream<User?>.value(null),
       );
+
+      when(notificationsRespository.requestNotifications)
+          .thenAnswer((_) async {});
 
       registerFallbackValue(MockAuthProvider());
     },
@@ -41,6 +49,7 @@ void main() {
       final sut = UserRepository(
         firebaseAuth: firebaseAuth,
         tokenStorage: tokenStorage,
+        notificationsRespository: notificationsRespository,
         isWeb: isWeb,
       );
 
@@ -61,6 +70,7 @@ void main() {
       final sut = UserRepository(
         firebaseAuth: firebaseAuth,
         tokenStorage: tokenStorage,
+        notificationsRespository: notificationsRespository,
         isWeb: isWeb,
       );
 
@@ -71,26 +81,22 @@ void main() {
       verify(() => firebaseAuth.signInWithProvider(any())).called(1);
     });
 
-    test('tokens get saved', () async {
+    test('access token get saved', () async {
       // arrange
       final sut = UserRepository(
         firebaseAuth: firebaseAuth,
         tokenStorage: tokenStorage,
+        notificationsRespository: notificationsRespository,
         isWeb: true,
       );
 
       const accessToken = 'access_token';
-      const refreshToken = 'refresh_token';
 
       final authCredential = MockAuthCredential();
       when(() => authCredential.accessToken).thenReturn(accessToken);
 
-      final user = MockUser();
-      when(() => user.refreshToken).thenReturn(refreshToken);
-
       final userCredential = MockUserCredential();
       when(() => userCredential.credential).thenReturn(authCredential);
-      when(() => userCredential.user).thenReturn(user);
 
       when(() => firebaseAuth.signInWithPopup(any())).thenAnswer(
         (_) async => userCredential,
@@ -101,7 +107,6 @@ void main() {
 
       // assert
       expect(tokenStorage.readAccessToken(), accessToken);
-      expect(tokenStorage.readRefreshToken(), refreshToken);
     });
   });
 }

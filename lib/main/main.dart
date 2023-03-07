@@ -12,9 +12,14 @@ void main() {
     final sharedPrefs = await SharedPreferences.getInstance();
     final tokenStorage = SharedPrefsTokenStorage(sharedPrefs: sharedPrefs);
 
+    final notificationsRespository = NotificationsRespository(
+      firebaseMessaging: firebaseMessaging,
+    );
+
     final userRepository = UserRepository(
       firebaseAuth: firebaseAuth,
       tokenStorage: tokenStorage,
+      notificationsRespository: notificationsRespository,
     );
 
     final msGraphChopperClient = ChopperClient(
