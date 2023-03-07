@@ -14,6 +14,11 @@ class MSGraphRepository {
     debugPrint('$response');
   }
 
+  Future<void> calendars() async {
+    final calendars = await _msGraphDataSource.calendars();
+    debugPrint('$calendars');
+  }
+
   Future<void> events() async {
     final events = await _msGraphDataSource.events();
     debugPrint('$events');

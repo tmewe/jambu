@@ -16,6 +16,22 @@ class MSGraphDataSource {
     return _msGraphAPI.me();
   }
 
+  Future<List<MSCalendar>> calendars() async {
+    final response = await _msGraphAPI.calendars();
+
+    if (response.statusCode != 200) {
+      return [];
+    }
+
+    final jsonBody =
+        jsonDecode(response.body.toString()) as Map<String, dynamic>;
+    final calendarsJson = jsonBody['value'] as List<dynamic>;
+    final calendarsJsonList =
+        calendarsJson.map((e) => e as Map<String, dynamic>);
+    final calendars = calendarsJsonList.map(MSCalendar.fromJson).toList();
+    return calendars;
+  }
+
   Future<List<MSEvent>> events() async {
     final response = await _msGraphAPI.calendarEvents(
       filter: "start/dateTime ge '2023-03-03'",
