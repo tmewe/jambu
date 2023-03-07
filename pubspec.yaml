@@ -21,6 +21,7 @@ dependencies:
   freezed: ^2.3.2
   freezed_annotation: ^2.2.0
   go_router: ^6.2.0
+  intl: 0.17.0 # Upgrade if possible
   json_annotation: ^4.8.0
   meta: 1.8.0
   rxdart: ^0.27.7

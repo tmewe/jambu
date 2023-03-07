@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jambu/app/app.dart';
+import 'package:jambu/backend/backend.dart';
 import 'package:jambu/repository/repository.dart';
 
 class App extends StatelessWidget {
   const App({
     required UserRepository userRepository,
     required MSGraphRepository msGraphRepository,
+    required FirestoreRepository firestoreRepository,
     super.key,
   })  : _userRepository = userRepository,
-        _msGraphRepository = msGraphRepository;
+        _msGraphRepository = msGraphRepository,
+        _firestoreRepository = firestoreRepository;
 
   final UserRepository _userRepository;
   final MSGraphRepository _msGraphRepository;
+  final FirestoreRepository _firestoreRepository;
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +24,7 @@ class App extends StatelessWidget {
       providers: [
         RepositoryProvider.value(value: _userRepository),
         RepositoryProvider.value(value: _msGraphRepository),
+        RepositoryProvider.value(value: _firestoreRepository),
       ],
       child: const AppView(),
     );

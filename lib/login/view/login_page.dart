@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jambu/backend/backend.dart';
 import 'package:jambu/login/bloc/login_bloc.dart';
 import 'package:jambu/repository/repository.dart';
 
@@ -12,6 +13,7 @@ class LoginPage extends StatelessWidget {
       body: BlocProvider(
         create: (_) => LoginBloc(
           userRepository: context.read<UserRepository>(),
+          firestoreRepository: context.read<FirestoreRepository>(),
         ),
         child: const LoginView(),
       ),
