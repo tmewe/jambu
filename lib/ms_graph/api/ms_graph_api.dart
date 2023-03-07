@@ -14,6 +14,12 @@ abstract class MSGraphAPI extends ChopperService {
     @Query() String select = '''id, name, hexColor''',
   });
 
+  @Post(
+    path: 'me/calendars',
+    headers: {'content-type': 'application/json'},
+  )
+  Future<Response<dynamic>> createCalendar(@Body() String data);
+
   @Get(path: 'me/calendar/events')
   Future<Response<dynamic>> calendarEvents({
     @Query() required String filter,
