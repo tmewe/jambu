@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
+import 'package:jambu/repository/repository.dart';
 import 'package:jambu/storage/storage.dart';
 import 'package:rxdart/subjects.dart';
 
@@ -10,9 +10,11 @@ class UserRepository {
   UserRepository({
     required FirebaseAuth firebaseAuth,
     required TokenStorage tokenStorage,
+    required NotificationsRespository notificationsRespository,
     bool isWeb = kIsWeb,
   })  : _firebaseAuth = firebaseAuth,
         _tokenStorage = tokenStorage,
+        _notificationsRespository = notificationsRespository,
         _isWeb = isWeb {
     _firebaseAuth.authStateChanges().listen((user) {
       debugPrint('User changed: ${user?.displayName}');
@@ -22,6 +24,7 @@ class UserRepository {
 
   final FirebaseAuth _firebaseAuth;
   final TokenStorage _tokenStorage;
+  final NotificationsRespository _notificationsRespository;
   final bool _isWeb;
 
   final BehaviorSubject<User?> _userSubject = BehaviorSubject.seeded(null);
@@ -48,7 +51,7 @@ class UserRepository {
     } else {
       userCredential = await _firebaseAuth.signInWithProvider(msProvider);
     }
-    unawaited(_requestNotifications());
+    unawaited(_notificationsRespository.requestNotifications());
     _saveCredential(userCredential);
   }
 
@@ -73,22 +76,6 @@ class UserRepository {
     if (accessToken != null) {
       debugPrint('Access token: $accessToken', wrapWidth: 1024);
       _tokenStorage.saveAccessToken(accessToken);
-    }
-  }
-
-  // TODO(tim): Refactor
-  Future<void> _requestNotifications() async {
-    final notificationSettings =
-        await FirebaseMessaging.instance.getNotificationSettings();
-    final status = notificationSettings.authorizationStatus;
-
-    if (status == AuthorizationStatus.notDetermined) {
-      await FirebaseMessaging.instance.requestPermission();
-      final fcmToken = await FirebaseMessaging.instance.getToken(
-        vapidKey:
-            '''BDwDEXNpZUq9IJQ60LNTt3At9ctSWMBiEo5BMXzB9X2VojyfM0En84zNMr328DhLhruGVJQPCjo2lTJ3YCZhGoY''',
-      );
-      debugPrint(fcmToken);
     }
   }
 }
