@@ -17,7 +17,7 @@ void main() {
       firebaseMessaging: firebaseMessaging,
     );
 
-    final userRepository = UserRepository(
+    final userRepository = AuthRepository(
       firebaseAuth: firebaseAuth,
       tokenStorage: tokenStorage,
       notificationsRespository: notificationsRespository,

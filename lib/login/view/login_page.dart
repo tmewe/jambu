@@ -12,7 +12,7 @@ class LoginPage extends StatelessWidget {
     return Scaffold(
       body: BlocProvider(
         create: (_) => LoginBloc(
-          userRepository: context.read<UserRepository>(),
+          userRepository: context.read<AuthRepository>(),
           firestoreRepository: context.read<FirestoreRepository>(),
         ),
         child: const LoginView(),

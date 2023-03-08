@@ -6,8 +6,8 @@ import 'package:jambu/repository/repository.dart';
 import 'package:jambu/storage/storage.dart';
 import 'package:rxdart/subjects.dart';
 
-class UserRepository {
-  UserRepository({
+class AuthRepository {
+  AuthRepository({
     required FirebaseAuth firebaseAuth,
     required TokenStorage tokenStorage,
     required NotificationsRespository notificationsRespository,

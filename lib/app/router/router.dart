@@ -42,7 +42,7 @@ GoRouter getRouter({
 }
 
 String? _redirect(BuildContext context, GoRouterState state) {
-  final user = context.read<UserRepository>().currentUser;
+  final user = context.read<AuthRepository>().currentUser;
   final isLoggedIn = user != null;
   final isLoggingIn = state.subloc == '/login';
 

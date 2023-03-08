@@ -11,7 +11,7 @@ part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginBloc({
-    required UserRepository userRepository,
+    required AuthRepository userRepository,
     required FirestoreRepository firestoreRepository,
   })  : _userRepository = userRepository,
         _firestoreRepository = firestoreRepository,
@@ -19,7 +19,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<LoginRequested>(_onLoginRequested);
   }
 
-  final UserRepository _userRepository;
+  final AuthRepository _userRepository;
   final FirestoreRepository _firestoreRepository;
 
   FutureOr<void> _onLoginRequested(

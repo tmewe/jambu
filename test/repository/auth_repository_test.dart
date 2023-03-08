@@ -46,7 +46,7 @@ void main() {
         (_) async => MockUserCredential(),
       );
 
-      final sut = UserRepository(
+      final sut = AuthRepository(
         firebaseAuth: firebaseAuth,
         tokenStorage: tokenStorage,
         notificationsRespository: notificationsRespository,
@@ -67,7 +67,7 @@ void main() {
         (_) async => MockUserCredential(),
       );
 
-      final sut = UserRepository(
+      final sut = AuthRepository(
         firebaseAuth: firebaseAuth,
         tokenStorage: tokenStorage,
         notificationsRespository: notificationsRespository,
@@ -83,7 +83,7 @@ void main() {
 
     test('access token get saved', () async {
       // arrange
-      final sut = UserRepository(
+      final sut = AuthRepository(
         firebaseAuth: firebaseAuth,
         tokenStorage: tokenStorage,
         notificationsRespository: notificationsRespository,

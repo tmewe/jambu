@@ -59,7 +59,7 @@ class PlaygroundPage extends StatelessWidget {
             ),
             TextButton(
               onPressed: () {
-                context.read<UserRepository>().logout();
+                context.read<AuthRepository>().logout();
               },
               child: const Text('Abmelden'),
             ),
