@@ -6,7 +6,7 @@ import 'package:jambu/repository/repository.dart';
 
 class App extends StatelessWidget {
   const App({
-    required UserRepository userRepository,
+    required AuthRepository userRepository,
     required MSGraphRepository msGraphRepository,
     required FirestoreRepository firestoreRepository,
     super.key,
@@ -14,7 +14,7 @@ class App extends StatelessWidget {
         _msGraphRepository = msGraphRepository,
         _firestoreRepository = firestoreRepository;
 
-  final UserRepository _userRepository;
+  final AuthRepository _userRepository;
   final MSGraphRepository _msGraphRepository;
   final FirestoreRepository _firestoreRepository;
 
@@ -36,7 +36,7 @@ class AppView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final userStream = context.read<UserRepository>().userStream;
+    final userStream = context.read<AuthRepository>().userStream;
     return MaterialApp.router(
       routerConfig: getRouter(userStream: userStream),
     );
