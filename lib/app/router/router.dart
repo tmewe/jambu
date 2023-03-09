@@ -1,14 +1,14 @@
 import 'dart:async';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jambu/app/router/gorouter_refresh_stream.dart';
+import 'package:jambu/backend/backend.dart';
 import 'package:jambu/home/home.dart';
 import 'package:jambu/login/login.dart';
 import 'package:jambu/logout/logout.dart';
-import 'package:jambu/repository/repository.dart';
+import 'package:jambu/model/model.dart';
 
 GoRouter getRouter({
   required Stream<User?> userStream,
@@ -42,7 +42,7 @@ GoRouter getRouter({
 }
 
 String? _redirect(BuildContext context, GoRouterState state) {
-  final user = context.read<AuthRepository>().currentUser;
+  final user = context.read<UserRepository>().currentUser;
   final isLoggedIn = user != null;
   final isLoggingIn = state.subloc == '/login';
 

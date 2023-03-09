@@ -10,16 +10,19 @@ class App extends StatelessWidget {
     required MSGraphRepository msGraphRepository,
     required FirestoreRepository firestoreRepository,
     required UserRepository userRespository,
+    required CalendarRepository calendarRepository,
     super.key,
   })  : _authRepository = authRepository,
         _msGraphRepository = msGraphRepository,
         _firestoreRepository = firestoreRepository,
-        _userRepository = userRespository;
+        _userRepository = userRespository,
+        _calendarRepository = calendarRepository;
 
   final AuthRepository _authRepository;
   final MSGraphRepository _msGraphRepository;
   final FirestoreRepository _firestoreRepository;
   final UserRepository _userRepository;
+  final CalendarRepository _calendarRepository;
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +32,7 @@ class App extends StatelessWidget {
         RepositoryProvider.value(value: _msGraphRepository),
         RepositoryProvider.value(value: _firestoreRepository),
         RepositoryProvider.value(value: _userRepository),
+        RepositoryProvider.value(value: _calendarRepository),
       ],
       child: const AppView(),
     );
@@ -40,7 +44,7 @@ class AppView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final userStream = context.read<AuthRepository>().userStream;
+    final userStream = context.read<UserRepository>().currentUserStream;
     return MaterialApp.router(
       routerConfig: getRouter(userStream: userStream),
     );
