@@ -1,6 +1,6 @@
-import 'package:flutter/foundation.dart';
 import 'package:jambu/backend/datasource/datasource.dart';
 import 'package:jambu/backend/repository/user_repository.dart';
+import 'package:jambu/model/model.dart';
 
 class FirestoreRepository {
   FirestoreRepository({
@@ -12,9 +12,8 @@ class FirestoreRepository {
   final FirestoreDatasource _firestoreDatasource;
   final UserRepository _userRepository;
 
-  Future<void> getAttendances() async {
-    final att = await _firestoreDatasource.getAttendances();
-    debugPrint('$att');
+  Future<List<Attendance>> getAttendances() async {
+    return _firestoreDatasource.getAttendances();
   }
 
   Future<void> updateAttendanceAt({
