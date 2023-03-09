@@ -11,13 +11,12 @@ class FirestoreDatasource {
 
   Future<List<User>> getUsers() async {
     final querySnaphot = await _firestore.collection('users').get();
-    final users = querySnaphot.docs.map((e) => User.fromJson(e.data()));
+    final users = querySnaphot.docs.map(User.fromFirestore);
     return users.toList();
   }
 
   Future<void> updateUser(User user) async {
-    final userJson = user.toJson();
-    return _firestore.collection('users').doc(user.id).set(userJson);
+    return _firestore.collection('users').doc(user.id).set(user.toFirestore());
   }
 
   Future<List<Attendance>> getAttendances() async {
