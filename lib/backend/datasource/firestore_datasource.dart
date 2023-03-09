@@ -38,7 +38,7 @@ class FirestoreDatasource {
     if (!querySnaphot.exists && isAttending) {
       final attendance = Attendance(date: day, users: [user.id]);
       await _saveAttendanceToFirestore(attendance, dateString: formattedDate);
-    } 
+    }
     // Document for given date exists
     else {
       final attendance = Attendance.fromFirestore(querySnaphot);

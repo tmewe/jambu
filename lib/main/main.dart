@@ -27,14 +27,19 @@ void main() {
       notificationsRespository: notificationsRespository,
     );
 
-    final userRespository = UserRepository(
+    final userRepository = UserRepository(
       firestoreDatasource: firestoreDatasource,
       authRepository: authRepository,
     );
 
     final firestoreRepository = FirestoreRepository(
       firestoreDatasource: firestoreDatasource,
-      userRepository: userRespository,
+      userRepository: userRepository,
+    );
+
+    final calendarRepository = CalendarRepository(
+      firestoreRepository: firestoreRepository,
+      userRepository: userRepository,
     );
 
     final msGraphChopperClient = ChopperClient(
@@ -58,7 +63,8 @@ void main() {
       authRepository: authRepository,
       msGraphRepository: msGraphRepository,
       firestoreRepository: firestoreRepository,
-      userRespository: userRespository,
+      userRespository: userRepository,
+      calendarRepository: calendarRepository,
     );
   });
 }

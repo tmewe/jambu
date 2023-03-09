@@ -27,12 +27,12 @@ class LoginView extends StatelessWidget {
     final loginStatus = context.select((LoginBloc bloc) => bloc.state.status);
     if (loginStatus == LoginStatus.initial) {
       return const WelcomeView();
-    } else if (loginStatus == LoginStatus.loading) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
+    } else if (loginStatus == LoginStatus.failure) {
+      return const ErrorView();
     }
-    return const ErrorView();
+    return const Center(
+      child: CircularProgressIndicator(),
+    );
   }
 }
 
