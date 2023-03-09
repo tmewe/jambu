@@ -22,7 +22,6 @@ class MockUser extends Mock implements User {}
 class MockNotificationsRepository extends Mock
     implements NotificationsRespository {}
 
-
 void main() {
   final firebaseAuth = MockFirebaseAuth();
   final tokenStorage = InMemoryTokenStorage();

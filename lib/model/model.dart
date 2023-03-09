@@ -1,2 +1,2 @@
 export 'attendance.dart';
-export 'user/user.dart';
+export 'user.dart';
