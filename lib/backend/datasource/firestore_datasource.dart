@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import 'package:jambu/model/model.dart';
 
@@ -21,6 +20,12 @@ class FirestoreDatasource {
     return _firestore.collection('users').doc(user.id).set(userJson);
   }
 
+  Future<List<Attendance>> getAttendances() async {
+    final querySnaphot = await _firestore.collection('attendances').get();
+    final attendances = querySnaphot.docs.map(Attendance.fromFirestore);
+    return attendances.toList();
+  }
+
   Future<void> updateAttendanceAt({
     required DateTime date,
     required bool isAttending,
@@ -30,12 +35,11 @@ class FirestoreDatasource {
     final querySnaphot =
         await _firestore.collection('attendances').doc(formattedDate).get();
     if (querySnaphot.data() == null) {
-      await _firestore.collection('attendances').doc(formattedDate).set(
-        {
-          'users': [user.id]
-        },
-      );
+      final attendance = Attendance(date: date, users: [user.id]);
+      await _firestore
+          .collection('attendances')
+          .doc(formattedDate)
+          .set(attendance.toFirestore());
     }
-    debugPrint('$querySnaphot');
   }
 }

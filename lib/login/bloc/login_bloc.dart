@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:jambu/backend/backend.dart';
 import 'package:jambu/repository/repository.dart';
 import 'package:meta/meta.dart';
 
@@ -11,16 +10,13 @@ part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginBloc({
-    required AuthRepository userRepository,
-    required FirestoreRepository firestoreRepository,
-  })  : _userRepository = userRepository,
-        _firestoreRepository = firestoreRepository,
+    required AuthRepository authRepository,
+  })  : _authRepository = authRepository,
         super(const LoginState.initial()) {
     on<LoginRequested>(_onLoginRequested);
   }
 
-  final AuthRepository _userRepository;
-  final FirestoreRepository _firestoreRepository;
+  final AuthRepository _authRepository;
 
   FutureOr<void> _onLoginRequested(
     LoginRequested event,
@@ -28,12 +24,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   ) async {
     emit(const LoginState(status: LoginStatus.loading));
     try {
-      final credentials = await _userRepository.login();
+      await _authRepository.login();
       emit(const LoginState(status: LoginStatus.success));
-
-      if (credentials.user != null) {
-        await _firestoreRepository.updateUser(credentials.user!);
-      }
     } catch (e) {
       emit(const LoginState(status: LoginStatus.failure));
     }

@@ -17,8 +17,11 @@ class MockAuthCredential extends Mock implements AuthCredential {}
 
 class MockAuthProvider extends Mock implements MicrosoftAuthProvider {}
 
+class MockUser extends Mock implements User {}
+
 class MockNotificationsRepository extends Mock
     implements NotificationsRespository {}
+
 
 void main() {
   final firebaseAuth = MockFirebaseAuth();
@@ -35,10 +38,11 @@ void main() {
           .thenAnswer((_) async {});
 
       registerFallbackValue(MockAuthProvider());
+      registerFallbackValue(MockUser());
     },
   );
 
-  group('login', () {
+  group('login popup', () {
     test('signInWithPopup() is called once if web', () async {
       // arrange
       const isWeb = true;
@@ -80,16 +84,21 @@ void main() {
       // assert
       verify(() => firebaseAuth.signInWithProvider(any())).called(1);
     });
+  });
 
-    test('access token get saved', () async {
-      // arrange
-      final sut = AuthRepository(
+  group('login', () {
+    late final AuthRepository sut;
+    setUpAll(() {
+      sut = AuthRepository(
         firebaseAuth: firebaseAuth,
         tokenStorage: tokenStorage,
         notificationsRespository: notificationsRespository,
         isWeb: true,
       );
+    });
 
+    test('access token get saved', () async {
+      // arrange
       const accessToken = 'access_token';
 
       final authCredential = MockAuthCredential();

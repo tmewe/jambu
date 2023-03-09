@@ -17,25 +17,31 @@ void main() {
       firebaseMessaging: firebaseMessaging,
     );
 
-    final userRepository = AuthRepository(
+    final firestoreDatasource = FirestoreDatasource(
+      firestore: firebaseFirestore,
+    );
+
+    final authRepository = AuthRepository(
       firebaseAuth: firebaseAuth,
       tokenStorage: tokenStorage,
       notificationsRespository: notificationsRespository,
     );
 
-    final firestoreDatasource = FirestoreDatasource(
-      firestore: firebaseFirestore,
+    final userRespository = UserRepository(
+      firestoreDatasource: firestoreDatasource,
+      authRepository: authRepository,
     );
 
     final firestoreRepository = FirestoreRepository(
       firestoreDatasource: firestoreDatasource,
+      userRepository: userRespository,
     );
 
     final msGraphChopperClient = ChopperClient(
       baseUrl: Uri.parse('https://graph.microsoft.com'),
       authenticator: AuthChallengeAuthenticator(
         tokenStorage: tokenStorage,
-        userRepository: userRepository,
+        authRepository: authRepository,
       ),
       interceptors: [
         LoggingInterceptor(),
@@ -49,9 +55,10 @@ void main() {
     );
 
     return App(
-      userRepository: userRepository,
+      authRepository: authRepository,
       msGraphRepository: msGraphRepository,
       firestoreRepository: firestoreRepository,
+      userRespository: userRespository,
     );
   });
 }
