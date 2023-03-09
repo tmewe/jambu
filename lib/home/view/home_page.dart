@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jambu/calendar/view/calendar.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -6,9 +7,16 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: Center(
-        child: Text('Home'),
-      ),
+      body: HomeView(),
     );
+  }
+}
+
+class HomeView extends StatelessWidget {
+  const HomeView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Calendar();
   }
 }
