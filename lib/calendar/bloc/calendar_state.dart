@@ -11,7 +11,7 @@ class CalendarState extends Equatable {
     List<DateTime> displayDates = const [],
   }) {
     if (displayDates.isEmpty) {
-      this.displayDates = _weekdays();
+      this.displayDates = Week(date: DateTime.now()).workingDays;
     } else {
       this.displayDates = displayDates;
     }
@@ -45,13 +45,4 @@ class CalendarState extends Equatable {
       displayDates: displayDates ?? this.displayDates,
     );
   }
-}
-
-List<DateTime> _weekdays() {
-  final t = DateTime.now();
-  final y = t.subtract(const Duration(days: 1));
-  final y2 = t.subtract(const Duration(days: 2));
-  final y3 = t.subtract(const Duration(days: 3));
-  final to = t.add(const Duration(days: 1));
-  return [y3, y2, y, t, to];
 }
