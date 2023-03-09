@@ -6,25 +6,29 @@ import 'package:jambu/repository/repository.dart';
 
 class App extends StatelessWidget {
   const App({
-    required AuthRepository userRepository,
+    required AuthRepository authRepository,
     required MSGraphRepository msGraphRepository,
     required FirestoreRepository firestoreRepository,
+    required UserRepository userRespository,
     super.key,
-  })  : _userRepository = userRepository,
+  })  : _authRepository = authRepository,
         _msGraphRepository = msGraphRepository,
-        _firestoreRepository = firestoreRepository;
+        _firestoreRepository = firestoreRepository,
+        _userRepository = userRespository;
 
-  final AuthRepository _userRepository;
+  final AuthRepository _authRepository;
   final MSGraphRepository _msGraphRepository;
   final FirestoreRepository _firestoreRepository;
+  final UserRepository _userRepository;
 
   @override
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
       providers: [
-        RepositoryProvider.value(value: _userRepository),
+        RepositoryProvider.value(value: _authRepository),
         RepositoryProvider.value(value: _msGraphRepository),
         RepositoryProvider.value(value: _firestoreRepository),
+        RepositoryProvider.value(value: _userRepository),
       ],
       child: const AppView(),
     );

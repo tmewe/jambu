@@ -1,42 +1,33 @@
-import 'package:firebase_auth/firebase_auth.dart' as fb_auth;
+import 'package:flutter/foundation.dart';
 import 'package:jambu/backend/datasource/datasource.dart';
-import 'package:jambu/model/model.dart';
+import 'package:jambu/backend/repository/user_repository.dart';
 
 class FirestoreRepository {
   FirestoreRepository({
     required FirestoreDatasource firestoreDatasource,
-  }) : _firestoreDatasource = firestoreDatasource;
+    required UserRepository userRepository,
+  })  : _firestoreDatasource = firestoreDatasource,
+        _userRepository = userRepository;
 
   final FirestoreDatasource _firestoreDatasource;
-  User? _currentUser;
+  final UserRepository _userRepository;
 
-  /// Syncs the firebase auth user with the user from firestore
-  Future<void> updateUser(fb_auth.User firebaseUser) async {
-    final users = await _firestoreDatasource.getUsers();
-    final currentUser = users.firstWhere(
-      (user) => user.id == firebaseUser.uid,
-      orElse: () {
-        return User(id: firebaseUser.uid, name: firebaseUser.displayName ?? '');
-      },
-    );
-    _currentUser = currentUser;
-
-    // TODO(tim): Compare users to check if update is needed
-    final updatedUser =
-        currentUser.copyWith(name: firebaseUser.displayName ?? '');
-    await _firestoreDatasource.updateUser(updatedUser);
+  Future<void> getAttendances() async {
+    final att = await _firestoreDatasource.getAttendances();
+    debugPrint('$att');
   }
 
   Future<void> updateAttendanceAt({
     required DateTime date,
     required bool isAttending,
   }) async {
-    if (_currentUser == null) return;
+    final currentUser = _userRepository.currentUser;
+    if (currentUser == null) return;
 
     await _firestoreDatasource.updateAttendanceAt(
       date: date,
       isAttending: isAttending,
-      user: _currentUser!,
+      user: currentUser,
     );
   }
 }

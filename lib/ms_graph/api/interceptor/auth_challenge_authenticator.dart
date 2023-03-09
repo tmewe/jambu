@@ -9,12 +9,12 @@ import 'package:jambu/storage/storage.dart';
 class AuthChallengeAuthenticator extends Authenticator {
   AuthChallengeAuthenticator({
     required TokenStorage tokenStorage,
-    required AuthRepository userRepository,
+    required AuthRepository authRepository,
   })  : _tokenStorage = tokenStorage,
-        _userRepository = userRepository;
+        _authRepository = authRepository;
 
   final TokenStorage _tokenStorage;
-  final AuthRepository _userRepository;
+  final AuthRepository _authRepository;
 
   @override
   FutureOr<Request?> authenticate(
@@ -25,7 +25,7 @@ class AuthChallengeAuthenticator extends Authenticator {
     if (response.statusCode != HttpStatus.unauthorized) return null;
 
     // TODO(tim): Replace using refresh token
-    await _userRepository.reauthenticate();
+    await _authRepository.reauthenticate();
     final accessToken = await _tokenStorage.readAccessToken();
 
     if (accessToken == null) return null;
