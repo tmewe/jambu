@@ -4,7 +4,7 @@ import 'package:jambu/calendar/util/util.dart';
 void main() {
   void testCorrectDates(DateTime input, List<DateTime> dates) {
     // arrange
-    final sut = Week(date: input);
+    final sut = WeekFromDate(input);
 
     // act
     final result = sut.workingDays;
@@ -16,7 +16,7 @@ void main() {
   group('workingDays', () {
     test('Returs an array containing five elements', () {
       // arrange
-      final sut = Week(date: DateTime.now());
+      final sut = WeekFromDate(DateTime.now());
 
       // act
       final result = sut.workingDays;

@@ -2,9 +2,8 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
-import 'package:jambu/calendar/util/util.dart';
-import 'package:jambu/model/model.dart';
+import 'package:jambu/calendar/model/model.dart';
+import 'package:jambu/extension/week_viewmodel_extension.dart';
 import 'package:jambu/repository/repository.dart';
 
 part 'calendar_event.dart';
@@ -14,9 +13,10 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
   CalendarBloc({
     required CalendarRepository calendarRepository,
   })  : _calendarRepository = calendarRepository,
-        super(CalendarState()) {
+        super(const CalendarState()) {
     on<CalendarRequested>(_onCalendarRequested);
     on<CalendarAttendanceUpdate>(_onCalenderAttendanceUpdate);
+    on<CalendarGoToWeek>(_onCalendarGotToWeek);
   }
 
   final CalendarRepository _calendarRepository;
@@ -26,13 +26,11 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     Emitter<CalendarState> emit,
   ) async {
     emit(state.copyWith(status: CalendarStatus.loading));
-    final attendances = await _calendarRepository.getAttendances();
-    final userAttendances = await _calendarRepository.getAttendancesForUser();
+    final weeks = await _calendarRepository.fetchCalendar();
     emit(
       state.copyWith(
         status: CalendarStatus.success,
-        attendances: attendances,
-        userAttendances: userAttendances,
+        weeks: weeks,
       ),
     );
   }
@@ -41,18 +39,27 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     CalendarAttendanceUpdate event,
     Emitter<CalendarState> emit,
   ) async {
-    final List<DateTime> updatedAttendances;
-    if (event.isAttending) {
-      updatedAttendances = [...state.userAttendances, event.date];
-    } else {
-      updatedAttendances = state.userAttendances
-          .where((d) => !DateUtils.isSameDay(d, event.date))
-          .toList();
-    }
-    emit(state.copyWith(userAttendances: updatedAttendances));
+    final selectedWeek = state.weeks[state.selectedWeek];
+    final selectedDay = selectedWeek.dayAtDate(event.date);
+
+    if (selectedDay == null) return;
+
+    final newDay = selectedDay.copyWith(isUserAttending: event.isAttending);
+    final newWeek = selectedWeek.updateDay(newDay);
+
+    emit(state.copyWith(weeks: state.weeks.updateWeek(newWeek)));
+
     await _calendarRepository.updateAttendanceAt(
       date: event.date,
       isAttending: event.isAttending,
     );
+  }
+
+  FutureOr<void> _onCalendarGotToWeek(
+    CalendarGoToWeek event,
+    Emitter<CalendarState> emit,
+  ) async {
+    if (event.weekNumber < 0 || event.weekNumber > 3) return;
+    emit(state.copyWith(selectedWeek: event.weekNumber));
   }
 }

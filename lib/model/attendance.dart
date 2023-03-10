@@ -6,7 +6,7 @@ import 'package:flutter/foundation.dart';
 class Attendance extends Equatable {
   const Attendance({
     required this.date,
-    this.users = const [],
+    this.userIds = const [],
   });
 
   factory Attendance.fromFirestore(
@@ -15,25 +15,25 @@ class Attendance extends Equatable {
     final data = snapshot.data();
     return Attendance(
       date: (data?['date'] as Timestamp).toDate(),
-      users: List.from(data?['users'] as Iterable),
+      userIds: List.from(data?['users'] as Iterable),
     );
   }
 
   final DateTime date;
-  final List<String> users;
+  final List<String> userIds;
 
   Map<String, dynamic> toFirestore() {
     return {
       'date': Timestamp.fromDate(date),
-      'users': users,
+      'users': userIds,
     };
   }
 
   @override
-  String toString() => 'Attendance(date: $date, users: $users)';
+  String toString() => 'Attendance(date: $date, users: $userIds)';
 
   @override
-  List<Object> get props => [date, users];
+  List<Object> get props => [date, userIds];
 
   Attendance copyWith({
     DateTime? date,
@@ -41,7 +41,7 @@ class Attendance extends Equatable {
   }) {
     return Attendance(
       date: date ?? this.date,
-      users: users ?? this.users,
+      userIds: users ?? userIds,
     );
   }
 }

@@ -16,3 +16,9 @@ extension DayString on DateTime {
     }
   }
 }
+
+extension Midnight on DateTime {
+  DateTime get midnight {
+    return DateTime(year, month, day);
+  }
+}

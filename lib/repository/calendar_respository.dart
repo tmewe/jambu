@@ -1,5 +1,6 @@
 import 'package:jambu/backend/backend.dart';
-import 'package:jambu/model/model.dart';
+import 'package:jambu/calendar/core/core.dart';
+import 'package:jambu/calendar/model/model.dart';
 
 // TODO(tim): Add tests
 class CalendarRepository {
@@ -12,42 +13,53 @@ class CalendarRepository {
   final FirestoreRepository _firestoreRepository;
   final UserRepository _userRepository;
 
-  List<Attendance> allAttendances = [];
-  List<Attendance> otherAttendances = [];
-  List<DateTime> userAttendances = [];
+  List<CalendarWeek> weeks = [];
 
-  Future<List<Attendance>> getAttendances() async {
-    allAttendances = await _firestoreRepository.getAttendances();
-
+  Future<List<CalendarWeek>> fetchCalendar() async {
     final currentUser = _userRepository.currentUser;
     if (currentUser == null) return [];
 
-    // Filter out current user
-    final filteredAttendances = allAttendances.map((a) {
-      return a.copyWith(
-        users: a.users.where((uid) => uid != currentUser.id).toList(),
-      );
-    }).toList();
+    final users = await _firestoreRepository.getUsers();
+    final attendances = await _firestoreRepository.getAttendances();
 
-    otherAttendances = filteredAttendances;
-    return filteredAttendances;
+    final weeks = CalendarMapping(
+      currentUser: currentUser,
+      attendances: attendances,
+      users: users,
+    )();
+
+    this.weeks = weeks;
+
+    final filteredWeeks = CalendarFiltering(
+      filter: CalendarFilter(),
+      weeks: weeks,
+    )();
+
+    return filteredWeeks;
   }
 
-  Future<List<DateTime>> getAttendancesForUser() async {
-    if (allAttendances.isEmpty) {
-      allAttendances = await _firestoreRepository.getAttendances();
-    }
+  Future<List<CalendarWeek>> updateFilter(CalendarFilter filter) async {
+    return [];
+  }
 
-    final currentUser = _userRepository.currentUser;
-    if (currentUser == null) return [];
+  Future<List<CalendarWeek>> updateFavorite({
+    required String userId,
+    required bool isFavorite,
+  }) async {
+    return [];
+  }
 
-    final filteredAttendances = allAttendances
-        .where((a) => a.users.contains(currentUser.id))
-        .map((a) => a.date)
-        .toList();
+  Future<List<CalendarWeek>> addTag({
+    required String tag,
+    required String userId,
+  }) async {
+    return [];
+  }
 
-    userAttendances = filteredAttendances;
-    return filteredAttendances;
+  Future<List<CalendarWeek>> removeTag({
+    required String tag,
+  }) async {
+    return [];
   }
 
   Future<void> updateAttendanceAt({
