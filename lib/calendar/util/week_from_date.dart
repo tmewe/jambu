@@ -1,5 +1,5 @@
-class Week {
-  Week({required this.date});
+class WeekFromDate {
+  WeekFromDate(this.date);
 
   final DateTime date;
 

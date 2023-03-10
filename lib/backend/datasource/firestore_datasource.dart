@@ -36,7 +36,7 @@ class FirestoreDatasource {
         await _firestore.collection('attendances').doc(formattedDate).get();
     // No document for the given date
     if (!querySnaphot.exists && isAttending) {
-      final attendance = Attendance(date: day, users: [user.id]);
+      final attendance = Attendance(date: day, userIds: [user.id]);
       await _saveAttendanceToFirestore(attendance, dateString: formattedDate);
     }
     // Document for given date exists
@@ -46,11 +46,11 @@ class FirestoreDatasource {
       final Attendance newAttendance;
       if (!isAttending) {
         newAttendance = attendance.copyWith(
-          users: attendance.users.where((id) => id != user.id).toList(),
+          users: attendance.userIds.where((id) => id != user.id).toList(),
         );
       } else {
         newAttendance = attendance.copyWith(
-          users: [...attendance.users, user.id],
+          users: [...attendance.userIds, user.id],
         );
       }
       await _saveAttendanceToFirestore(

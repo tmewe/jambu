@@ -20,6 +20,7 @@ class NotificationsRespository {
         vapidKey:
             '''BDwDEXNpZUq9IJQ60LNTt3At9ctSWMBiEo5BMXzB9X2VojyfM0En84zNMr328DhLhruGVJQPCjo2lTJ3YCZhGoY''',
       );
+      debugPrint('FCM Token');
       debugPrint(fcmToken);
     }
   }

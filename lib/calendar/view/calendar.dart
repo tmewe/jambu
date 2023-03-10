@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:jambu/calendar/bloc/calendar_bloc.dart';
+import 'package:jambu/calendar/model/model.dart';
 import 'package:jambu/extension/extension.dart';
-import 'package:jambu/model/model.dart';
 import 'package:jambu/repository/repository.dart';
 
 class Calendar extends StatelessWidget {
@@ -26,6 +27,9 @@ class CalendarView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<CalendarBloc, CalendarState>(
       builder: (context, state) {
+        if (state.status != CalendarStatus.success) {
+          return const CircularProgressIndicator();
+        }
         return Column(
           children: [
             Row(
@@ -45,59 +49,60 @@ class CalendarView extends StatelessWidget {
               ],
             ),
             Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: state.displayDates
-                  .map(
-                    (date) => _buildCalendarDay(
-                      context,
-                      date: date,
-                      state: state,
-                    ),
-                  )
-                  .toList(),
+              children: [
+                IconButton(
+                  onPressed: () {
+                    context.read<CalendarBloc>().add(
+                          CalendarGoToWeek(
+                            weekNumber: state.selectedWeek - 1,
+                          ),
+                        );
+                  },
+                  icon: const Icon(Icons.arrow_back_ios),
+                ),
+                ...state.weeks[state.selectedWeek].days.map(
+                  (day) {
+                    return _CalendarDay(
+                      day: day,
+                      onChanged: (value) {
+                        context.read<CalendarBloc>().add(
+                              CalendarAttendanceUpdate(
+                                date: day.date,
+                                isAttending: value,
+                              ),
+                            );
+                      },
+                    );
+                  },
+                ),
+                IconButton(
+                  onPressed: () {
+                    context.read<CalendarBloc>().add(
+                          CalendarGoToWeek(
+                            weekNumber: state.selectedWeek + 1,
+                          ),
+                        );
+                  },
+                  icon: const Icon(Icons.arrow_forward_ios),
+                ),
+              ],
             ),
           ],
         );
       },
     );
   }
-
-  Widget _buildCalendarDay(
-    BuildContext context, {
-    required DateTime date,
-    required CalendarState state,
-  }) {
-    final filter = state.attendances.where(
-      (a) => DateUtils.isSameDay(a.date, date),
-    );
-    final attendance = filter.isEmpty ? null : filter.first;
-    final isUserAttending =
-        state.userAttendances.where((d) => d.day == date.day).isNotEmpty;
-    return _CalendarDay(
-      date: date,
-      attendance: attendance,
-      isUserAttending: isUserAttending,
-      onChanged: (value) => context.read<CalendarBloc>().add(
-            CalendarAttendanceUpdate(
-              date: date,
-              isAttending: !isUserAttending,
-            ),
-          ),
-    );
-  }
 }
 
 class _CalendarDay extends StatelessWidget {
   const _CalendarDay({
-    required this.date,
+    required this.day,
     required this.onChanged,
-    this.attendance,
-    this.isUserAttending = false,
   });
 
-  final DateTime date;
-  final Attendance? attendance;
-  final bool isUserAttending;
+  final CalendarDay day;
   final ValueChanged<bool>? onChanged;
 
   @override
@@ -105,11 +110,12 @@ class _CalendarDay extends StatelessWidget {
     return Column(
       children: [
         Switch(
-          value: isUserAttending,
+          value: day.isUserAttending,
           onChanged: onChanged,
         ),
-        Text(date.weekdayString),
-        ...attendance?.users.map(Text.new) ?? [],
+        Text(day.date.weekdayString),
+        Text(DateFormat('dd').format(day.date)),
+        ...day.users.map((user) => Text(user.name)),
       ],
     );
   }

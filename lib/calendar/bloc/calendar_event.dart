@@ -21,3 +21,11 @@ class CalendarAttendanceUpdate extends CalendarEvent {
   @override
   List<Object?> get props => [date, isAttending];
 }
+
+class CalendarGoToWeek extends CalendarEvent {
+  const CalendarGoToWeek({
+    required this.weekNumber,
+  });
+
+  final int weekNumber;
+}

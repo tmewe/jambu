@@ -12,6 +12,10 @@ class FirestoreRepository {
   final FirestoreDatasource _firestoreDatasource;
   final UserRepository _userRepository;
 
+  Future<List<User>> getUsers() async {
+    return _firestoreDatasource.getUsers();
+  }
+
   Future<List<Attendance>> getAttendances() async {
     return _firestoreDatasource.getAttendances();
   }
