@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:jambu/app_ui/app_ui.dart';
 import 'package:jambu/calendar/bloc/calendar_bloc.dart';
 import 'package:jambu/calendar/model/model.dart';
 import 'package:jambu/extension/extension.dart';
@@ -30,66 +31,71 @@ class CalendarView extends StatelessWidget {
         if (state.status != CalendarStatus.success) {
           return const CircularProgressIndicator();
         }
-        return Column(
-          children: [
-            Row(
+        return Align(
+          child: Container(
+            constraints: const BoxConstraints(maxWidth: maElementWidth),
+            child: Column(
               children: [
-                IconButton(
-                  onPressed: () {
-                    context.read<CalendarBloc>().add(CalendarRequested());
-                  },
-                  icon: const Icon(Icons.refresh),
+                Row(
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        context.read<CalendarBloc>().add(CalendarRequested());
+                      },
+                      icon: const Icon(Icons.refresh),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        context.read<AuthRepository>().logout();
+                      },
+                      child: const Text('Logout'),
+                    ),
+                  ],
                 ),
-                TextButton(
-                  onPressed: () {
-                    context.read<AuthRepository>().logout();
-                  },
-                  child: const Text('Logout'),
-                ),
-              ],
-            ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                IconButton(
-                  onPressed: () {
-                    context.read<CalendarBloc>().add(
-                          CalendarGoToWeek(
-                            weekNumber: state.selectedWeek - 1,
-                          ),
-                        );
-                  },
-                  icon: const Icon(Icons.arrow_back_ios),
-                ),
-                ...state.weeks[state.selectedWeek].days.map(
-                  (day) {
-                    return _CalendarDay(
-                      day: day,
-                      onChanged: (value) {
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    IconButton(
+                      onPressed: () {
                         context.read<CalendarBloc>().add(
-                              CalendarAttendanceUpdate(
-                                date: day.date,
-                                isAttending: value,
+                              CalendarGoToWeek(
+                                weekNumber: state.selectedWeek - 1,
                               ),
                             );
                       },
-                    );
-                  },
-                ),
-                IconButton(
-                  onPressed: () {
-                    context.read<CalendarBloc>().add(
-                          CalendarGoToWeek(
-                            weekNumber: state.selectedWeek + 1,
-                          ),
+                      icon: const Icon(Icons.arrow_back_ios),
+                    ),
+                    ...state.weeks[state.selectedWeek].days.map(
+                      (day) {
+                        return _CalendarDay(
+                          day: day,
+                          onChanged: (value) {
+                            context.read<CalendarBloc>().add(
+                                  CalendarAttendanceUpdate(
+                                    date: day.date,
+                                    isAttending: value,
+                                  ),
+                                );
+                          },
                         );
-                  },
-                  icon: const Icon(Icons.arrow_forward_ios),
+                      },
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        context.read<CalendarBloc>().add(
+                              CalendarGoToWeek(
+                                weekNumber: state.selectedWeek + 1,
+                              ),
+                            );
+                      },
+                      icon: const Icon(Icons.arrow_forward_ios),
+                    ),
+                  ],
                 ),
               ],
             ),
-          ],
+          ),
         );
       },
     );
