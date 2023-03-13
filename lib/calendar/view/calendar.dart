@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:jambu/app_ui/app_ui.dart';
 import 'package:jambu/calendar/bloc/calendar_bloc.dart';
 import 'package:jambu/calendar/model/model.dart';
+import 'package:jambu/calendar/widgets/widgets.dart';
 import 'package:jambu/extension/extension.dart';
 import 'package:jambu/repository/repository.dart';
 
@@ -121,7 +122,7 @@ class _CalendarDay extends StatelessWidget {
         ),
         Text(day.date.weekdayString),
         Text(DateFormat('dd').format(day.date)),
-        ...day.users.map((user) => Text(user.name)),
+        ...day.users.map((user) => CalendarItemWidget(user: user)),
       ],
     );
   }
