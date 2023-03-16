@@ -48,6 +48,7 @@ class UserRepository {
 
     // Get user data from ms graph
     final msUser = await _msGraphRepository.me();
+    final msPhoto = await _msGraphRepository.profilePhoto();
 
     final updatedUser = currentUser.copyWith(
       name: firebaseUser.displayName ?? '',

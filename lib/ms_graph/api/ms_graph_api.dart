@@ -9,6 +9,9 @@ abstract class MSGraphAPI extends ChopperService {
   @Get(path: '/me')
   Future<Response<dynamic>> me();
 
+  @Get(path: r'/me/photos/120x120/\$value')
+  Future<Response<dynamic>> photo();
+
   @Get(path: 'me/calendars')
   Future<Response<dynamic>> calendars({
     @Query() String select = '''id, name, hexColor''',
