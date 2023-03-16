@@ -27,21 +27,6 @@ void main() {
       notificationsRespository: notificationsRespository,
     );
 
-    final userRepository = UserRepository(
-      firestoreDatasource: firestoreDatasource,
-      authRepository: authRepository,
-    );
-
-    final firestoreRepository = FirestoreRepository(
-      firestoreDatasource: firestoreDatasource,
-      userRepository: userRepository,
-    );
-
-    final calendarRepository = CalendarRepository(
-      firestoreRepository: firestoreRepository,
-      userRepository: userRepository,
-    );
-
     final msGraphChopperClient = ChopperClient(
       baseUrl: Uri.parse('https://graph.microsoft.com'),
       authenticator: AuthChallengeAuthenticator(
@@ -57,6 +42,22 @@ void main() {
     final msGraphDataSource = MSGraphDataSource(msGraphAPI: msGraphAPI);
     final msGraphRepository = MSGraphRepository(
       msGraphDataSource: msGraphDataSource,
+    );
+
+    final userRepository = UserRepository(
+      firestoreDatasource: firestoreDatasource,
+      authRepository: authRepository,
+      msGraphRepository: msGraphRepository,
+    );
+
+    final firestoreRepository = FirestoreRepository(
+      firestoreDatasource: firestoreDatasource,
+      userRepository: userRepository,
+    );
+
+    final calendarRepository = CalendarRepository(
+      firestoreRepository: firestoreRepository,
+      userRepository: userRepository,
     );
 
     return App(
