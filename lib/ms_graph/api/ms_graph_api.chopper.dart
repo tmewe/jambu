@@ -28,6 +28,17 @@ class _$MSGraphAPI extends MSGraphAPI {
   }
 
   @override
+  Future<Response<dynamic>> photo() {
+    final Uri $url = Uri.parse('/v1.0/me/photos/120x120/\$value');
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+    );
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
   Future<Response<dynamic>> calendars(
       {String select = '''id, name, hexColor'''}) {
     final Uri $url = Uri.parse('/v1.0/me/calendars');

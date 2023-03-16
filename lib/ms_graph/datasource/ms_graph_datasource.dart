@@ -1,6 +1,6 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
-import 'package:flutter/material.dart';
 import 'package:jambu/ms_graph/api/api.dart';
 import 'package:jambu/ms_graph/model/model.dart';
 
@@ -17,7 +17,18 @@ class MSGraphDataSource {
     if (response.statusCode != 200) {
       return null;
     }
+
     return MSUser.fromJson(response.body.toString());
+  }
+
+  Future<Uint8List?> profilePhoto() async {
+    final response = await _msGraphAPI.photo();
+
+    if (response.statusCode != 200) {
+      return null;
+    }
+
+    return response.bodyBytes;
   }
 
   Future<List<MSCalendar>> calendars() async {
@@ -38,9 +49,7 @@ class MSGraphDataSource {
 
   Future<void> createCalendar(MSCalendar calendar) async {
     final jsonCalendar = jsonEncode(calendar.toJson());
-    debugPrint(jsonCalendar);
-    final response = await _msGraphAPI.createCalendar(jsonCalendar);
-    debugPrint('$response');
+    await _msGraphAPI.createCalendar(jsonCalendar);
   }
 
   Future<List<MSEvent>> events() async {
@@ -62,8 +71,6 @@ class MSGraphDataSource {
 
   Future<void> createEvent(MSEvent event) async {
     final jsonEvent = jsonEncode(event.toJson());
-    debugPrint(jsonEvent);
-    final response = await _msGraphAPI.createEvent(jsonEvent);
-    debugPrint('$response');
+    await _msGraphAPI.createEvent(jsonEvent);
   }
 }

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:jambu/ms_graph/ms_graph.dart';
 
@@ -11,6 +12,10 @@ class MSGraphRepository {
 
   Future<MSUser?> me() {
     return _msGraphDataSource.me();
+  }
+
+  Future<Uint8List?> profilePhoto() {
+    return _msGraphDataSource.profilePhoto();
   }
 
   Future<void> calendars() async {
