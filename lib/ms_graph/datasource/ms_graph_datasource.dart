@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:chopper/chopper.dart';
 import 'package:flutter/material.dart';
 import 'package:jambu/ms_graph/api/api.dart';
 import 'package:jambu/ms_graph/model/model.dart';
@@ -12,8 +11,13 @@ class MSGraphDataSource {
 
   final MSGraphAPI _msGraphAPI;
 
-  Future<Response<dynamic>> me() {
-    return _msGraphAPI.me();
+  Future<MSUser?> me() async {
+    final response = await _msGraphAPI.me();
+
+    if (response.statusCode != 200) {
+      return null;
+    }
+    return MSUser.fromJson(response.body.toString());
   }
 
   Future<List<MSCalendar>> calendars() async {

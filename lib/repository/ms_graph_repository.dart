@@ -9,9 +9,8 @@ class MSGraphRepository {
   final MSGraphDataSource _msGraphDataSource;
   final _germanTimeZone = 'W. Europe Standard Time';
 
-  Future<void> me() async {
-    final response = await _msGraphDataSource.me();
-    debugPrint('$response');
+  Future<MSUser?> me() {
+    return _msGraphDataSource.me();
   }
 
   Future<void> calendars() async {

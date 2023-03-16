@@ -1,6 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart' as fb_auth;
+import 'package:fpdart/fpdart.dart';
 import 'package:jambu/backend/datasource/datasource.dart';
 import 'package:jambu/model/model.dart';
+import 'package:jambu/ms_graph/datasource/ms_graph_datasource.dart';
+import 'package:jambu/ms_graph/model/model.dart';
 import 'package:jambu/repository/repository.dart';
 import 'package:rxdart/subjects.dart';
 
@@ -8,8 +11,10 @@ class UserRepository {
   UserRepository({
     required FirestoreDatasource firestoreDatasource,
     required AuthRepository authRepository,
+    required MSGraphRepository msGraphRepository,
   })  : _firestoreDatasource = firestoreDatasource,
-        _authRepository = authRepository {
+        _authRepository = authRepository,
+        _msGraphRepository = msGraphRepository {
     _authRepository.userStream.listen((fb_auth.User? firebaseUser) {
       if (firebaseUser == null) {
         _currentUserSubject.add(null);
@@ -21,6 +26,7 @@ class UserRepository {
 
   final FirestoreDatasource _firestoreDatasource;
   final AuthRepository _authRepository;
+  final MSGraphRepository _msGraphRepository;
 
   final BehaviorSubject<User?> _currentUserSubject =
       BehaviorSubject.seeded(null);
@@ -42,6 +48,9 @@ class UserRepository {
         );
       },
     );
+
+    // Get user data from ms graph
+    final msUser = await _msGraphRepository.me();
 
     final updatedUser =
         currentUser.copyWith(name: firebaseUser.displayName ?? '');
