@@ -35,7 +35,11 @@ class UserRepository {
     final currentUser = users.firstWhere(
       (user) => user.id == firebaseUser.uid,
       orElse: () {
-        return User(id: firebaseUser.uid, name: firebaseUser.displayName ?? '');
+        return User(
+          id: firebaseUser.uid,
+          name: firebaseUser.displayName ?? '-',
+          email: firebaseUser.email ?? '-',
+        );
       },
     );
 
