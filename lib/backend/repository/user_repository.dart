@@ -1,9 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart' as fb_auth;
-import 'package:fpdart/fpdart.dart';
 import 'package:jambu/backend/datasource/datasource.dart';
 import 'package:jambu/model/model.dart';
-import 'package:jambu/ms_graph/datasource/ms_graph_datasource.dart';
-import 'package:jambu/ms_graph/model/model.dart';
 import 'package:jambu/repository/repository.dart';
 import 'package:rxdart/subjects.dart';
 
@@ -52,8 +49,11 @@ class UserRepository {
     // Get user data from ms graph
     final msUser = await _msGraphRepository.me();
 
-    final updatedUser =
-        currentUser.copyWith(name: firebaseUser.displayName ?? '');
+    final updatedUser = currentUser.copyWith(
+      name: firebaseUser.displayName ?? '',
+      jobTitle: msUser?.jobTitle,
+    );
+
     // TODO(tim): Compare users to check if update is needed
     await updateUser(updatedUser);
   }
