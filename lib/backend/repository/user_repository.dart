@@ -9,9 +9,11 @@ class UserRepository {
     required FirestoreDatasource firestoreDatasource,
     required AuthRepository authRepository,
     required MSGraphRepository msGraphRepository,
+    required PhotoStorageRepository photoStorageRepository,
   })  : _firestoreDatasource = firestoreDatasource,
         _authRepository = authRepository,
-        _msGraphRepository = msGraphRepository {
+        _msGraphRepository = msGraphRepository,
+        _photoStorageRepository = photoStorageRepository {
     _authRepository.userStream.listen((fb_auth.User? firebaseUser) {
       if (firebaseUser == null) {
         _currentUserSubject.add(null);
@@ -24,6 +26,7 @@ class UserRepository {
   final FirestoreDatasource _firestoreDatasource;
   final AuthRepository _authRepository;
   final MSGraphRepository _msGraphRepository;
+  final PhotoStorageRepository _photoStorageRepository;
 
   final BehaviorSubject<User?> _currentUserSubject =
       BehaviorSubject.seeded(null);
@@ -49,6 +52,13 @@ class UserRepository {
     // Get user data from ms graph
     final msUser = await _msGraphRepository.me();
     final msPhoto = await _msGraphRepository.profilePhoto();
+    if (msPhoto != null) {
+      final photoUrl = await _photoStorageRepository.uploadPhotoData(
+        data: msPhoto,
+        userName: currentUser.name,
+      );
+      print(photoUrl);
+    }
 
     final updatedUser = currentUser.copyWith(
       name: firebaseUser.displayName ?? '',

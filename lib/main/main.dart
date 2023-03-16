@@ -8,10 +8,19 @@ import 'package:jambu/storage/storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
-  bootstrap((firebaseMessaging, firebaseAuth, firebaseFirestore) async {
+  bootstrap((
+    firebaseMessaging,
+    firebaseAuth,
+    firebaseFirestore,
+    firebaseStorage,
+  ) async {
     // TODO(tim): Replace with secure storage
     final sharedPrefs = await SharedPreferences.getInstance();
     final tokenStorage = SharedPrefsTokenStorage(sharedPrefs: sharedPrefs);
+
+    final photoStorageRepository = PhotoStorageRepository(
+      storage: firebaseStorage,
+    );
 
     final notificationsRespository = NotificationsRespository(
       firebaseMessaging: firebaseMessaging,
@@ -48,6 +57,7 @@ void main() {
       firestoreDatasource: firestoreDatasource,
       authRepository: authRepository,
       msGraphRepository: msGraphRepository,
+      photoStorageRepository: photoStorageRepository,
     );
 
     final firestoreRepository = FirestoreRepository(
@@ -66,6 +76,7 @@ void main() {
       firestoreRepository: firestoreRepository,
       userRespository: userRepository,
       calendarRepository: calendarRepository,
+      photoStorageRepository: photoStorageRepository,
     );
   });
 }

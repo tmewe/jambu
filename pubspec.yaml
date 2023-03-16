@@ -11,9 +11,10 @@ dependencies:
   cloud_firestore: ^4.4.3
   cupertino_icons: ^1.0.2
   equatable: ^2.0.5
-  firebase_auth: ^4.2.6
+  firebase_auth: 4.2.2
   firebase_core: ^2.5.0
   firebase_messaging: ^14.2.2
+  firebase_storage: ^11.0.15 #https://github.com/firebase/flutterfire/issues/10586
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.2
