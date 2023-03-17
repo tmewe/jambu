@@ -40,8 +40,7 @@ class _CalendarViewState extends State<CalendarView> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<CalendarBloc, CalendarState>(
-      listener: (context, state) {},
+    return BlocBuilder<CalendarBloc, CalendarState>(
       builder: (context, state) {
         if (state.status != CalendarStatus.success) {
           return const CircularProgressIndicator();

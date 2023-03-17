@@ -15,7 +15,9 @@ class CalendarRepository {
 
   List<CalendarWeek> weeks = [];
 
-  Future<List<CalendarWeek>> fetchCalendar() async {
+  Future<List<CalendarWeek>> fetchCalendar({
+    CalendarFilter filter = const CalendarFilter(),
+  }) async {
     final currentUser = _userRepository.currentUser;
     if (currentUser == null) return [];
 
@@ -31,7 +33,7 @@ class CalendarRepository {
     this.weeks = weeks;
 
     final filteredWeeks = CalendarFiltering(
-      filter: const CalendarFilter(),
+      filter: filter,
       weeks: weeks,
     )();
 
