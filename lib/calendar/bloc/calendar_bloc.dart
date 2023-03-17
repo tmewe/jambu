@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:jambu/calendar/model/model.dart';
-import 'package:jambu/extension/week_viewmodel_extension.dart';
 import 'package:jambu/repository/repository.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -48,20 +47,14 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     CalendarAttendanceUpdate event,
     Emitter<CalendarState> emit,
   ) async {
-    final selectedWeek = state.weeks[state.selectedWeek];
-    final selectedDay = selectedWeek.dayAtDate(event.date);
-
-    if (selectedDay == null) return;
-
-    final newDay = selectedDay.copyWith(isUserAttending: event.isAttending);
-    final newWeek = selectedWeek.updateDay(newDay);
-
-    emit(state.copyWith(weeks: state.weeks.updateWeek(newWeek)));
-
-    await _calendarRepository.updateAttendanceAt(
+    final weeks = await _calendarRepository.updateAttendanceAt(
       date: event.date,
       isAttending: event.isAttending,
     );
+
+    if (weeks.isNotEmpty) {
+      emit(state.copyWith(weeks: weeks));
+    }
   }
 
   FutureOr<void> _onCalendarGoToWeek(
