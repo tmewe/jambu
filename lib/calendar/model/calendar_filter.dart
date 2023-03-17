@@ -1,5 +1,5 @@
 class CalendarFilter {
-  CalendarFilter({
+  const CalendarFilter({
     this.search = '',
     this.tags = const [],
   });
