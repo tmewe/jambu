@@ -49,23 +49,24 @@ class UserRepository {
       },
     );
 
+    // TODO(tim): Update user data only once a month or so
     // Get user data from ms graph
     final msUser = await _msGraphRepository.me();
     final msPhoto = await _msGraphRepository.profilePhoto();
+    String? photoUrl;
     if (msPhoto != null) {
-      final photoUrl = await _photoStorageRepository.uploadPhotoData(
+      photoUrl = await _photoStorageRepository.uploadPhotoData(
         data: msPhoto,
         userName: currentUser.name,
       );
-      print(photoUrl);
     }
 
     final updatedUser = currentUser.copyWith(
       name: firebaseUser.displayName ?? '',
       jobTitle: msUser?.jobTitle,
+      imageUrl: photoUrl,
     );
 
-    // TODO(tim): Compare users to check if update is needed
     await updateUser(updatedUser);
   }
 
