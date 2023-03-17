@@ -22,8 +22,21 @@ class Calendar extends StatelessWidget {
   }
 }
 
-class CalendarView extends StatelessWidget {
+class CalendarView extends StatefulWidget {
   const CalendarView({super.key});
+
+  @override
+  State<CalendarView> createState() => _CalendarViewState();
+}
+
+class _CalendarViewState extends State<CalendarView> {
+  final searchTextController = TextEditingController();
+
+  @override
+  void dispose() {
+    searchTextController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +69,7 @@ class CalendarView extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 10),
-                  const SearchBar(),
+                  SearchBar(controller: searchTextController),
                   const SizedBox(height: 20),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,

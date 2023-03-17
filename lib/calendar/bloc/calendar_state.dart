@@ -8,28 +8,28 @@ class CalendarState extends Equatable {
     this.status = CalendarStatus.initial,
     this.weeks = const [],
     this.selectedWeek = 0,
+    this.filter = const CalendarFilter(),
   });
 
   final CalendarStatus status;
   final List<CalendarWeek> weeks;
   final int selectedWeek;
+  final CalendarFilter filter;
 
   @override
-  List<Object> get props => [
-        status,
-        weeks,
-        selectedWeek,
-      ];
+  List<Object> get props => [status, weeks, selectedWeek, filter];
 
   CalendarState copyWith({
     CalendarStatus? status,
     List<CalendarWeek>? weeks,
     int? selectedWeek,
+    CalendarFilter? filter,
   }) {
     return CalendarState(
       status: status ?? this.status,
       weeks: weeks ?? this.weeks,
       selectedWeek: selectedWeek ?? this.selectedWeek,
+      filter: filter ?? this.filter,
     );
   }
 }
