@@ -73,6 +73,7 @@ class _CalendarViewState extends State<CalendarView> {
                   SearchBar(
                     controller: searchTextController,
                     onChanged: (searchText) {
+                      setState(() {});
                       context
                           .read<CalendarBloc>()
                           .add(CalendarFilterUpdate(searchText: searchText));
