@@ -35,7 +35,7 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     Emitter<CalendarState> emit,
   ) async {
     emit(state.copyWith(status: CalendarStatus.loading));
-    final weeks = await _calendarRepository.fetchCalendar();
+    final weeks = await _calendarRepository.fetchCalendar(filter: state.filter);
     emit(
       state.copyWith(
         status: CalendarStatus.success,
