@@ -31,7 +31,7 @@ class CalendarRepository {
     this.weeks = weeks;
 
     final filteredWeeks = CalendarFiltering(
-      filter: CalendarFilter(),
+      filter: const CalendarFilter(),
       weeks: weeks,
     )();
 
@@ -39,7 +39,7 @@ class CalendarRepository {
   }
 
   Future<List<CalendarWeek>> updateFilter(CalendarFilter filter) async {
-    return [];
+    return CalendarFiltering(filter: filter, weeks: weeks)();
   }
 
   Future<List<CalendarWeek>> updateFavorite({
