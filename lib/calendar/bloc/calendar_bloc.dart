@@ -5,6 +5,7 @@ import 'package:equatable/equatable.dart';
 import 'package:jambu/calendar/model/model.dart';
 import 'package:jambu/extension/week_viewmodel_extension.dart';
 import 'package:jambu/repository/repository.dart';
+import 'package:rxdart/rxdart.dart';
 
 part 'calendar_event.dart';
 part 'calendar_state.dart';
@@ -16,7 +17,15 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
         super(const CalendarState()) {
     on<CalendarRequested>(_onCalendarRequested);
     on<CalendarAttendanceUpdate>(_onCalenderAttendanceUpdate);
-    on<CalendarGoToWeek>(_onCalendarGotToWeek);
+    on<CalendarGoToWeek>(_onCalendarGoToWeek);
+    on<CalendarFilterUpdate>(
+      _onCalendarFilterUpdate,
+      transformer: (events, mapper) {
+        return events
+            .debounceTime(const Duration(milliseconds: 500))
+            .switchMap(mapper);
+      },
+    );
   }
 
   final CalendarRepository _calendarRepository;
@@ -55,11 +64,23 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     );
   }
 
-  FutureOr<void> _onCalendarGotToWeek(
+  FutureOr<void> _onCalendarGoToWeek(
     CalendarGoToWeek event,
     Emitter<CalendarState> emit,
   ) async {
     if (event.weekNumber < 0 || event.weekNumber > 3) return;
     emit(state.copyWith(selectedWeek: event.weekNumber));
+  }
+
+  FutureOr<void> _onCalendarFilterUpdate(
+    CalendarFilterUpdate event,
+    Emitter<CalendarState> emit,
+  ) async {
+    final filter = CalendarFilter(
+      search: event.searchText ?? '',
+      tags: event.tags,
+    );
+    final filteredWeeks = await _calendarRepository.updateFilter(filter);
+    emit(state.copyWith(weeks: filteredWeeks, filter: filter));
   }
 }

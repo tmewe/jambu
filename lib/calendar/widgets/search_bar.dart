@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 class SearchBar extends StatelessWidget {
   const SearchBar({
     required this.controller,
+    required this.onChanged,
     super.key,
   });
 
   final TextEditingController controller;
+  final ValueChanged<String>? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +30,7 @@ class SearchBar extends StatelessWidget {
           size: 24,
         ),
       ),
+      onChanged: onChanged,
     );
   }
 }

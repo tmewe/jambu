@@ -1,7 +1,10 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:equatable/equatable.dart';
+
 import 'package:jambu/calendar/model/calendar_user.dart';
 
-class CalendarDay {
-  CalendarDay({
+class CalendarDay extends Equatable {
+  const CalendarDay({
     required this.date,
     required this.isUserAttending,
     this.users = const [],
@@ -22,4 +25,7 @@ class CalendarDay {
       users: users ?? this.users,
     );
   }
+
+  @override
+  List<Object> get props => [date, isUserAttending, users];
 }

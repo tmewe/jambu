@@ -40,7 +40,8 @@ class _CalendarViewState extends State<CalendarView> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CalendarBloc, CalendarState>(
+    return BlocConsumer<CalendarBloc, CalendarState>(
+      listener: (context, state) {},
       builder: (context, state) {
         if (state.status != CalendarStatus.success) {
           return const CircularProgressIndicator();
@@ -69,11 +70,18 @@ class _CalendarViewState extends State<CalendarView> {
                     ],
                   ),
                   const SizedBox(height: 10),
-                  SearchBar(controller: searchTextController),
+                  SearchBar(
+                    controller: searchTextController,
+                    onChanged: (searchText) {
+                      context
+                          .read<CalendarBloc>()
+                          .add(CalendarFilterUpdate(searchText: searchText));
+                    },
+                  ),
                   const SizedBox(height: 20),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       IconButton(
                         onPressed: () {

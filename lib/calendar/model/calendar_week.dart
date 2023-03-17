@@ -1,9 +1,11 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+
 import 'package:jambu/calendar/model/calendar_day.dart';
 
-class CalendarWeek {
-  CalendarWeek({
+class CalendarWeek extends Equatable {
+  const CalendarWeek({
     required this.days,
   });
 
@@ -37,4 +39,7 @@ class CalendarWeek {
       days: days ?? this.days,
     );
   }
+
+  @override
+  List<Object> get props => [days];
 }
