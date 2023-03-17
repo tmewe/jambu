@@ -122,7 +122,7 @@ class _CalendarDay extends StatelessWidget {
         ),
         Text(day.date.weekdayString),
         Text(DateFormat('dd').format(day.date)),
-        ...day.users.map((user) => CalendarItemWidget(user: user)),
+        ...day.users.map((user) => CalendarItem(user: user)),
       ],
     );
   }

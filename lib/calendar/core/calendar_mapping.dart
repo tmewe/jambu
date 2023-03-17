@@ -34,7 +34,12 @@ class CalendarMapping {
             return CalendarUser(id: uid, name: '-');
           }
           final user = filteredUsers.first;
-          return CalendarUser(id: uid, name: user.name);
+          return CalendarUser(
+            id: uid,
+            name: user.name,
+            jobTitle: user.jobTitle,
+            image: user.imageUrl,
+          );
         });
 
         final day = CalendarDay(
