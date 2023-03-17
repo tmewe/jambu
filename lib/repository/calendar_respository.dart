@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:jambu/backend/backend.dart';
 import 'package:jambu/calendar/core/core.dart';
 import 'package:jambu/calendar/model/model.dart';
@@ -64,13 +66,23 @@ class CalendarRepository {
     return [];
   }
 
-  Future<void> updateAttendanceAt({
+  Future<List<CalendarWeek>> updateAttendanceAt({
     required DateTime date,
     required bool isAttending,
   }) async {
-    await _firestoreRepository.updateAttendanceAt(
-      date: date,
-      isAttending: isAttending,
+    final day = weeks.dayAtDate(date);
+    if (day == null) {
+      return [];
+    }
+    final updatedDay = day.copyWith(isUserAttending: isAttending);
+    final updatedWeeks = weeks.updateDay(updatedDay);
+    weeks = updatedWeeks;
+    unawaited(
+      _firestoreRepository.updateAttendanceAt(
+        date: date,
+        isAttending: isAttending,
+      ),
     );
+    return weeks;
   }
 }
