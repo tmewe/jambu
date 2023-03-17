@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart' as fb_auth;
+import 'package:flutter/foundation.dart';
 import 'package:jambu/backend/datasource/datasource.dart';
 import 'package:jambu/model/model.dart';
+import 'package:jambu/ms_graph/model/model.dart';
 import 'package:jambu/repository/repository.dart';
 import 'package:rxdart/subjects.dart';
 
@@ -49,16 +51,19 @@ class UserRepository {
       },
     );
 
-    // TODO(tim): Update user data only once a month or so
-    // Get user data from ms graph
-    final msUser = await _msGraphRepository.me();
-    final msPhoto = await _msGraphRepository.profilePhoto();
+    MSUser? msUser;
     String? photoUrl;
-    if (msPhoto != null) {
-      photoUrl = await _photoStorageRepository.uploadPhotoData(
-        data: msPhoto,
-        userName: currentUser.name,
-      );
+    if (!kDebugMode) {
+      // TODO(tim): Update user data only once a month or so
+      // Get user data from ms graph
+      msUser = await _msGraphRepository.me();
+      final msPhoto = await _msGraphRepository.profilePhoto();
+      if (msPhoto != null) {
+        photoUrl = await _photoStorageRepository.uploadPhotoData(
+          data: msPhoto,
+          userName: currentUser.name,
+        );
+      }
     }
 
     final updatedUser = currentUser.copyWith(
