@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:flutter/foundation.dart';
 import 'package:jambu/ms_graph/api/api.dart';
 import 'package:jambu/ms_graph/model/model.dart';
 
@@ -43,12 +44,12 @@ class MSGraphDataSource {
     final calendarsJson = jsonBody['value'] as List<dynamic>;
     final calendarsJsonList =
         calendarsJson.map((e) => e as Map<String, dynamic>);
-    final calendars = calendarsJsonList.map(MSCalendar.fromJson).toList();
+    final calendars = calendarsJsonList.map(MSCalendar.fromMap).toList();
     return calendars;
   }
 
   Future<void> createCalendar(MSCalendar calendar) async {
-    final jsonCalendar = jsonEncode(calendar.toJson());
+    final jsonCalendar = calendar.toJson();
     await _msGraphAPI.createCalendar(jsonCalendar);
   }
 
@@ -65,12 +66,12 @@ class MSGraphDataSource {
         jsonDecode(response.body.toString()) as Map<String, dynamic>;
     final eventsJson = jsonBody['value'] as List<dynamic>;
     final eventsJsonList = eventsJson.map((e) => e as Map<String, dynamic>);
-    final events = eventsJsonList.map(MSEvent.fromJson).toList();
+    final events = eventsJsonList.map(MSEvent.fromMap).toList();
     return events;
   }
 
   Future<void> createEvent(MSEvent event) async {
-    final jsonEvent = jsonEncode(event.toJson());
+    final jsonEvent = event.toJson();
     await _msGraphAPI.createEvent(jsonEvent);
   }
 }

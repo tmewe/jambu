@@ -9,6 +9,7 @@ import 'package:jambu/home/home.dart';
 import 'package:jambu/login/login.dart';
 import 'package:jambu/logout/logout.dart';
 import 'package:jambu/model/model.dart';
+import 'package:jambu/playground/playground.dart';
 
 GoRouter getRouter({
   required Stream<User?> userStream,
@@ -24,6 +25,13 @@ GoRouter getRouter({
         pageBuilder: (context, state) => const NoTransitionPage(
           child: HomePage(),
         ),
+        routes: [
+          GoRoute(
+            path: 'playground',
+            name: 'playground',
+            builder: (context, state) => const PlaygroundPage(),
+          ),
+        ],
       ),
       GoRoute(
         path: '/login',

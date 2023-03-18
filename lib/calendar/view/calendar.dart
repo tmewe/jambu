@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:jambu/app_ui/app_ui.dart';
 import 'package:jambu/calendar/bloc/calendar_bloc.dart';
@@ -64,7 +65,13 @@ class _CalendarViewState extends State<CalendarView> {
                         onPressed: () {
                           context.read<AuthRepository>().logout();
                         },
-                        child: const Text('Logout'),
+                        child: const Text('Abmelden'),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          context.goNamed('playground');
+                        },
+                        child: const Text('Playground'),
                       ),
                     ],
                   ),
