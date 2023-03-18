@@ -15,8 +15,6 @@ class CalendarRepository {
   final FirestoreRepository _firestoreRepository;
   final UserRepository _userRepository;
 
-  List<CalendarWeek> weeks = [];
-
   Future<List<CalendarWeek>> fetchCalendar({
     CalendarFilter filter = const CalendarFilter(),
   }) async {
@@ -32,17 +30,13 @@ class CalendarRepository {
       users: users,
     )();
 
-    this.weeks = weeks;
-
-    final filteredWeeks = CalendarFiltering(
-      filter: filter,
-      weeks: weeks,
-    )();
-
-    return filteredWeeks;
+    return weeks;
   }
 
-  Future<List<CalendarWeek>> updateFilter(CalendarFilter filter) async {
+  List<CalendarWeek> updateFilter({
+    required CalendarFilter filter,
+    required List<CalendarWeek> weeks,
+  }) {
     return CalendarFiltering(filter: filter, weeks: weeks)();
   }
 
@@ -66,23 +60,26 @@ class CalendarRepository {
     return [];
   }
 
-  Future<List<CalendarWeek>> updateAttendanceAt({
+  List<CalendarWeek> updateAttendanceAt({
     required DateTime date,
     required bool isAttending,
-  }) async {
+    required List<CalendarWeek> weeks,
+    required CalendarFilter filter,
+  }) {
     final day = weeks.dayAtDate(date);
     if (day == null) {
       return [];
     }
     final updatedDay = day.copyWith(isUserAttending: isAttending);
     final updatedWeeks = weeks.updateDay(updatedDay);
-    weeks = updatedWeeks;
+
     unawaited(
       _firestoreRepository.updateAttendanceAt(
         date: date,
         isAttending: isAttending,
       ),
     );
-    return weeks;
+
+    return updatedWeeks;
   }
 }
