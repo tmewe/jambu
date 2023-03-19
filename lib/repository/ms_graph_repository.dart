@@ -29,9 +29,8 @@ class MSGraphRepository {
     await _msGraphDataSource.createCalendar(msCalendar);
   }
 
-  Future<void> eventsFromToday() async {
-    final events = await _msGraphDataSource.events(fromDate: DateTime.now());
-    debugPrint('$events');
+  Future<List<MSEvent>> eventsFromToday() {
+    return _msGraphDataSource.events(fromDate: DateTime.now());
   }
 
   Future<void> createEventAt({required DateTime dateTime}) async {

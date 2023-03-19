@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 extension DayString on DateTime {
   String get weekdayString {
     switch (weekday) {
@@ -20,5 +22,11 @@ extension DayString on DateTime {
 extension Midnight on DateTime {
   DateTime get midnight {
     return DateTime(year, month, day);
+  }
+}
+
+extension IsSameDay on DateTime {
+  bool isSameDay(DateTime date) {
+    return DateUtils.isSameDay(this, date);
   }
 }

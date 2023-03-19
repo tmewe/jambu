@@ -46,11 +46,11 @@ class FirestoreDatasource {
       final Attendance newAttendance;
       if (!isAttending) {
         newAttendance = attendance.copyWith(
-          users: attendance.userIds.where((id) => id != user.id).toList(),
+          userIds: attendance.userIds.where((id) => id != user.id).toList(),
         );
       } else {
         newAttendance = attendance.copyWith(
-          users: [...attendance.userIds, user.id],
+          userIds: [...attendance.userIds, user.id],
         );
       }
       await _saveAttendanceToFirestore(

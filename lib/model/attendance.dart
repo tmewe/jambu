@@ -37,11 +37,11 @@ class Attendance extends Equatable {
 
   Attendance copyWith({
     DateTime? date,
-    List<String>? users,
+    List<String>? userIds,
   }) {
     return Attendance(
       date: date ?? this.date,
-      userIds: users ?? userIds,
+      userIds: userIds ?? this.userIds,
     );
   }
 }
