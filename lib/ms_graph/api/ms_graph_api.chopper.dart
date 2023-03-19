@@ -72,8 +72,8 @@ class _$MSGraphAPI extends MSGraphAPI {
   @override
   Future<Response<dynamic>> calendarEvents({
     required String filter,
-    String select =
-        '''subject, showAs, isOnlineMeeting, start, end, location, responseStatus, isAllDay''',
+    String select = 'subject, showAs, isOnlineMeeting, start, '
+        'end, location, responseStatus, isAllDay, attendees',
   }) {
     final Uri $url = Uri.parse('/v1.0/me/calendar/events');
     final Map<String, dynamic> $params = <String, dynamic>{
