@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
+import 'package:intl/intl.dart';
 import 'package:jambu/ms_graph/api/api.dart';
 import 'package:jambu/ms_graph/model/model.dart';
 
@@ -53,9 +54,15 @@ class MSGraphDataSource {
     await _msGraphAPI.createCalendar(jsonCalendar);
   }
 
-  Future<List<MSEvent>> events() async {
+  Future<List<MSEvent>> events({DateTime? fromDate}) async {
+    var filter = '';
+    if (fromDate != null) {
+      // Date format 2023-03-03
+      final dateString = DateFormat('yyyy-MM-dd').format(fromDate);
+      filter = "start/dateTime ge '$dateString'";
+    }
     final response = await _msGraphAPI.calendarEvents(
-      filter: "start/dateTime ge '2023-03-03'",
+      filter: filter,
     );
 
     if (response.statusCode != 200) {
