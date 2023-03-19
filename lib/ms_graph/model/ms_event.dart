@@ -65,6 +65,14 @@ class MSEvent {
   final MSEventResponseStatus? responseStatus;
   final List<MSEventAttendee> attendees;
 
+  bool get isWholeDayOOF => isAllDay && showAs == EventStatus.oof;
+
+  bool get isPresenceWithMultipleAttendees {
+    return !isOnlineMeeting &&
+        responseStatus?.response == ResponseStatus.accepted &&
+        attendees.where((a) => a.type == 'required').length > 1;
+  }
+
   MSEvent copyWith({
     String? subject,
     bool? isAllDay,
