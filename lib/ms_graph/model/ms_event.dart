@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:jambu/ms_graph/model/ms_date.dart';
+import 'package:jambu/ms_graph/model/ms_event_attendee.dart';
 import 'package:jambu/ms_graph/model/ms_event_location.dart';
 import 'package:jambu/ms_graph/model/ms_event_response_status.dart';
 
@@ -16,6 +17,7 @@ class MSEvent {
     this.location,
     this.isReminderOn,
     this.responseStatus,
+    this.attendees = const [],
   });
 
   factory MSEvent.fromMap(Map<String, dynamic> map) {
@@ -37,6 +39,13 @@ class MSEvent {
               map['responseStatus'] as Map<String, dynamic>,
             )
           : null,
+      attendees: map['attendees'] != null
+          ? List<MSEventAttendee>.from(
+              (map['attendees'] as List<dynamic>).map<MSEventAttendee>(
+                (x) => MSEventAttendee.fromMap(x as Map<String, dynamic>),
+              ),
+            )
+          : [],
     );
   }
 
@@ -54,6 +63,7 @@ class MSEvent {
   final MSEventLocation? location;
   final bool? isReminderOn;
   final MSEventResponseStatus? responseStatus;
+  final List<MSEventAttendee> attendees;
 
   MSEvent copyWith({
     String? subject,
@@ -93,6 +103,7 @@ class MSEvent {
       'location': location?.toMap(),
       'isReminderOn': isReminderOn,
       'responseStatus': responseStatus?.toMap(),
+      'attendees': attendees.map((x) => x.toMap()).toList(),
     };
   }
 
@@ -102,8 +113,9 @@ class MSEvent {
   String toString() {
     return 'MSEvent(subject: $subject, isAllDay: $isAllDay, '
         'isOnlineMeeting: $isOnlineMeeting, start: $start, end: $end, '
-        'showAs: $showAs, id: $id, location: $location, '
-        'isReminderOn: $isReminderOn, responseStatus: $responseStatus)';
+        'showAs: $showAs, location: $location, '
+        'isReminderOn: $isReminderOn, responseStatus: $responseStatus) '
+        'attendees: $attendees';
   }
 }
 

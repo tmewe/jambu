@@ -26,8 +26,8 @@ abstract class MSGraphAPI extends ChopperService {
   @Get(path: 'me/calendar/events')
   Future<Response<dynamic>> calendarEvents({
     @Query() required String filter,
-    @Query() String select =
-        '''subject, showAs, isOnlineMeeting, start, end, location, responseStatus, isAllDay''',
+    @Query() String select = 'subject, showAs, isOnlineMeeting, start, '
+        'end, location, responseStatus, isAllDay, attendees',
   });
 
   @Post(

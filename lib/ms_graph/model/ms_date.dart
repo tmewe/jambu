@@ -28,4 +28,7 @@ class MSDate {
 
   factory MSDate.fromJson(String source) =>
       MSDate.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  @override
+  String toString() => '$date';
 }

@@ -41,6 +41,5 @@ class MSEventLocation {
   String toJson() => json.encode(toMap());
 
   @override
-  String toString() =>
-      'MSEventLocation(displayName: $displayName, locationType: $locationType)';
+  String toString() => displayName;
 }
