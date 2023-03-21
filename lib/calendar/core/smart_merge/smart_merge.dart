@@ -1,5 +1,6 @@
 import 'package:jambu/calendar/core/smart_merge/event_to_presences_mapping.dart';
 import 'package:jambu/calendar/core/smart_merge/filter_presences.dart';
+import 'package:jambu/calendar/core/smart_merge/merge_manual_absences.dart';
 import 'package:jambu/calendar/core/smart_merge/merge_presences_attendances.dart';
 import 'package:jambu/calendar/core/smart_merge/merge_regular_attendances.dart';
 import 'package:jambu/extension/extension.dart';
@@ -33,6 +34,11 @@ class SmartMerge {
       date: DateTime.now().midnight,
       regularAttendances: _currentUser.regularAttendances,
       presences: presences,
+    )();
+
+    presences = MergeManualAbsences(
+      presences: presences,
+      absences: _currentUser.manualAbsences,
     )();
 
     presences = FilterPresences(presences: presences)();
