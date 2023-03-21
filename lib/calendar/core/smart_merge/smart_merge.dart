@@ -1,6 +1,8 @@
 import 'package:jambu/calendar/core/smart_merge/event_to_presences_mapping.dart';
 import 'package:jambu/calendar/core/smart_merge/filter_presences.dart';
 import 'package:jambu/calendar/core/smart_merge/merge_presences_attendances.dart';
+import 'package:jambu/calendar/core/smart_merge/merge_regular_attendances.dart';
+import 'package:jambu/extension/extension.dart';
 import 'package:jambu/model/model.dart';
 import 'package:jambu/ms_graph/model/model.dart';
 
@@ -22,15 +24,21 @@ class SmartMerge {
       return _fsAttendances;
     }
 
-    final presenceDays = _msEvents
+    var presences = _msEvents
         .map((event) => EventToPresencesMapping(event: event)())
         .expand((p) => p)
         .toList();
 
-    final uniquePresenceDays = FilterPresences(presences: presenceDays)();
+    presences = MergeRegularAttendances(
+      date: DateTime.now().midnight,
+      regularAttendances: _currentUser.regularAttendances,
+      presences: presences,
+    )();
+
+    presences = FilterPresences(presences: presences)();
 
     final attendances = MergePresencesAttendances(
-      presences: uniquePresenceDays,
+      presences: presences,
       attendances: _fsAttendances,
       currentUser: _currentUser,
     )();

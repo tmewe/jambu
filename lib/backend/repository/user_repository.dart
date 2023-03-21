@@ -53,17 +53,15 @@ class UserRepository {
 
     MSUser? msUser;
     String? photoUrl;
-    if (!kDebugMode) {
-      // TODO(tim): Update user data only once a month or so
-      // Get user data from ms graph
-      msUser = await _msGraphRepository.me();
-      final msPhoto = await _msGraphRepository.profilePhoto();
-      if (msPhoto != null) {
-        photoUrl = await _photoStorageRepository.uploadPhotoData(
-          data: msPhoto,
-          userName: currentUser.name,
-        );
-      }
+    // TODO(tim): Update user data only once a month or so
+    // Get user data from ms graph
+    msUser = await _msGraphRepository.me();
+    final msPhoto = await _msGraphRepository.profilePhoto();
+    if (msPhoto != null) {
+      photoUrl = await _photoStorageRepository.uploadPhotoData(
+        data: msPhoto,
+        userName: currentUser.name,
+      );
     }
 
     final updatedUser = currentUser.copyWith(
