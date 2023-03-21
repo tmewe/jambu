@@ -16,7 +16,7 @@ class EventToPresencesMapping {
     // One day is the minimum
     if (eventDuration == 0) {
       eventDuration = 1;
-    } 
+    }
     // Duration = one day means that the event takes place at two dates
     else {
       eventDuration++;

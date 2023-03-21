@@ -26,6 +26,8 @@ class SmartSync {
       firestoreAttendances: firestoreAttendances,
     )();
 
+    // Todo(tim): Add smart upload
+
     return attendances;
   }
 }

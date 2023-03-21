@@ -77,6 +77,36 @@ void main() {
     });
 
     test(
+        'returns zero attendandce '
+        'when there are two events and two presences '
+        'that are at the same dates and in presence', () {
+      // arrange
+      final attendances = [
+        Attendance(
+          date: date,
+        ),
+        Attendance(date: date.add(const Duration(days: 1))),
+      ];
+
+      final presences = [
+        Presence(date: date, isPresent: false),
+        Presence(date: date.add(const Duration(days: 1)), isPresent: false),
+      ];
+
+      final merge = MergePresencesAttendances(
+        presences: presences,
+        attendances: attendances,
+        currentUser: currentUser,
+      );
+
+      // act
+      final result = merge();
+
+      // assert
+      expect(result, <Attendance>[]);
+    });
+
+    test(
         'returns four attendandces '
         'when there are two events and two attendance '
         'that are not at the same dates', () {

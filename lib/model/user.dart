@@ -12,6 +12,8 @@ class User extends Equatable {
     this.jobTitle,
     this.favorites = const [],
     this.tags = const [],
+    this.regularAttendances = const [],
+    this.manualAbsences = const [],
   });
 
   factory User.fromFirestore(
@@ -26,6 +28,13 @@ class User extends Equatable {
       jobTitle: data?['jobTitle'] as String?,
       favorites: List.from(data?['favorites'] as Iterable),
       tags: List.from(data?['tags'] as Iterable),
+      regularAttendances: List.from(data?['regularAttendances'] as Iterable),
+      manualAbsences: data?['manualAbsences'] is Iterable
+          ? List.from(
+              (data?['manualAbsences'] as Iterable)
+                  .map((e) => (e as Timestamp).toDate()),
+            )
+          : [],
     );
   }
 
@@ -36,6 +45,8 @@ class User extends Equatable {
   final String? jobTitle;
   final List<String> favorites;
   final List<String> tags;
+  final List<int> regularAttendances; // In weekdays 1 - 7
+  final List<DateTime> manualAbsences;
 
   Map<String, dynamic> toFirestore() {
     return {
@@ -46,13 +57,17 @@ class User extends Equatable {
       'jobTitle': jobTitle,
       'favorites': favorites,
       'tags': tags,
+      'regularAttendances': regularAttendances,
+      'manualAbsences': manualAbsences.map(Timestamp.fromDate),
     };
   }
 
   @override
   String toString() {
     return 'User(id: $id, name: $name, email: $email imageUrl: $imageUrl, '
-        ' jobTitle: $jobTitle, favorites: $favorites, tags: $tags)';
+        ' jobTitle: $jobTitle, favorites: $favorites, tags: $tags) '
+        'regularAttendances: $regularAttendances, '
+        'manualAbsences: $manualAbsences';
   }
 
   User copyWith({
@@ -63,6 +78,8 @@ class User extends Equatable {
     String? jobTitle,
     List<String>? favorites,
     List<String>? tags,
+    List<int>? regularAttendances,
+    List<DateTime>? manualAbsences,
   }) {
     return User(
       id: id ?? this.id,
@@ -72,9 +89,19 @@ class User extends Equatable {
       jobTitle: jobTitle ?? this.jobTitle,
       favorites: favorites ?? this.favorites,
       tags: tags ?? this.tags,
+      regularAttendances: regularAttendances ?? this.regularAttendances,
+      manualAbsences: manualAbsences ?? this.manualAbsences,
     );
   }
 
   @override
-  List<Object> get props => [id, name, email, favorites, tags];
+  List<Object> get props => [
+        id,
+        name,
+        email,
+        favorites,
+        tags,
+        regularAttendances,
+        manualAbsences,
+      ];
 }
