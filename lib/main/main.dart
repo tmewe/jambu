@@ -68,6 +68,7 @@ void main() {
     final calendarRepository = CalendarRepository(
       firestoreRepository: firestoreRepository,
       userRepository: userRepository,
+      msGraphRepository: msGraphRepository,
     );
 
     return App(

@@ -1,5 +1,5 @@
 import 'package:jambu/backend/backend.dart';
-import 'package:jambu/calendar/core/smart_merge.dart';
+import 'package:jambu/calendar/core/smart_merge/smart_merge.dart';
 import 'package:jambu/model/model.dart';
 import 'package:jambu/repository/repository.dart';
 
