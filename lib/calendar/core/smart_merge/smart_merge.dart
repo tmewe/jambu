@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:jambu/calendar/core/smart_merge/event_to_presences_mapping.dart';
 import 'package:jambu/calendar/core/smart_merge/filter_presences.dart';
 import 'package:jambu/calendar/core/smart_merge/merge_manual_absences.dart';
@@ -21,6 +22,7 @@ class SmartMerge {
   final List<Attendance> _fsAttendances;
 
   List<Attendance> call() {
+    debugPrint('Start smart merge');
     if (_msEvents.isEmpty) {
       return _fsAttendances;
     }

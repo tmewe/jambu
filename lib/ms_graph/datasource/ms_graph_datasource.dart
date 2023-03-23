@@ -81,4 +81,13 @@ class MSGraphDataSource {
     final jsonEvent = event.toJson();
     await _msGraphAPI.createEvent(jsonEvent);
   }
+
+  Future<void> uploadBatchRequest(List<MSBatchRequest> requests) async {
+    if (requests.isEmpty) return;
+
+    final requestMap = {
+      'requests': requests.map((e) => e.toMap()).toList(),
+    };
+    await _msGraphAPI.batch(jsonEncode(requestMap));
+  }
 }

@@ -52,4 +52,8 @@ class MSGraphRepository {
     );
     await _msGraphDataSource.createEvent(msEvent);
   }
+
+  Future<void> uploadBatchRequest(List<MSBatchRequest> requests) async {
+    return _msGraphDataSource.uploadBatchRequest(requests);
+  }
 }
