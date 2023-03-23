@@ -51,6 +51,8 @@ class SmartMerge {
       currentUser: _currentUser,
     )();
 
+    debugPrint('Got ${attendances.length} attendances');
+
     return attendances;
   }
 }

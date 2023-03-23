@@ -8,9 +8,9 @@ class AppBlocObserver extends BlocObserver {
     Transition<dynamic, dynamic> transition,
   ) {
     super.onTransition(bloc, transition);
-    // ignore: lines_longer_than_80_chars
     debugPrint(
-      '''${bloc.runtimeType} transition: From ${transition.currentState} to ${transition.nextState}''',
+      '${bloc.runtimeType} transition: From ${transition.currentState} '
+      'to ${transition.nextState}',
     );
   }
 
