@@ -1,11 +1,20 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
-class MSDate {
+import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
+
+import 'package:jambu/constants.dart';
+
+@immutable
+class MSDate extends Equatable {
   const MSDate({
     required this.date,
     required this.timeZone,
   });
+
+  factory MSDate.german({required DateTime date}) =>
+      MSDate(date: date, timeZone: Constants.germanTimeZone);
 
   final DateTime date;
   final String timeZone;
@@ -31,4 +40,7 @@ class MSDate {
 
   @override
   String toString() => '$date';
+
+  @override
+  List<Object> get props => [date, timeZone];
 }

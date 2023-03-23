@@ -23,6 +23,10 @@ void main() {
       firestoreRepository: firestoreRepository,
       msGraphRepository: msGraphRepository,
     );
+
+    when(() => msGraphRepository.uploadBatchRequest(any())).thenAnswer(
+      (_) async {},
+    );
   });
 
   group('SmartSync', () {

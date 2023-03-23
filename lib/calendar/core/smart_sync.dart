@@ -1,4 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:jambu/backend/backend.dart';
+import 'package:jambu/calendar/core/core.dart';
 import 'package:jambu/calendar/core/smart_merge/smart_merge.dart';
 import 'package:jambu/model/model.dart';
 import 'package:jambu/repository/repository.dart';
@@ -17,6 +19,7 @@ class SmartSync {
   final MSGraphRepository _msGraphRepository;
 
   Future<List<Attendance>> call() async {
+    debugPrint('Start smart sync');
     final msEvents = await _msGraphRepository.eventsFromToday();
     final firestoreAttendances = await _firestoreRepository.getAttendances();
 
@@ -26,7 +29,13 @@ class SmartSync {
       firestoreAttendances: firestoreAttendances,
     )();
 
-    // TODO(tim): Add smart upload
+    await SmartUpload(
+      currentUser: _currentUser,
+      msEvents: msEvents,
+      attendances: attendances,
+      msGraphRepository: _msGraphRepository,
+      firestoreRepository: _firestoreRepository,
+    )();
 
     return attendances;
   }
