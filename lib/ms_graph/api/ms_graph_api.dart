@@ -36,5 +36,11 @@ abstract class MSGraphAPI extends ChopperService {
   )
   Future<Response<dynamic>> createEvent(@Body() String data);
 
+  @Post(
+    path: r'\$batch',
+    headers: {'content-type': 'application/json'},
+  )
+  Future<Response<dynamic>> batch(@Body() String data);
+
   static MSGraphAPI create([ChopperClient? client]) => _$MSGraphAPI(client);
 }

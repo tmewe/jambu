@@ -105,4 +105,21 @@ class _$MSGraphAPI extends MSGraphAPI {
     );
     return client.send<dynamic, dynamic>($request);
   }
+
+  @override
+  Future<Response<dynamic>> batch(String data) {
+    final Uri $url = Uri.parse('/v1.0/\$batch');
+    final Map<String, String> $headers = {
+      'content-type': 'application/json',
+    };
+    final $body = data;
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      body: $body,
+      headers: $headers,
+    );
+    return client.send<dynamic, dynamic>($request);
+  }
 }
