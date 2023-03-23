@@ -43,4 +43,9 @@ class CalendarState extends Equatable {
       filter: filter ?? this.filter,
     );
   }
+
+  @override
+  String toString() {
+    return 'CalendarState(status: $status)';
+  }
 }

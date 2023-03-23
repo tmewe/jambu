@@ -32,41 +32,24 @@ class FirestoreDatasource {
   }) async {
     final day = DateTime(date.year, date.month, date.day);
     final formattedDate = DateFormat('yyyy-MM-dd').format(day);
-    final querySnaphot =
-        await _firestore.collection('attendances').doc(formattedDate).get();
-    // No document for the given date
-    if (!querySnaphot.exists && isAttending) {
+
+    final attendanceRef =
+        _firestore.collection('attendances').doc(formattedDate);
+
+    try {
+      // Try to update an existing attendance
+      // If there is none we continue in the catch block
+      final fieldValue = isAttending
+          ? FieldValue.arrayUnion([user.id])
+          : FieldValue.arrayRemove([user.id]);
+      await attendanceRef.update({'users': fieldValue});
+    } catch (_) {
+      // No document found for the given date -> create a new one
+      // if the user is attending
+      if (!isAttending) return;
+
       final attendance = Attendance(date: day, userIds: [user.id]);
-      await _saveAttendanceToFirestore(attendance, dateString: formattedDate);
+      await attendanceRef.set(attendance.toFirestore());
     }
-    // Document for given date exists
-    else {
-      final attendance = Attendance.fromFirestore(querySnaphot);
-
-      final Attendance newAttendance;
-      if (!isAttending) {
-        newAttendance = attendance.copyWith(
-          userIds: attendance.userIds.where((id) => id != user.id).toList(),
-        );
-      } else {
-        newAttendance = attendance.copyWith(
-          userIds: [...attendance.userIds, user.id],
-        );
-      }
-      await _saveAttendanceToFirestore(
-        newAttendance,
-        dateString: formattedDate,
-      );
-    }
-  }
-
-  Future<void> _saveAttendanceToFirestore(
-    Attendance attendance, {
-    required String dateString,
-  }) async {
-    await _firestore
-        .collection('attendances')
-        .doc(dateString)
-        .set(attendance.toFirestore());
   }
 }
