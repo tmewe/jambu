@@ -74,11 +74,13 @@ class _$MSGraphAPI extends MSGraphAPI {
     required String filter,
     String select = 'subject, showAs, isOnlineMeeting, start, '
         'end, location, responseStatus, isAllDay, attendees',
+    int top = 100,
   }) {
     final Uri $url = Uri.parse('/v1.0/me/calendar/events');
     final Map<String, dynamic> $params = <String, dynamic>{
       'filter': filter,
       'select': select,
+      'top': top,
     };
     final Request $request = Request(
       'GET',
