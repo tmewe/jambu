@@ -28,6 +28,7 @@ abstract class MSGraphAPI extends ChopperService {
     @Query() required String filter,
     @Query() String select = 'subject, showAs, isOnlineMeeting, start, '
         'end, location, responseStatus, isAllDay, attendees',
+    @Query() int top = 100,
   });
 
   @Post(
