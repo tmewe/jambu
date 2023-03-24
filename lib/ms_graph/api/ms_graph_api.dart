@@ -24,9 +24,7 @@ abstract class MSGraphAPI extends ChopperService {
   )
   Future<Response<dynamic>> createCalendar(@Body() String data);
 
-  @Get(
-    path: 'me/calendars/${Constants.testCalendarId}/events',
-  )
+  @Get(path: 'me/calendars/${Constants.testCalendarId}/events')
   Future<Response<dynamic>> calendarEvents({
     @Query() required String filter,
     @Query() String select = 'subject, showAs, isOnlineMeeting, start, '
@@ -39,6 +37,14 @@ abstract class MSGraphAPI extends ChopperService {
     headers: {'content-type': 'application/json'},
   )
   Future<Response<dynamic>> createEvent(@Body() String data);
+
+  @Delete(
+    path: 'me/calendars/${Constants.testCalendarId}/events',
+    headers: {'content-type': 'application/json'},
+  )
+  Future<Response<dynamic>> deleteEvent({
+    @Query() required String id,
+  });
 
   @Post(
     path: r'\$batch',

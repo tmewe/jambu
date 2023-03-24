@@ -111,6 +111,24 @@ class _$MSGraphAPI extends MSGraphAPI {
   }
 
   @override
+  Future<Response<dynamic>> deleteEvent({required String id}) {
+    final Uri $url = Uri.parse(
+        '/v1.0/me/calendars/AAMkAGYwY2Y0MWM4LWE2MzItNDk5Ny05NzIzLWFjNjUwZjI3Y2UwYwBGAAAAAABd4EEhe61iSIEnLzkh3SdoBwDnm8A17Q_oQ41X7GXJE69AAAAAAAEGAADnm8A17Q_oQ41X7GXJE69AAACKlQf_AAA=/events');
+    final Map<String, dynamic> $params = <String, dynamic>{'id': id};
+    final Map<String, String> $headers = {
+      'content-type': 'application/json',
+    };
+    final Request $request = Request(
+      'DELETE',
+      $url,
+      client.baseUrl,
+      parameters: $params,
+      headers: $headers,
+    );
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
   Future<Response<dynamic>> batch(String data) {
     final Uri $url = Uri.parse('/v1.0/\$batch');
     final Map<String, String> $headers = {
