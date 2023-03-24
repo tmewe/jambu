@@ -83,11 +83,15 @@ class _$MSGraphAPI extends MSGraphAPI {
       'select': select,
       'top': top,
     };
+    final Map<String, String> $headers = {
+      'Prefer': 'outlook.timezone = "Europe/Berlin"',
+    };
     final Request $request = Request(
       'GET',
       $url,
       client.baseUrl,
       parameters: $params,
+      headers: $headers,
     );
     return client.send<dynamic, dynamic>($request);
   }
