@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'package:jambu/constants.dart';
-import 'package:jambu/extension/extension.dart';
 import 'package:jambu/model/model.dart';
 
 class FirestoreDatasource {
@@ -37,8 +36,9 @@ class FirestoreDatasource {
     final day = DateTime(date.year, date.month, date.day);
     final formattedDate = DateFormat('yyyy-MM-dd').format(day);
 
-    final attendanceRef =
-        _firestore.collection('attendances').doc(formattedDate);
+    final attendanceRef = _firestore
+        .collection(Constants.attendancesCollection)
+        .doc(formattedDate);
 
     try {
       // Try to update an existing attendance

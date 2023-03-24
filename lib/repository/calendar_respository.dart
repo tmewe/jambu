@@ -22,7 +22,7 @@ class CalendarRepository {
   Future<List<CalendarWeek>> fetchCalendar({
     CalendarFilter filter = const CalendarFilter(),
   }) async {
-    final currentUser = _userRepository.currentUser;
+    final currentUser = await _userRepository.fetchCurrentUser();
     if (currentUser == null) return [];
 
     final attendances = await SmartSync(
@@ -32,7 +32,6 @@ class CalendarRepository {
     )();
 
     final users = await _firestoreRepository.getUsers();
-    // final attendances = await _firestoreRepository.getAttendances();
 
     final weeks = CalendarMapping(
       currentUser: currentUser,

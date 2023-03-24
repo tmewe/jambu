@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fb_auth;
 import 'package:jambu/backend/datasource/datasource.dart';
 import 'package:jambu/model/model.dart';
@@ -36,6 +37,14 @@ class UserRepository {
 
   User? get currentUser => _currentUserSubject.value;
 
+  Future<User?> fetchCurrentUser() async {
+    if (currentUser == null) return null;
+    final users = await _firestoreDatasource.getUsers();
+    final fetchedUser = users.firstWhereOrNull((u) => u.id == currentUser!.id);
+    _currentUserSubject.add(fetchedUser);
+    return fetchedUser;
+  }
+
   /// Syncs the firebase auth user with the user from firestore
   Future<void> updateUserFromFirebase(fb_auth.User firebaseUser) async {
     final users = await _firestoreDatasource.getUsers();
@@ -69,10 +78,10 @@ class UserRepository {
       imageUrl: photoUrl,
     );
 
-    await updateUser(updatedUser);
+    await _updateUser(updatedUser);
   }
 
-  Future<void> updateUser(User user) async {
+  Future<void> _updateUser(User user) async {
     await _firestoreDatasource.updateUser(user);
     _currentUserSubject.add(user);
   }
