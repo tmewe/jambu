@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:jambu/calendar/core/smart_merge/presence.dart';
 import 'package:jambu/calendar/util/month.dart';
 import 'package:jambu/extension/extension.dart';
@@ -23,10 +24,13 @@ class MergeRegularAttendances {
     for (final week in currentMonth.weeks) {
       for (final date in week.workingDays) {
         if (regularAttendances.contains(date.weekday)) {
-          final presenceAtDate = presences.indexWhere((e) {
+          final presenceAtDate = presences.firstWhereOrNull((e) {
             return e.date.isSameDay(date);
           });
-          if (presenceAtDate == -1) {
+          // Only add a presence if non exists
+          // If there already is a presence where isPresent == false
+          // we don't want to change it because of an oof ms event
+          if (presenceAtDate == null) {
             resultPresences.add(
               Presence(date: date.midnight, isPresent: true),
             );

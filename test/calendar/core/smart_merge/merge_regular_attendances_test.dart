@@ -33,9 +33,9 @@ void main() {
 
     test(
         'returns four presences at correct dates '
+        'where isPresent is true '
         'when regular attendances contain friday '
-        'and presences are empty '
-        'where isPresent is true', () {
+        'and presences are empty', () {
       // arrange
       final regularAttendances = [5];
       final presences = <Presence>[];
