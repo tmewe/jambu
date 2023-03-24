@@ -107,7 +107,7 @@ class _CalendarViewState extends State<CalendarView> {
                             onChanged: (value) {
                               context.read<CalendarBloc>().add(
                                     CalendarAttendanceUpdate(
-                                      date: day.date,
+                                      date: day.date.midnight,
                                       isAttending: value,
                                     ),
                                   );

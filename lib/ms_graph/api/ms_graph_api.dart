@@ -41,12 +41,9 @@ abstract class MSGraphAPI extends ChopperService {
   )
   Future<Response<dynamic>> createEvent(@Body() String data);
 
-  @Delete(
-    path: 'me/calendars/${Constants.testCalendarId}/events',
-    headers: {'content-type': 'application/json'},
-  )
+  @Delete(path: 'me/calendars/${Constants.testCalendarId}/events/{id}')
   Future<Response<dynamic>> deleteEvent({
-    @Query() required String id,
+    @Path() required String id,
   });
 
   @Post(

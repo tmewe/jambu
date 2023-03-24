@@ -26,6 +26,7 @@ class OutlookUpload {
   final DateTime _today;
 
   Future<void> call() async {
+    final uploadDate = _today.subtract(const Duration(hours: 1));
     final userAttendances = _attendances.whereUserId(_currentUser.id);
 
     final officeEvents = _msEvents
@@ -35,12 +36,12 @@ class OutlookUpload {
     final eventsToRemove = getEventsToRemove(
       events: officeEvents,
       userAttendances: userAttendances,
-    ).where((e) => e.start.date.isAfter(_today)).toList();
+    ).where((e) => e.start.date.isAfter(uploadDate)).toList();
 
     final eventsToAdd = getEventsToAdd(
       events: officeEvents,
       userAttendances: userAttendances,
-    ).where((e) => e.start.date.isAfter(_today)).toList();
+    ).where((e) => e.start.date.isAfter(uploadDate)).toList();
 
     final requests = mapEventsToRequests(
       eventsToRemove: eventsToRemove,

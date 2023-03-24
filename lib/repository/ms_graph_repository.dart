@@ -1,5 +1,7 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:jambu/constants.dart';
 import 'package:jambu/extension/extension.dart';
 import 'package:jambu/ms_graph/ms_graph.dart';
 
@@ -62,7 +64,16 @@ class MSGraphRepository {
     required DateTime date,
     required bool isAttending,
   }) async {
-    final event = MSEvent.office(date: date.midnight);
-    return _msGraphDataSource.createEvent(event);
+    final eventsAtDate = await _msGraphDataSource.eventsAt(date: date);
+    final officeEventAtDate = eventsAtDate.firstWhereOrNull(
+      (event) => event.subject == Constants.officeEventSubject,
+    );
+    if (officeEventAtDate == null && isAttending) {
+      await _msGraphDataSource.createEvent(MSEvent.office(date: date));
+    } else if (officeEventAtDate != null &&
+        officeEventAtDate.id != null &&
+        !isAttending) {
+      await _msGraphDataSource.deleteEvent(officeEventAtDate.id!);
+    }
   }
 }
