@@ -12,15 +12,18 @@ class OutlookUpload {
     required List<MSEvent> msEvents,
     required List<Attendance> attendances,
     required MSGraphRepository msGraphRepository,
+    DateTime? today,
   })  : _currentUser = currentUser,
         _msEvents = msEvents,
         _attendances = attendances,
-        _msGraphRepository = msGraphRepository;
+        _msGraphRepository = msGraphRepository,
+        _today = today ?? DateTime.now().midnight;
 
   final User _currentUser;
   final List<MSEvent> _msEvents;
   final List<Attendance> _attendances;
   final MSGraphRepository _msGraphRepository;
+  final DateTime _today;
 
   Future<void> call() async {
     final userAttendances = _attendances.whereUserId(_currentUser.id);
@@ -32,12 +35,12 @@ class OutlookUpload {
     final eventsToRemove = getEventsToRemove(
       events: officeEvents,
       userAttendances: userAttendances,
-    );
+    ).where((e) => e.start.date.isAfter(_today)).toList();
 
     final eventsToAdd = getEventsToAdd(
       events: officeEvents,
       userAttendances: userAttendances,
-    );
+    ).where((e) => e.start.date.isAfter(_today)).toList();
 
     final requests = mapEventsToRequests(
       eventsToRemove: eventsToRemove,

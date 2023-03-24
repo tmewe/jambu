@@ -22,6 +22,7 @@ void main() {
       msEvents: [],
       attendances: [],
       msGraphRepository: msGraphRepository,
+      today: date,
     );
   });
 
