@@ -137,38 +137,26 @@ class _CalendarViewState extends State<CalendarView> {
   }
 }
 
-// ignore: must_be_immutable
-class _CalendarDay extends StatefulWidget {
-  _CalendarDay({
+class _CalendarDay extends StatelessWidget {
+  const _CalendarDay({
     required this.day,
     required this.onChanged,
-  }) {
-    _isOn = day.isUserAttending;
-  }
+  });
 
   final CalendarDay day;
-  final ValueChanged<bool> onChanged;
-  var _isOn = false;
+  final ValueChanged<bool>? onChanged;
 
-  @override
-  State<_CalendarDay> createState() => _CalendarDayState();
-}
-
-class _CalendarDayState extends State<_CalendarDay> {
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Switch(
-          value: widget._isOn,
-          onChanged: (value) {
-            setState(() => widget._isOn = value);
-            widget.onChanged(value);
-          },
+          value: day.isUserAttending,
+          onChanged: onChanged,
         ),
-        Text(widget.day.date.weekdayString),
-        Text(DateFormat('dd').format(widget.day.date)),
-        ...widget.day.users.map((user) => CalendarItem(user: user)),
+        Text(day.date.weekdayString),
+        Text(DateFormat('dd').format(day.date)),
+        ...day.users.map((user) => CalendarItem(user: user)),
       ],
     );
   }
