@@ -15,7 +15,7 @@ void main() {
         'returns one element where isPresent is false '
         'when event is whole day oof', () {
       // arrange
-      final event = _oofEvent(date: date);
+      final event = _oofEvent(date: date, duration: const Duration(days: 1));
       final mapping = EventToPresencesMapping(event: event);
 
       // act
@@ -41,7 +41,7 @@ void main() {
 
     test(
         'returns five element where isPresent is false '
-        'when event oof for six days', () {
+        'when event oof for five days', () {
       // arrange
       const duration = Duration(days: 4);
       final event = _oofEvent(date: date, duration: duration);
@@ -49,6 +49,25 @@ void main() {
 
       final expected = List.generate(5, (i) {
         return Presence(date: date.add(Duration(days: i)), isPresent: false);
+      });
+
+      // act
+      final result = mapping();
+
+      // assert
+      expect(result, expected);
+    });
+
+    test(
+        'returns five element where isPresent is true '
+        'when event presence for five days', () {
+      // arrange
+      const duration = Duration(days: 4);
+      final event = _presenceEvent(date: date, duration: duration);
+      final mapping = EventToPresencesMapping(event: event);
+
+      final expected = List.generate(5, (i) {
+        return Presence(date: date.add(Duration(days: i)), isPresent: true);
       });
 
       // act

@@ -10,19 +10,15 @@ class EventToPresencesMapping {
 
   List<Presence> call() {
     // Get the duration of the event (could be multiple days)
-    var eventDuration =
-        event.end.date.difference(event.start.date).abs().inDays;
+    final eventDuration = event.end.date.difference(event.start.date).abs();
 
-    // One day is the minimum
-    if (eventDuration == 0) {
-      eventDuration = 1;
+    var eventLength = 1;
+    if (eventDuration.inHours > 24) {
+      eventLength = eventDuration.inDays + 1;
     }
-    // Duration = one day means that the event takes place at two dates
-    else {
-      eventDuration++;
-    }
+
     final presences = <Presence>[];
-    for (var i = 0; i < eventDuration; i++) {
+    for (var i = 0; i < eventLength; i++) {
       final date = event.start.date.add(Duration(days: i));
       if (event.isWholeDayOOF) {
         presences.add(Presence(date: date, isPresent: false));
