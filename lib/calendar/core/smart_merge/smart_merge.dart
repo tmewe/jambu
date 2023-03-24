@@ -22,10 +22,6 @@ class SmartMerge {
   final List<Attendance> _fsAttendances;
 
   List<Attendance> call() {
-    if (_msEvents.isEmpty) {
-      return _fsAttendances;
-    }
-
     var presences = _msEvents
         .map((event) => EventToPresencesMapping(event: event)())
         .expand((p) => p)
