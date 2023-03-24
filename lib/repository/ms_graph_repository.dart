@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:jambu/extension/extension.dart';
 import 'package:jambu/ms_graph/ms_graph.dart';
 
 class MSGraphRepository {
@@ -30,7 +31,7 @@ class MSGraphRepository {
   }
 
   Future<List<MSEvent>> eventsFromToday() {
-    return _msGraphDataSource.events(fromDate: DateTime.now());
+    return _msGraphDataSource.events(fromDate: DateTime.now().midnight);
   }
 
   Future<void> createEventAt({required DateTime dateTime}) async {
