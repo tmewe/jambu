@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart';
 import 'package:jambu/backend/backend.dart';
 import 'package:jambu/extension/extension.dart';
 import 'package:jambu/model/model.dart';

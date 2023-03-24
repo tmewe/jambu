@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:jambu/backend/backend.dart';
 import 'package:jambu/calendar/core/smart_upload/firestore_upload.dart';
 import 'package:jambu/calendar/core/smart_upload/outlook_upload.dart';

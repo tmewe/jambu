@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:fpdart/fpdart.dart';
 import 'package:jambu/backend/repository/repository.dart';
 import 'package:jambu/calendar/core/smart_upload/firestore_upload.dart';
 import 'package:jambu/model/model.dart';
