@@ -23,7 +23,7 @@ class SmartSync {
     final msEvents = await _msGraphRepository.eventsFromToday();
     final firestoreAttendances = await _firestoreRepository.getAttendances();
 
-    final attendances = SmartMerge(
+    final updatedAttendances = SmartMerge(
       currentUser: _currentUser,
       msEvents: msEvents,
       firestoreAttendances: firestoreAttendances,
@@ -32,11 +32,12 @@ class SmartSync {
     await SmartUpload(
       currentUser: _currentUser,
       msEvents: msEvents,
-      attendances: attendances,
+      oldAttendances: firestoreAttendances,
+      updatedAttendances: updatedAttendances,
       msGraphRepository: _msGraphRepository,
       firestoreRepository: _firestoreRepository,
     )();
 
-    return attendances;
+    return updatedAttendances;
   }
 }

@@ -23,9 +23,7 @@ class OutlookUpload {
   final MSGraphRepository _msGraphRepository;
 
   Future<void> call() async {
-    debugPrint('Start outlook upload');
-    final userAttendances =
-        _attendances.where((a) => a.userIds.contains(_currentUser.id)).toList();
+    final userAttendances = _attendances.whereUserId(_currentUser.id);
 
     final officeEvents = _msEvents
         .where((event) => event.subject == Constants.officeEventSubject)
