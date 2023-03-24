@@ -15,7 +15,14 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
   })  : _calendarRepository = calendarRepository,
         super(const CalendarState()) {
     on<CalendarRequested>(_onCalendarRequested);
-    on<CalendarAttendanceUpdate>(_onCalenderAttendanceUpdate);
+    on<CalendarAttendanceUpdate>(
+      _onCalenderAttendanceUpdate,
+      transformer: (events, mapper) {
+        return events
+            .debounceTime(const Duration(seconds: 1))
+            .switchMap(mapper);
+      },
+    );
     on<CalendarGoToWeek>(_onCalendarGoToWeek);
     on<CalendarFilterUpdate>(
       _onCalendarFilterUpdate,
