@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
+import 'package:jambu/extension/extension.dart';
 import 'package:jambu/ms_graph/api/api.dart';
 import 'package:jambu/ms_graph/model/model.dart';
 
@@ -58,8 +59,16 @@ class MSGraphDataSource {
     var filter = '';
     if (fromDate != null) {
       // Date format 2023-03-03
-      final dateString = DateFormat('yyyy-MM-dd').format(fromDate);
-      filter = "start/dateTime ge '$dateString'";
+      // Subtract one hour to make sure all events at the start date
+      // are included
+      final startDateString = DateFormat('yyyy-MM-ddTHH:mm').format(
+        fromDate.midnight.subtract(const Duration(hours: 1)),
+      );
+      final endDateString = DateFormat('yyyy-MM-ddTHH:mm').format(
+        fromDate.midnight.add(const Duration(days: 28, hours: 1)),
+      );
+      filter = "start/dateTime ge '$startDateString' "
+          "and end/dateTime le '$endDateString'";
     }
     final response = await _msGraphAPI.calendarEvents(
       filter: filter,
