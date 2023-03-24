@@ -1,6 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:jambu/calendar/core/smart_merge/presence.dart';
-import 'package:jambu/calendar/util/month.dart';
+import 'package:jambu/calendar/util/month_from_date.dart';
 import 'package:jambu/extension/extension.dart';
 
 class MergeRegularAttendances {

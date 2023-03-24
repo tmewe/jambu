@@ -1,5 +1,7 @@
-class WeekFromDate {
-  WeekFromDate(this.date);
+import 'package:equatable/equatable.dart';
+
+class WeekFromDate extends Equatable {
+  const WeekFromDate(this.date);
 
   final DateTime date;
 
@@ -19,4 +21,7 @@ class WeekFromDate {
     }
     return dates;
   }
+
+  @override
+  List<Object> get props => [date];
 }
