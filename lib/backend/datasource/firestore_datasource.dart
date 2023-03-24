@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
+import 'package:jambu/constants.dart';
+import 'package:jambu/extension/extension.dart';
 import 'package:jambu/model/model.dart';
 
 class FirestoreDatasource {
@@ -10,7 +12,8 @@ class FirestoreDatasource {
   final FirebaseFirestore _firestore;
 
   Future<List<User>> getUsers() async {
-    final querySnaphot = await _firestore.collection('users').get();
+    final querySnaphot =
+        await _firestore.collection(Constants.usersCollection).get();
     final users = querySnaphot.docs.map(User.fromFirestore);
     return users.toList();
   }
@@ -20,7 +23,8 @@ class FirestoreDatasource {
   }
 
   Future<List<Attendance>> getAttendances() async {
-    final querySnaphot = await _firestore.collection('attendances').get();
+    final querySnaphot =
+        await _firestore.collection(Constants.attendancesCollection).get();
     final attendances = querySnaphot.docs.map(Attendance.fromFirestore);
     return attendances.toList();
   }
@@ -51,5 +55,17 @@ class FirestoreDatasource {
       final attendance = Attendance(date: day, userIds: [user.id]);
       await attendanceRef.set(attendance.toFirestore());
     }
+  }
+
+  Future<void> updateManualAbsences({
+    required DateTime date,
+    required String userId,
+    required bool add,
+  }) async {
+    final fieldValue = add
+        ? FieldValue.arrayUnion([Timestamp.fromDate(date)])
+        : FieldValue.arrayRemove([Timestamp.fromDate(date)]);
+    final ref = _firestore.collection(Constants.usersCollection).doc(userId);
+    await ref.update({'manualAbsences': fieldValue});
   }
 }

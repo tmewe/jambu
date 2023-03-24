@@ -33,4 +33,26 @@ class FirestoreRepository {
       user: currentUser,
     );
   }
+
+  Future<void> addManualAbsence(DateTime date) async {
+    final user = _userRepository.currentUser;
+    if (user == null) return;
+
+    await _firestoreDatasource.updateManualAbsences(
+      date: date,
+      userId: user.id,
+      add: true,
+    );
+  }
+
+  Future<void> removeManualAbsence(DateTime date) async {
+    final user = _userRepository.currentUser;
+    if (user == null) return;
+
+    await _firestoreDatasource.updateManualAbsences(
+      date: date,
+      userId: user.id,
+      add: false,
+    );
+  }
 }
