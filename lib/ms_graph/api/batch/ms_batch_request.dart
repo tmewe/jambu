@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
+import 'package:jambu/constants.dart';
 
 import 'package:jambu/ms_graph/model/model.dart';
 
@@ -23,7 +24,7 @@ class MSBatchRequest extends Equatable {
     return MSBatchRequest(
       id: id,
       method: 'POST',
-      url: '/me/events',
+      url: '/me/calendars/${Constants.testCalendarId}/events',
       headers: {'content-type': ContentType.json.mimeType},
       body: event.toMap(),
     );
@@ -36,7 +37,7 @@ class MSBatchRequest extends Equatable {
     return MSBatchRequest(
       id: id,
       method: 'DELETE',
-      url: '/me/events/$eventId',
+      url: '/me/calendars/${Constants.testCalendarId}/events/$eventId',
     );
   }
 

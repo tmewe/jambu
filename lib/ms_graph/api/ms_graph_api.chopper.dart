@@ -76,7 +76,8 @@ class _$MSGraphAPI extends MSGraphAPI {
         'end, location, responseStatus, isAllDay, attendees',
     int top = 100,
   }) {
-    final Uri $url = Uri.parse('/v1.0/me/calendar/events');
+    final Uri $url = Uri.parse(
+        '/v1.0/me/calendars/AAMkAGYwY2Y0MWM4LWE2MzItNDk5Ny05NzIzLWFjNjUwZjI3Y2UwYwBGAAAAAABd4EEhe61iSIEnLzkh3SdoBwDnm8A17Q_oQ41X7GXJE69AAAAAAAEGAADnm8A17Q_oQ41X7GXJE69AAACKlQf_AAA=/events');
     final Map<String, dynamic> $params = <String, dynamic>{
       'filter': filter,
       'select': select,
@@ -93,7 +94,8 @@ class _$MSGraphAPI extends MSGraphAPI {
 
   @override
   Future<Response<dynamic>> createEvent(String data) {
-    final Uri $url = Uri.parse('/v1.0/me/calendar/events');
+    final Uri $url = Uri.parse(
+        '/v1.0/me/calendars/AAMkAGYwY2Y0MWM4LWE2MzItNDk5Ny05NzIzLWFjNjUwZjI3Y2UwYwBGAAAAAABd4EEhe61iSIEnLzkh3SdoBwDnm8A17Q_oQ41X7GXJE69AAAAAAAEGAADnm8A17Q_oQ41X7GXJE69AAACKlQf_AAA=/events');
     final Map<String, String> $headers = {
       'content-type': 'application/json',
     };
