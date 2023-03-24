@@ -61,5 +61,8 @@ class MSGraphRepository {
   Future<void> updateAttendanceAt({
     required DateTime date,
     required bool isAttending,
-  }) async {}
+  }) async {
+    final event = MSEvent.office(date: date.midnight);
+    return _msGraphDataSource.createEvent(event);
+  }
 }
