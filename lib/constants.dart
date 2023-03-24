@@ -1,6 +1,8 @@
 abstract class Constants {
   static const String officeEventSubject = '💼 Im Büro';
   static const String germanTimeZone = 'Europe/Berlin';
+  static const String usersCollection = 'users';
+  static const String attendancesCollection = 'attendances';
 
   // TODO(tim): REMOVE
   static const String testCalendarId =

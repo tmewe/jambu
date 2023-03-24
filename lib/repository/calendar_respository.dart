@@ -97,6 +97,12 @@ class CalendarRepository {
       ),
     );
 
+    if (isAttending) {
+      unawaited(_firestoreRepository.removeManualAbsence(date));
+    } else {
+      unawaited(_firestoreRepository.addManualAbsence(date));
+    }
+
     return updatedWeeks;
   }
 }
