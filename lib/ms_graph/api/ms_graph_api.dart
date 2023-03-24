@@ -1,6 +1,7 @@
 // ignore_for_file: use_raw_strings
 
 import 'package:chopper/chopper.dart';
+import 'package:jambu/constants.dart';
 
 part 'ms_graph_api.chopper.dart';
 
@@ -23,7 +24,9 @@ abstract class MSGraphAPI extends ChopperService {
   )
   Future<Response<dynamic>> createCalendar(@Body() String data);
 
-  @Get(path: 'me/calendar/events')
+  @Get(
+    path: 'me/calendars/${Constants.testCalendarId}/events',
+  )
   Future<Response<dynamic>> calendarEvents({
     @Query() required String filter,
     @Query() String select = 'subject, showAs, isOnlineMeeting, start, '
@@ -32,7 +35,7 @@ abstract class MSGraphAPI extends ChopperService {
   });
 
   @Post(
-    path: 'me/calendar/events',
+    path: 'me/calendars/${Constants.testCalendarId}/events',
     headers: {'content-type': 'application/json'},
   )
   Future<Response<dynamic>> createEvent(@Body() String data);

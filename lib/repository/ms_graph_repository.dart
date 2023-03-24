@@ -57,4 +57,9 @@ class MSGraphRepository {
   Future<void> uploadBatchRequest(List<MSBatchRequest> requests) async {
     return _msGraphDataSource.uploadBatchRequest(requests);
   }
+
+  Future<void> updateAttendanceAt({
+    required DateTime date,
+    required bool isAttending,
+  }) async {}
 }
