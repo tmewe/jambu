@@ -31,7 +31,7 @@ class MSGraphRepository {
   }
 
   Future<List<MSEvent>> eventsFromToday() {
-    return _msGraphDataSource.events(fromDate: DateTime.now().midnight);
+    return _msGraphDataSource.eventsFrom(fromDate: DateTime.now().midnight);
   }
 
   Future<void> createEventAt({required DateTime dateTime}) async {

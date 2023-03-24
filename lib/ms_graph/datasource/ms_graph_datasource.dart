@@ -55,24 +55,34 @@ class MSGraphDataSource {
     await _msGraphAPI.createCalendar(jsonCalendar);
   }
 
-  Future<List<MSEvent>> events({DateTime? fromDate}) async {
-    var filter = '';
-    if (fromDate != null) {
-      // Date format 2023-03-03
-      // Subtract one hour to make sure all events at the start date
-      // are included
-      final startDateString = DateFormat('yyyy-MM-ddTHH:mm').format(
-        fromDate.midnight.subtract(const Duration(hours: 1)),
-      );
-      final endDateString = DateFormat('yyyy-MM-ddTHH:mm').format(
-        fromDate.midnight.add(const Duration(days: 28, hours: 1)),
-      );
-      filter = "start/dateTime ge '$startDateString' "
-          "and end/dateTime le '$endDateString'";
-    }
-    final response = await _msGraphAPI.calendarEvents(
-      filter: filter,
-    );
+  Future<List<MSEvent>> eventsFrom({DateTime? fromDate}) async {
+    fromDate ??= DateTime.now();
+
+    // Subtract one hour to make sure all events at the start date
+    // are included
+    final startDate = fromDate.midnight.subtract(const Duration(hours: 1));
+    final endDate = fromDate.add(const Duration(days: 28, hours: 1));
+
+    return _fetchEvents(startDate: startDate, endDate: endDate);
+  }
+
+  Future<List<MSEvent>> eventsAt({required DateTime date}) async {
+    final startDate = date.midnight.subtract(const Duration(hours: 1));
+    final endDate = date.add(const Duration(days: 1, hours: 1));
+
+    return _fetchEvents(startDate: startDate, endDate: endDate);
+  }
+
+  Future<List<MSEvent>> _fetchEvents({
+    required DateTime startDate,
+    required DateTime endDate,
+  }) async {
+    final startDateString = DateFormat('yyyy-MM-ddTHH:mm').format(startDate);
+    final endDateString = DateFormat('yyyy-MM-ddTHH:mm').format(endDate);
+    final filter = "start/dateTime ge '$startDateString' "
+        "and end/dateTime le '$endDateString'";
+
+    final response = await _msGraphAPI.calendarEvents(filter: filter);
 
     if (response.statusCode != 200) {
       return [];
