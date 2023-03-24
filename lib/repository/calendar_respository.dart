@@ -90,6 +90,13 @@ class CalendarRepository {
       ),
     );
 
+    unawaited(
+      _msGraphRepository.updateAttendanceAt(
+        date: date,
+        isAttending: isAttending,
+      ),
+    );
+
     return updatedWeeks;
   }
 }

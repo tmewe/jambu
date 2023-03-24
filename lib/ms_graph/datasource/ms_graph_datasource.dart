@@ -101,6 +101,10 @@ class MSGraphDataSource {
     await _msGraphAPI.createEvent(jsonEvent);
   }
 
+  Future<void> deleteEvent(String eventId) async {
+    await _msGraphAPI.deleteEvent(id: eventId);
+  }
+
   Future<void> uploadBatchRequest(List<MSBatchRequest> requests) async {
     if (requests.isEmpty) return;
 
