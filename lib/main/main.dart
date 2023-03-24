@@ -5,7 +5,6 @@ import 'package:jambu/main/bootstrap/bootstrap.dart';
 import 'package:jambu/ms_graph/ms_graph.dart';
 import 'package:jambu/repository/repository.dart';
 import 'package:jambu/storage/storage.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   bootstrap((
@@ -14,9 +13,7 @@ void main() {
     firebaseFirestore,
     firebaseStorage,
   ) async {
-    // TODO(tim): Replace with secure storage
-    final sharedPrefs = await SharedPreferences.getInstance();
-    final tokenStorage = SharedPrefsTokenStorage(sharedPrefs: sharedPrefs);
+    final tokenStorage = SecureTokenStorage();
 
     final photoStorageRepository = PhotoStorageRepository(
       storage: firebaseStorage,
