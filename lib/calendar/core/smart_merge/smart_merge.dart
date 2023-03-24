@@ -22,7 +22,6 @@ class SmartMerge {
   final List<Attendance> _fsAttendances;
 
   List<Attendance> call() {
-    debugPrint('Start smart merge');
     if (_msEvents.isEmpty) {
       return _fsAttendances;
     }
@@ -51,7 +50,10 @@ class SmartMerge {
       currentUser: _currentUser,
     )();
 
-    debugPrint('Got ${attendances.length} attendances');
+    debugPrint('There are ${attendances.length} attendance updates');
+    for (final a in attendances) {
+      debugPrint(a.toString());
+    }
 
     return attendances;
   }
