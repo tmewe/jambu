@@ -1,6 +1,8 @@
+// ignore_for_file: sort_constructors_first
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
+import 'package:jambu/model/tag.dart';
 
 @immutable
 class User extends Equatable {
@@ -16,6 +18,16 @@ class User extends Equatable {
     this.manualAbsences = const [],
   });
 
+  final String id;
+  final String name;
+  final String email;
+  final String? imageUrl;
+  final String? jobTitle;
+  final List<String> favorites;
+  final List<Tag> tags;
+  final List<int> regularAttendances; // In weekdays 1 - 7
+  final List<DateTime> manualAbsences;
+
   factory User.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
   ) {
@@ -27,26 +39,16 @@ class User extends Equatable {
       imageUrl: data?['imageUrl'] as String?,
       jobTitle: data?['jobTitle'] as String?,
       favorites: List.from(data?['favorites'] as Iterable),
-      tags: List.from(data?['tags'] as Iterable),
+      tags: List<Map<String, dynamic>>.from(data?['tags'] as Iterable)
+          .map(Tag.fromMap)
+          .toList(),
       regularAttendances: List.from(data?['regularAttendances'] as Iterable),
-      manualAbsences: data?['manualAbsences'] is Iterable
-          ? List.from(
-              (data?['manualAbsences'] as Iterable)
-                  .map((e) => (e as Timestamp).toDate()),
-            )
-          : [],
+      manualAbsences: List.from(
+        (data?['manualAbsences'] as Iterable)
+            .map((e) => (e as Timestamp).toDate()),
+      ),
     );
   }
-
-  final String id;
-  final String name;
-  final String email;
-  final String? imageUrl;
-  final String? jobTitle;
-  final List<String> favorites;
-  final List<String> tags;
-  final List<int> regularAttendances; // In weekdays 1 - 7
-  final List<DateTime> manualAbsences;
 
   Map<String, dynamic> toFirestore() {
     return {
@@ -56,7 +58,7 @@ class User extends Equatable {
       'imageUrl': imageUrl,
       'jobTitle': jobTitle,
       'favorites': favorites,
-      'tags': tags,
+      'tags': tags.map((t) => t.toMap()),
       'regularAttendances': regularAttendances,
       'manualAbsences': manualAbsences.map(Timestamp.fromDate),
     };
@@ -77,7 +79,7 @@ class User extends Equatable {
     String? imageUrl,
     String? jobTitle,
     List<String>? favorites,
-    List<String>? tags,
+    List<Tag>? tags,
     List<int>? regularAttendances,
     List<DateTime>? manualAbsences,
   }) {
