@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:jambu/calendar/model/model.dart';
 import 'package:jambu/calendar/util/util.dart';
 import 'package:jambu/extension/extension.dart';
@@ -26,30 +27,27 @@ class CalendarMapping {
       final days = <CalendarDay>[];
 
       for (final date in week.workingDays) {
-        final attendanceAtDate = attendances.getAtDate(date);
+        final attendance = attendances.getAtDate(date);
 
-        final isUserAttending =
-            attendanceAtDate.userIds.contains(currentUser.id);
-        final usersAtDay = attendanceAtDate.userIds.where((uid) {
-          return uid != currentUser.id;
-        }).map((uid) {
-          final filteredUsers = users.where((u) => u.id == uid);
-          if (filteredUsers.isEmpty) {
-            return CalendarUser(id: uid, name: '-');
-          }
-          final user = filteredUsers.first;
-          return CalendarUser(
-            id: uid,
-            name: user.name,
-            jobTitle: user.jobTitle,
-            image: user.imageUrl,
-          );
-        });
+        // Filters and maps the user ids at date to calendar users
+        final colleaguesAtDay = attendance.userIds
+            .where((uid) => uid != currentUser.id)
+            .map((uid) => users.firstWhereOrNull((u) => u.id == uid))
+            .whereNotNull()
+            .map(
+              (colleague) => CalendarUser(
+                id: colleague.id,
+                name: colleague.name,
+                jobTitle: colleague.jobTitle,
+                image: colleague.imageUrl,
+              ),
+            );
 
+        final isUserAttending = attendance.userIds.contains(currentUser.id);
         final day = CalendarDay(
           date: date,
           isUserAttending: isUserAttending,
-          users: usersAtDay.toList(),
+          users: colleaguesAtDay.toList(),
         );
         days.add(day);
       }
