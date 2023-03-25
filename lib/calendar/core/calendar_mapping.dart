@@ -4,18 +4,22 @@ import 'package:jambu/extension/extension.dart';
 import 'package:jambu/model/model.dart';
 
 class CalendarMapping {
-  CalendarMapping({
+  const CalendarMapping({
     required this.currentUser,
     required this.attendances,
     required this.users,
+    this.today,
   });
 
   final User currentUser;
   final List<Attendance> attendances;
   final List<User> users;
+  final DateTime? today;
 
   List<CalendarWeek> call() {
-    final currentMonth = MonthFromDate(DateTime.now().midnight);
+    final currentMonth = MonthFromDate(
+      today?.midnight ?? DateTime.now().midnight,
+    );
 
     final weeks = <CalendarWeek>[];
     for (final week in currentMonth.weeks) {
