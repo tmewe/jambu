@@ -61,7 +61,7 @@ void main() {
     });
 
     test(
-        'returns list where with correct users '
+        'returns list with correct users '
         'when attendances is not empty', () {
       // arrange
       final date1 = DateTime.parse('2023-03-20');
@@ -97,7 +97,7 @@ void main() {
     });
 
     test(
-        'returns list where with attendances '
+        'returns list with attendances '
         'when attendances contain current user', () {
       // arrange
       final attendances = List.generate(
@@ -123,6 +123,66 @@ void main() {
 
       final day2 = result.first.days[1];
       expect(day2.isUserAttending, isTrue);
+    });
+
+    group('Tags', () {
+      late User user;
+      late String colleagueId;
+      late String tagName;
+
+      setUp(() {
+        tagName = 'Bier';
+        colleagueId = '1';
+
+        user = User(
+          id: '0',
+          name: '',
+          email: '',
+          tags: [
+            Tag(name: tagName, userIds: [colleagueId]),
+          ],
+        );
+      });
+
+      test(
+          'returns list with one tags for user with id 1 '
+          'when user has a tag for user 1', () {
+        // arrange
+        final mapping = CalendarMapping(
+          currentUser: user,
+          attendances: [
+            Attendance(date: date, userIds: [colleagueId]),
+          ],
+          users: testUsers,
+          today: date,
+        );
+
+        // act
+        final result = mapping();
+
+        // assert
+        expect(result.first.days.first.users.first.tags, [tagName]);
+      });
+
+      test(
+          'returns empty list with tags '
+          'when user has no tag for user 2', () {
+        // arrange
+        final mapping = CalendarMapping(
+          currentUser: user,
+          attendances: [
+            Attendance(date: date, userIds: const ['2']),
+          ],
+          users: testUsers,
+          today: date,
+        );
+
+        // act
+        final result = mapping();
+
+        // assert
+        expect(result.first.days.first.users.first.tags, isEmpty);
+      });
     });
   });
 }
