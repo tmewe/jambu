@@ -1,4 +1,3 @@
-// ignore_for_file: sort_constructors_first
 import 'package:equatable/equatable.dart';
 
 class CalendarUser extends Equatable {

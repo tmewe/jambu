@@ -28,31 +28,37 @@ class CalendarMapping {
 
       for (final date in week.workingDays) {
         final attendance = attendances.getAtDate(date);
-
-        // Filters and maps the user ids at date to calendar users
-        final colleaguesAtDay = attendance.userIds
-            .where((uid) => uid != currentUser.id)
-            .map((uid) => users.firstWhereOrNull((u) => u.id == uid))
-            .whereNotNull()
-            .map(
-              (colleague) => CalendarUser(
-                id: colleague.id,
-                name: colleague.name,
-                jobTitle: colleague.jobTitle,
-                image: colleague.imageUrl,
-              ),
-            );
-
         final isUserAttending = attendance.userIds.contains(currentUser.id);
         final day = CalendarDay(
           date: date,
           isUserAttending: isUserAttending,
-          users: colleaguesAtDay.toList(),
+          users: _colleaguesAtDay(attendance),
         );
         days.add(day);
       }
       weeks.add(CalendarWeek(days: days));
     }
     return weeks;
+  }
+
+  // Filters and maps the user ids at date to calendar users
+  List<CalendarUser> _colleaguesAtDay(Attendance attendance) {
+    return attendance.userIds
+        .where((uid) => uid != currentUser.id)
+        .map((uid) => users.firstWhereOrNull((u) => u.id == uid))
+        .whereNotNull()
+        .map(
+          (colleague) => CalendarUser(
+            id: colleague.id,
+            name: colleague.name,
+            jobTitle: colleague.jobTitle,
+            image: colleague.imageUrl,
+            tags: currentUser.tags
+                .where((tag) => tag.userIds.contains(colleague.id))
+                .map((t) => t.name)
+                .toList(),
+          ),
+        )
+        .toList();
   }
 }
