@@ -16,7 +16,14 @@ class MergePresencesAttendances {
   final User currentUser;
 
   List<Attendance> call() {
-    var resultAttendances = [...attendances];
+    final attendancesWithoutReasons = attendances.map((a) {
+      return a.copyWith(
+        present: a.present.map((e) => Entry(userId: e.userId)).toList(),
+        absent: a.absent.map((e) => Entry(userId: e.userId)).toList(),
+      );
+    });
+    var resultAttendances = [...attendancesWithoutReasons];
+
     for (final presence in presences) {
       final attendanceAtDate = resultAttendances.firstWhereOrNull(
         (e) => e.date.isSameDay(presence.date),
@@ -53,7 +60,7 @@ class MergePresencesAttendances {
       resultAttendances.remove(attendanceAtDate);
 
       final updatedPresent = {
-        ...attendanceAtDate.present,
+        ...attendanceAtDate.present.where((e) => e.userId != currentUser.id),
         Entry(userId: currentUser.id, reason: presence.reason),
       }.toList();
       final updatedAbsent = {
@@ -93,7 +100,7 @@ class MergePresencesAttendances {
         ...attendanceAtDate.present.where((e) => e.userId != currentUser.id)
       }.toList();
       final updatedAbsent = {
-        ...attendanceAtDate.absent,
+        ...attendanceAtDate.absent.where((e) => e.userId != currentUser.id),
         if (presence.reason != null) // Only add if there is a reason
           Entry(
             userId: currentUser.id,

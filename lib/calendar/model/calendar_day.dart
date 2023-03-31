@@ -28,6 +28,20 @@ class CalendarDay extends Equatable {
     );
   }
 
+  CalendarDay copyWithoutReason({
+    DateTime? date,
+    bool? isUserAttending,
+    List<CalendarUser>? users,
+    String? reason,
+  }) {
+    return CalendarDay(
+      date: date ?? this.date,
+      isUserAttending: isUserAttending ?? this.isUserAttending,
+      users: users ?? this.users,
+      reason: reason,
+    );
+  }
+
   @override
   List<Object> get props => [date, isUserAttending, users];
 }
