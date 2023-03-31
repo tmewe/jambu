@@ -3,6 +3,8 @@ abstract class Constants {
   static const String germanTimeZone = 'Europe/Berlin';
   static const String usersCollection = 'users';
   static const String attendancesCollection = 'attendances';
+  static const String presentField = 'present';
+  static const String absentField = 'absent';
 
   // TODO(tim): REMOVE
   static const String testCalendarId =
