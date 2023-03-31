@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'package:jambu/constants.dart';
+import 'package:jambu/extension/extension.dart';
 import 'package:jambu/model/model.dart';
 
 class FirestoreDatasource {
@@ -37,39 +38,47 @@ class FirestoreDatasource {
     required User user,
     String? reason,
   }) async {
-    final day = DateTime(date.year, date.month, date.day);
-    final formattedDate = DateFormat('yyyy-MM-dd').format(day);
+    final formattedDate = DateFormat('yyyy-MM-dd').format(date.midnight);
 
     final attendanceRef = _firestore
         .collection(Constants.attendancesCollection)
         .doc(formattedDate);
 
-    final entry = Entry(userId: user.id, reason: reason);
-    try {
-      // Try to update an existing attendance
-      // If there is none we continue in the catch block
-      final entryMap = entry.toMap();
-      final presentFieldValue = isAttending
-          ? FieldValue.arrayUnion([entryMap])
-          : FieldValue.arrayRemove([entryMap]);
+    await _firestore.runTransaction((transaction) async {
+      final snaphot = await transaction.get(attendanceRef);
 
-      final absensceFieldValue = isAttending
-          ? FieldValue.arrayRemove([entryMap])
-          : FieldValue.arrayUnion([entryMap]);
+      if (snaphot.exists) {
+        final attendance = Attendance.fromFirestore(snaphot);
 
-      await attendanceRef.update({
-        Constants.presentField: presentFieldValue,
-        Constants.absentField: absensceFieldValue
-      });
-    } catch (_) {
-      // No document found for the given date -> create a new one
-      final attendance = Attendance(
-        date: day,
-        present: isAttending ? [entry] : [],
-        absent: !isAttending ? [entry] : [],
-      );
-      await attendanceRef.set(attendance.toFirestore());
-    }
+        final present = isAttending
+            ? [
+                ...attendance.present.where((e) => e.userId != user.id),
+                Entry(userId: user.id, reason: reason),
+              ]
+            : attendance.present.where((element) => element.userId != user.id);
+
+        final absent = !isAttending
+            ? [
+                ...attendance.absent.where((e) => e.userId != user.id),
+                Entry(userId: user.id, reason: reason),
+              ]
+            : attendance.absent.where((element) => element.userId != user.id);
+
+        final updatedAttendance = attendance.copyWith(
+          present: present.toSet().toList(),
+          absent: absent.toSet().toList(),
+        );
+        transaction.update(attendanceRef, updatedAttendance.toFirestore());
+      } else {
+        final entry = Entry(userId: user.id, reason: reason);
+        final attendance = Attendance(
+          date: date.midnight,
+          present: isAttending ? [entry] : [],
+          absent: !isAttending ? [entry] : [],
+        );
+        transaction.set(attendanceRef, attendance.toFirestore());
+      }
+    });
   }
 
   Future<void> updateManualAbsences({
