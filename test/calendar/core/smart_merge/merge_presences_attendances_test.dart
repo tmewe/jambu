@@ -224,8 +224,33 @@ void main() {
           'and no absent entries '
           'when presence is true '
           'and attendances contains one absent entry '
-          'which isAttending is false at same date',
-          () {});
+          'which isAttending is false at same date', () {
+        // arrange
+        final presences = [
+          Presence(date: date, isPresent: true, reason: 'Termin'),
+        ];
+        final attendances = [
+          Attendance(date: date, absent: [Entry(userId: currentUser.id)]),
+        ];
+
+        final merge = MergePresencesAttendances(
+          presences: presences,
+          attendances: attendances,
+          currentUser: currentUser,
+        );
+
+        // act
+        final result = merge();
+
+        // assert
+        expect(result, hasLength(1));
+
+        final presentAttendance = result[0];
+
+        expect(presentAttendance, isNotNull);
+        expect(presentAttendance.present, hasLength(1));
+        expect(presentAttendance.absent, isEmpty);
+      });
     });
   });
 }
