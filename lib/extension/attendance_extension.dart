@@ -8,5 +8,5 @@ extension AttendanceAtDate on List<Attendance> {
       );
 
   List<Attendance> whereUserId(String id) =>
-      where((a) => a.userIds.contains(id)).toList();
+      where((a) => a.userIds.contains(Entry(userId: id))).toList();
 }

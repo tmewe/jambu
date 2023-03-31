@@ -8,11 +8,13 @@ class MockFirestoreRepository extends Mock implements FirestoreRepository {}
 
 void main() {
   late User user;
+  late List<Entry> present;
   late FirestoreRepository firestoreRepository;
   late DateTime date;
 
   setUp(() {
     user = const User(id: '0', name: 'Test User', email: 'test@gmail.de');
+    present = [Entry(userId: user.id)];
     firestoreRepository = MockFirestoreRepository();
     date = DateTime.parse('2023-03-20');
 
@@ -58,7 +60,7 @@ void main() {
       );
 
       final oldAttendances =
-          dates.map((d) => Attendance(date: d, userIds: [user.id])).toList();
+          dates.map((d) => Attendance(date: d, userIds: present)).toList();
 
       final upload = FirestoreUpload(
         currentUser: user,
@@ -91,7 +93,7 @@ void main() {
       );
 
       final newAttendances =
-          dates.map((d) => Attendance(date: d, userIds: [user.id])).toList();
+          dates.map((d) => Attendance(date: d, userIds: present)).toList();
 
       final upload = FirestoreUpload(
         currentUser: user,
@@ -138,14 +140,14 @@ void main() {
       );
 
       final oldAttendances =
-          oldDates.map((d) => Attendance(date: d, userIds: [user.id]));
+          oldDates.map((d) => Attendance(date: d, userIds: present));
 
       final sharedAttendances = sharedDates
-          .map((d) => Attendance(date: d, userIds: [user.id]))
+          .map((d) => Attendance(date: d, userIds: present))
           .toList();
 
       final updatedAttendances =
-          updatedDates.map((d) => Attendance(date: d, userIds: [user.id]));
+          updatedDates.map((d) => Attendance(date: d, userIds: present));
 
       final upload = FirestoreUpload(
         currentUser: user,

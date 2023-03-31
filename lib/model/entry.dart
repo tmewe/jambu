@@ -6,7 +6,7 @@ import 'package:meta/meta.dart';
 class Entry extends Equatable {
   const Entry({
     required this.userId,
-    required this.reason,
+    this.reason,
   });
 
   final String userId;

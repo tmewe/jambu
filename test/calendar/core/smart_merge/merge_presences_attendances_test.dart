@@ -22,7 +22,7 @@ void main() {
         'when presences are empty', () async {
       // arrange
       final attendances = [
-        Attendance(date: date, userIds: const ['1'])
+        Attendance.attending(date: date, userIds: const ['1'])
       ];
       final merge = MergePresencesAttendances(
         presences: [],
@@ -43,8 +43,8 @@ void main() {
         'that are at the same dates and in presence', () {
       // arrange
       final attendances = [
-        Attendance(date: date, userIds: const ['1']),
-        Attendance(
+        Attendance.attending(date: date, userIds: const ['1']),
+        Attendance.attending(
           date: date.add(const Duration(days: 1)),
           userIds: const ['2'],
         ),
@@ -62,8 +62,8 @@ void main() {
       );
 
       final expectedAttendances = [
-        Attendance(date: date, userIds: ['1', currentUser.id]),
-        Attendance(
+        Attendance.attending(date: date, userIds: ['1', currentUser.id]),
+        Attendance.attending(
           date: date.add(const Duration(days: 1)),
           userIds: ['2', currentUser.id],
         ),
@@ -112,8 +112,8 @@ void main() {
         'that are not at the same dates', () {
       // arrange
       final attendances = [
-        Attendance(date: date, userIds: [currentUser.id, '1']),
-        Attendance(
+        Attendance.attending(date: date, userIds: [currentUser.id, '1']),
+        Attendance.attending(
           date: date.add(const Duration(days: 1)),
           userIds: [currentUser.id, '2'],
         ),
@@ -132,11 +132,11 @@ void main() {
 
       final expectedAttendances = [
         ...attendances,
-        Attendance(
+        Attendance.attending(
           date: date.add(const Duration(days: 2)),
           userIds: [currentUser.id],
         ),
-        Attendance(
+        Attendance.attending(
           date: date.add(const Duration(days: 3)),
           userIds: [currentUser.id],
         ),

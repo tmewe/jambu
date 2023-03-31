@@ -67,8 +67,8 @@ void main() {
       final date1 = DateTime.parse('2023-03-20');
       final date2 = DateTime.parse('2023-03-21');
       final attendances = [
-        Attendance(date: date1, userIds: [testUsers[0].id]),
-        Attendance(date: date2, userIds: [testUsers[1].id]),
+        Attendance.attending(date: date1, userIds: [testUsers[0].id]),
+        Attendance.attending(date: date2, userIds: [testUsers[1].id]),
       ];
       final mapping = CalendarMapping(
         currentUser: user,
@@ -102,7 +102,7 @@ void main() {
       // arrange
       final attendances = List.generate(
         2,
-        (i) => Attendance(
+        (i) => Attendance.attending(
           date: date.add(Duration(days: i)),
           userIds: [user.id, '2', '3'],
         ),
@@ -151,7 +151,7 @@ void main() {
         final mapping = CalendarMapping(
           currentUser: user,
           attendances: [
-            Attendance(date: date, userIds: [colleagueId]),
+            Attendance.attending(date: date, userIds: [colleagueId]),
           ],
           users: testUsers,
           today: date,
@@ -171,7 +171,7 @@ void main() {
         final mapping = CalendarMapping(
           currentUser: user,
           attendances: [
-            Attendance(date: date, userIds: const ['2']),
+            Attendance.attending(date: date, userIds: const ['2']),
           ],
           users: testUsers,
           today: date,

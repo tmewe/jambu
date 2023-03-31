@@ -44,15 +44,18 @@ class FirestoreDatasource {
       // Try to update an existing attendance
       // If there is none we continue in the catch block
       final fieldValue = isAttending
-          ? FieldValue.arrayUnion([user.id])
-          : FieldValue.arrayRemove([user.id]);
+          ? FieldValue.arrayUnion([Entry(userId: user.id).toMap()])
+          : FieldValue.arrayRemove([Entry(userId: user.id).toMap()]);
       await attendanceRef.update({'users': fieldValue});
     } catch (_) {
       // No document found for the given date -> create a new one
       // if the user is attending
       if (!isAttending) return;
 
-      final attendance = Attendance(date: day, userIds: [user.id]);
+      final attendance = Attendance.attending(
+        date: day,
+        userIds: [user.id],
+      );
       await attendanceRef.set(attendance.toFirestore());
     }
   }

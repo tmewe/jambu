@@ -51,7 +51,13 @@ void main() {
 
 List<Attendance> get _attendances {
   return [
-    Attendance(date: DateTime.parse('2023-03-20'), userIds: const ['1']),
-    Attendance(date: DateTime.parse('2023-03-21'), userIds: const ['2']),
+    Attendance.attending(
+      date: DateTime.parse('2023-03-20'),
+      userIds: const ['1'],
+    ),
+    Attendance.attending(
+      date: DateTime.parse('2023-03-21'),
+      userIds: const ['2'],
+    ),
   ];
 }
