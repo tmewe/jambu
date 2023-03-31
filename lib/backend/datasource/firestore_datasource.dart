@@ -18,7 +18,10 @@ class FirestoreDatasource {
   }
 
   Future<void> updateUser(User user) async {
-    return _firestore.collection('users').doc(user.id).set(user.toFirestore());
+    return _firestore
+        .collection(Constants.usersCollection)
+        .doc(user.id)
+        .set(user.toFirestore());
   }
 
   Future<List<Attendance>> getAttendances() async {
@@ -46,7 +49,7 @@ class FirestoreDatasource {
       final fieldValue = isAttending
           ? FieldValue.arrayUnion([Entry(userId: user.id).toMap()])
           : FieldValue.arrayRemove([Entry(userId: user.id).toMap()]);
-      await attendanceRef.update({'users': fieldValue});
+      await attendanceRef.update({Constants.presentField: fieldValue});
     } catch (_) {
       // No document found for the given date -> create a new one
       // if the user is attending
