@@ -28,13 +28,19 @@ class CalendarMapping {
 
       for (final date in week.workingDays) {
         final attendance = attendances.getAtDate(date);
-        final isUserAttending = attendance.present.contains(
-          Entry(userId: currentUser.id),
+        final presentEntry = attendance.present.firstWhereOrNull(
+          (e) => e.userId == currentUser.id,
         );
+        final absentEntry = attendance.absent.firstWhereOrNull(
+          (e) => e.userId == currentUser.id,
+        );
+        final isUserAttending = presentEntry != null && absentEntry == null;
+        final reason = presentEntry?.reason ?? absentEntry?.reason;
         final day = CalendarDay(
           date: date,
           isUserAttending: isUserAttending,
           users: _colleaguesAtDay(attendance),
+          reason: reason,
         );
         days.add(day);
       }
