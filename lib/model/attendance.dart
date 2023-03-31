@@ -2,6 +2,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
+import 'package:jambu/model/entry.dart';
 
 @immutable
 class Attendance extends Equatable {
@@ -10,8 +11,13 @@ class Attendance extends Equatable {
     this.userIds = const [],
   });
 
+  Attendance.attending({
+    required this.date,
+    required List<String> userIds,
+  }) : userIds = userIds.map((e) => Entry(userId: e)).toList();
+
   final DateTime date;
-  final List<String> userIds;
+  final List<Entry> userIds;
 
   factory Attendance.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
@@ -19,7 +25,9 @@ class Attendance extends Equatable {
     final data = snapshot.data();
     return Attendance(
       date: (data?['date'] as Timestamp).toDate(),
-      userIds: List.from(data?['users'] as Iterable),
+      userIds: List<Map<String, dynamic>>.from(data?['users'] as Iterable)
+          .map(Entry.fromMap)
+          .toList(),
     );
   }
 
@@ -32,13 +40,13 @@ class Attendance extends Equatable {
   Map<String, dynamic> toFirestore() {
     return {
       'date': Timestamp.fromDate(date),
-      'users': userIds,
+      'users': userIds.map((e) => e.toMap()),
     };
   }
 
   Attendance copyWith({
     DateTime? date,
-    List<String>? userIds,
+    List<Entry>? userIds,
   }) {
     return Attendance(
       date: date ?? this.date,

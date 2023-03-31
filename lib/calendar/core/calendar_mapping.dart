@@ -28,7 +28,9 @@ class CalendarMapping {
 
       for (final date in week.workingDays) {
         final attendance = attendances.getAtDate(date);
-        final isUserAttending = attendance.userIds.contains(currentUser.id);
+        final isUserAttending = attendance.userIds.contains(
+          Entry(userId: currentUser.id),
+        );
         final day = CalendarDay(
           date: date,
           isUserAttending: isUserAttending,
@@ -44,8 +46,8 @@ class CalendarMapping {
   // Filters and maps the user ids at date to calendar users
   List<CalendarUser> _colleaguesAtDay(Attendance attendance) {
     return attendance.userIds
-        .where((uid) => uid != currentUser.id)
-        .map((uid) => users.firstWhereOrNull((u) => u.id == uid))
+        .where((uid) => uid.userId != currentUser.id)
+        .map((uid) => users.firstWhereOrNull((u) => u.id == uid.userId))
         .whereNotNull()
         .map(
           (colleague) => CalendarUser(

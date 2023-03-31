@@ -27,14 +27,20 @@ class MergePresencesAttendances {
         if (attendaceExists) {
           final attendance = resultAttendances.removeAt(index);
           final updatedAttendance = attendance.copyWith(
-            userIds: {...attendance.userIds, currentUser.id}.toList(),
+            userIds: {
+              ...attendance.userIds,
+              Entry(userId: currentUser.id),
+            }.toList(),
           );
           resultAttendances.add(updatedAttendance);
         }
         // Create new attendance
         else {
           resultAttendances.add(
-            Attendance(date: presence.date, userIds: [currentUser.id]),
+            Attendance.attending(
+              date: presence.date,
+              userIds: [currentUser.id],
+            ),
           );
         }
       }
@@ -42,9 +48,7 @@ class MergePresencesAttendances {
       else if (attendaceExists && !presence.isPresent) {
         final attendance = resultAttendances.removeAt(index);
         final filteredUsers = attendance.userIds
-            .where((e) {
-              return e != currentUser.id;
-            })
+            .where((e) => e.userId != currentUser.id)
             .toSet()
             .toList();
         // Only add the attendance is it contains users
