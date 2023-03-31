@@ -27,7 +27,7 @@ class OutlookUpload {
 
   Future<void> call() async {
     final uploadDate = _today.subtract(const Duration(hours: 1));
-    final userAttendances = _attendances.whereUserId(_currentUser.id);
+    final userAttendances = _attendances.wherePresentUserId(_currentUser.id);
 
     final officeEvents = _msEvents
         .where((event) => event.subject == Constants.officeEventSubject)

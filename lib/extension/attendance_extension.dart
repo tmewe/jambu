@@ -7,6 +7,7 @@ extension AttendanceAtDate on List<Attendance> {
         orElse: () => Attendance(date: date),
       );
 
-  List<Attendance> whereUserId(String id) =>
-      where((a) => a.present.contains(Entry(userId: id))).toList();
+  List<Attendance> wherePresentUserId(String id) => where(
+        (a) => a.present.contains(Entry(userId: id)),
+      ).toList();
 }
