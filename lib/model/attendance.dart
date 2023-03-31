@@ -1,3 +1,4 @@
+// ignore_for_file: sort_constructors_first
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
@@ -9,6 +10,9 @@ class Attendance extends Equatable {
     this.userIds = const [],
   });
 
+  final DateTime date;
+  final List<String> userIds;
+
   factory Attendance.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
   ) {
@@ -19,8 +23,11 @@ class Attendance extends Equatable {
     );
   }
 
-  final DateTime date;
-  final List<String> userIds;
+  @override
+  List<Object> get props => [date, userIds];
+
+  @override
+  String toString() => 'Attendance(date: $date, users: $userIds)';
 
   Map<String, dynamic> toFirestore() {
     return {
@@ -28,12 +35,6 @@ class Attendance extends Equatable {
       'users': userIds,
     };
   }
-
-  @override
-  String toString() => 'Attendance(date: $date, users: $userIds)';
-
-  @override
-  List<Object> get props => [date, userIds];
 
   Attendance copyWith({
     DateTime? date,
