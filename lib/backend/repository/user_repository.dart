@@ -2,7 +2,6 @@ import 'package:collection/collection.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fb_auth;
 import 'package:jambu/backend/datasource/datasource.dart';
 import 'package:jambu/model/model.dart';
-import 'package:jambu/ms_graph/model/model.dart';
 import 'package:jambu/repository/repository.dart';
 import 'package:rxdart/subjects.dart';
 
@@ -48,41 +47,35 @@ class UserRepository {
   /// Syncs the firebase auth user with the user from firestore
   Future<void> updateUserFromFirebase(fb_auth.User firebaseUser) async {
     final users = await _firestoreDatasource.getUsers();
-    final currentUser = users.firstWhere(
+    final currentUser = users.firstWhereOrNull(
       (user) => user.id == firebaseUser.uid,
-      orElse: () {
-        return User(
-          id: firebaseUser.uid,
-          name: firebaseUser.displayName ?? '-',
-          email: firebaseUser.email ?? '-',
-        );
-      },
     );
 
-    MSUser? msUser;
-    String? photoUrl;
-    // TODO(tim): Update user data only once a month or so
-    // Get user data from ms graph
-    msUser = await _msGraphRepository.me();
-    final msPhoto = await _msGraphRepository.profilePhoto();
-    if (msPhoto != null) {
-      photoUrl = await _photoStorageRepository.uploadPhotoData(
-        data: msPhoto,
-        userName: currentUser.name,
-      );
+    if (currentUser != null) {
+      _currentUserSubject.add(currentUser);
+      return;
     }
 
-    final updatedUser = currentUser.copyWith(
-      name: firebaseUser.displayName ?? '',
+    final msUser = await _msGraphRepository.me();
+    final name = firebaseUser.displayName;
+    final msPhoto = await _msGraphRepository.profilePhoto();
+
+    String? photoUrl;
+    if (msPhoto != null && name != null) {
+      photoUrl = await _photoStorageRepository.uploadPhotoData(
+        data: msPhoto,
+        userName: name,
+      );
+    }
+    final newUser = User(
+      id: firebaseUser.uid,
+      name: name ?? '-',
+      email: firebaseUser.email ?? '-',
       jobTitle: msUser?.jobTitle,
       imageUrl: photoUrl,
     );
 
-    await _updateUser(updatedUser);
-  }
-
-  Future<void> _updateUser(User user) async {
-    await _firestoreDatasource.updateUser(user);
-    _currentUserSubject.add(user);
+    await _firestoreDatasource.updateUser(newUser);
+    _currentUserSubject.add(newUser);
   }
 }
