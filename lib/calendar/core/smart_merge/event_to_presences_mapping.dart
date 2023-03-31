@@ -21,9 +21,13 @@ class EventToPresencesMapping {
     for (var i = 0; i < eventLength; i++) {
       final date = event.start.date.add(Duration(days: i));
       if (event.isWholeDayOOF) {
-        presences.add(Presence(date: date, isPresent: false));
+        presences.add(
+          Presence(date: date, isPresent: false, reason: event.subject),
+        );
       } else if (event.isPresenceWithMultipleAttendees) {
-        presences.add(Presence(date: date, isPresent: true));
+        presences.add(
+          Presence(date: date, isPresent: true, reason: event.subject),
+        );
       }
     }
     return presences;

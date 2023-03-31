@@ -7,10 +7,12 @@ class Presence extends Equatable {
   const Presence({
     required this.date,
     required this.isPresent,
+    this.reason,
   });
 
   final DateTime date;
   final bool isPresent;
+  final String? reason;
 
   @override
   List<Object> get props => [date, isPresent];

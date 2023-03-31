@@ -77,9 +77,9 @@ void main() {
     });
 
     test(
-        'returns zero attendandce '
-        'when there are two events and two presences '
-        'that are at the same dates and in presence', () {
+        'returns zero attendandces '
+        'when there are two attendances and two presences '
+        'that are at the same dates and not in presence', () {
       // arrange
       final attendances = [
         Attendance(
@@ -147,6 +147,85 @@ void main() {
 
       // assert
       expect(result, expectedAttendances);
+    });
+
+    group('Reasons', () {
+      test(
+          'returns attendance that contains reason '
+          'when presence contains reason', () {
+        // arrange
+        const presentReason = 'Office event';
+        const absentReason = 'OOF';
+        final presences = [
+          Presence(date: date, isPresent: true, reason: presentReason),
+          Presence(
+            date: date.add(const Duration(days: 1)),
+            isPresent: false,
+            reason: absentReason,
+          ),
+        ];
+
+        final merge = MergePresencesAttendances(
+          presences: presences,
+          attendances: [],
+          currentUser: currentUser,
+        );
+
+        // act
+        final result = merge();
+
+        // assert
+        expect(result, hasLength(2));
+
+        final presentAttendance = result[0].present[0];
+        final absentAttendance = result[1].absent[0];
+
+        expect(presentAttendance, isNotNull);
+        expect(absentAttendance, isNotNull);
+        expect(presentAttendance.reason, presentReason);
+        expect(absentAttendance.reason, absentReason);
+      });
+
+      test(
+          'returns attendance that contains one absent entry '
+          'and no present entries '
+          'when presence is false and contains reason '
+          'and attendances contains one present entry '
+          'which isAttending is true at same date', () {
+        // arrange
+        final presences = [
+          Presence(date: date, isPresent: false, reason: 'OOF'),
+        ];
+        final attendances = [
+          Attendance(date: date, present: [Entry(userId: currentUser.id)]),
+        ];
+
+        final merge = MergePresencesAttendances(
+          presences: presences,
+          attendances: attendances,
+          currentUser: currentUser,
+        );
+
+        // act
+        final result = merge();
+
+        // assert
+        expect(result, hasLength(1));
+
+        final absentAttendance = result[0];
+
+        expect(absentAttendance, isNotNull);
+        expect(absentAttendance.absent, hasLength(1));
+        expect(absentAttendance.present, isEmpty);
+      });
+
+      test(
+          'returns attendance that contains one present entry '
+          'and no absent entries '
+          'when presence is true '
+          'and attendances contains one absent entry '
+          'which isAttending is false at same date',
+          () {});
     });
   });
 }
