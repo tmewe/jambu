@@ -8,16 +8,16 @@ import 'package:jambu/model/entry.dart';
 class Attendance extends Equatable {
   const Attendance({
     required this.date,
-    this.userIds = const [],
+    this.present = const [],
   });
 
   Attendance.attending({
     required this.date,
     required List<String> userIds,
-  }) : userIds = userIds.map((e) => Entry(userId: e)).toList();
+  }) : present = userIds.map((e) => Entry(userId: e)).toList();
 
   final DateTime date;
-  final List<Entry> userIds;
+  final List<Entry> present;
 
   factory Attendance.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
@@ -25,32 +25,32 @@ class Attendance extends Equatable {
     final data = snapshot.data();
     return Attendance(
       date: (data?['date'] as Timestamp).toDate(),
-      userIds: List<Map<String, dynamic>>.from(data?['users'] as Iterable)
+      present: List<Map<String, dynamic>>.from(data?['users'] as Iterable)
           .map(Entry.fromMap)
           .toList(),
     );
   }
 
   @override
-  List<Object> get props => [date, userIds];
+  List<Object> get props => [date, present];
 
   @override
-  String toString() => 'Attendance(date: $date, users: $userIds)';
+  String toString() => 'Attendance(date: $date, users: $present)';
 
   Map<String, dynamic> toFirestore() {
     return {
       'date': Timestamp.fromDate(date),
-      'users': userIds.map((e) => e.toMap()),
+      'users': present.map((e) => e.toMap()),
     };
   }
 
   Attendance copyWith({
     DateTime? date,
-    List<Entry>? userIds,
+    List<Entry>? present,
   }) {
     return Attendance(
       date: date ?? this.date,
-      userIds: userIds ?? this.userIds,
+      present: present ?? this.present,
     );
   }
 }

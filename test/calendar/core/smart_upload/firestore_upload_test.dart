@@ -60,7 +60,7 @@ void main() {
       );
 
       final oldAttendances =
-          dates.map((d) => Attendance(date: d, userIds: present)).toList();
+          dates.map((d) => Attendance(date: d, present: present)).toList();
 
       final upload = FirestoreUpload(
         currentUser: user,
@@ -93,7 +93,7 @@ void main() {
       );
 
       final newAttendances =
-          dates.map((d) => Attendance(date: d, userIds: present)).toList();
+          dates.map((d) => Attendance(date: d, present: present)).toList();
 
       final upload = FirestoreUpload(
         currentUser: user,
@@ -140,14 +140,15 @@ void main() {
       );
 
       final oldAttendances =
-          oldDates.map((d) => Attendance(date: d, userIds: present));
+          oldDates.map((d) => Attendance(date: d, present: present));
 
       final sharedAttendances = sharedDates
-          .map((d) => Attendance(date: d, userIds: present))
+          .map((d) => Attendance(date: d, present: present))
           .toList();
 
-      final updatedAttendances =
-          updatedDates.map((d) => Attendance(date: d, userIds: present));
+      final updatedAttendances = updatedDates.map(
+        (d) => Attendance(date: d, present: present),
+      );
 
       final upload = FirestoreUpload(
         currentUser: user,
