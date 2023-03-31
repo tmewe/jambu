@@ -9,20 +9,17 @@ class SmartUpload {
   SmartUpload({
     required User currentUser,
     required List<MSEvent> msEvents,
-    required List<Attendance> oldAttendances,
     required List<Attendance> updatedAttendances,
     required MSGraphRepository msGraphRepository,
     required FirestoreRepository firestoreRepository,
   })  : _currentUser = currentUser,
         _msEvents = msEvents,
-        _oldAttendances = oldAttendances,
         _updatedAttendances = updatedAttendances,
         _msGraphRepository = msGraphRepository,
         _firestoreRepository = firestoreRepository;
 
   final User _currentUser;
   final List<MSEvent> _msEvents;
-  final List<Attendance> _oldAttendances;
   final List<Attendance> _updatedAttendances;
   final MSGraphRepository _msGraphRepository;
   final FirestoreRepository _firestoreRepository;
@@ -37,7 +34,6 @@ class SmartUpload {
 
     await FirestoreUpload(
       currentUser: _currentUser,
-      oldAttendances: _oldAttendances,
       updatedAttendances: _updatedAttendances,
       firestoreRepository: _firestoreRepository,
     )();

@@ -8,13 +8,11 @@ class MockFirestoreRepository extends Mock implements FirestoreRepository {}
 
 void main() {
   late User user;
-  late List<Entry> present;
   late FirestoreRepository firestoreRepository;
   late DateTime date;
 
   setUp(() {
     user = const User(id: '0', name: 'Test User', email: 'test@gmail.de');
-    present = [Entry(userId: user.id)];
     firestoreRepository = MockFirestoreRepository();
     date = DateTime.parse('2023-03-20');
 
@@ -29,11 +27,10 @@ void main() {
   group('FirestoreUpload', () {
     test(
         'No updates '
-        'when old and new attendances are empty', () async {
+        'when updated attendances are empty', () async {
       // arrange
       final upload = FirestoreUpload(
         currentUser: user,
-        oldAttendances: [],
         updatedAttendances: [],
         firestoreRepository: firestoreRepository,
       );
@@ -51,21 +48,15 @@ void main() {
     });
 
     test(
-        'Remove attendances '
-        'when new attendances is empty', () async {
+        'One attendance update '
+        'where isAttendig is false '
+        'when attendances contain attendance with an absent element', () async {
       // arrange
-      final dates = List.generate(
-        5,
-        (index) => date.add(Duration(days: index)),
-      );
-
-      final oldAttendances =
-          dates.map((d) => Attendance(date: d, present: present)).toList();
-
+      final absentEntry = Entry(userId: user.id);
+      final attendance = Attendance(date: date, absent: [absentEntry]);
       final upload = FirestoreUpload(
         currentUser: user,
-        oldAttendances: oldAttendances,
-        updatedAttendances: [],
+        updatedAttendances: [attendance],
         firestoreRepository: firestoreRepository,
       );
 
@@ -73,32 +64,25 @@ void main() {
       await upload();
 
       // assert
-      for (final date in dates) {
-        verify(
-          () => firestoreRepository.updateAttendanceAt(
-            date: date,
-            isAttending: false,
-          ),
-        );
-      }
+      verify(
+        () => firestoreRepository.updateAttendanceAt(
+          date: date,
+          isAttending: false,
+        ),
+      ).called(1);
     });
 
     test(
-        'Add attendances '
-        'when old attendances is empty', () async {
+        'One attendance update '
+        'where isAttendig is true '
+        'when attendances contain attendance with an present element',
+        () async {
       // arrange
-      final dates = List.generate(
-        5,
-        (index) => date.add(Duration(days: index)),
-      );
-
-      final newAttendances =
-          dates.map((d) => Attendance(date: d, present: present)).toList();
-
+      final presentEntry = Entry(userId: user.id);
+      final attendance = Attendance(date: date, present: [presentEntry]);
       final upload = FirestoreUpload(
         currentUser: user,
-        oldAttendances: [],
-        updatedAttendances: newAttendances,
+        updatedAttendances: [attendance],
         firestoreRepository: firestoreRepository,
       );
 
@@ -106,78 +90,12 @@ void main() {
       await upload();
 
       // assert
-      for (final date in dates) {
-        verify(
-          () => firestoreRepository.updateAttendanceAt(
-            date: date,
-            isAttending: true,
-          ),
-        );
-      }
-    });
-
-    test(
-        'Remove two attendances and add two attendances '
-        'when old attendances contains four items '
-        'and new attendances contains four items '
-        'and only two items are overlapping', () async {
-      // arrange
-      const sharedCount = 2;
-
-      final sharedDates = List.generate(
-        sharedCount,
-        (index) => date.add(Duration(days: index)),
-      );
-
-      final oldDates = List.generate(
-        2,
-        (index) => date.subtract(Duration(days: index + 1)),
-      );
-
-      final updatedDates = List.generate(
-        2,
-        (index) => date.add(Duration(days: index + sharedCount)),
-      );
-
-      final oldAttendances =
-          oldDates.map((d) => Attendance(date: d, present: present));
-
-      final sharedAttendances = sharedDates
-          .map((d) => Attendance(date: d, present: present))
-          .toList();
-
-      final updatedAttendances = updatedDates.map(
-        (d) => Attendance(date: d, present: present),
-      );
-
-      final upload = FirestoreUpload(
-        currentUser: user,
-        oldAttendances: [...oldAttendances, ...sharedAttendances],
-        updatedAttendances: [...sharedAttendances, ...updatedAttendances],
-        firestoreRepository: firestoreRepository,
-      );
-
-      // act
-      await upload();
-
-      // assert
-      for (final date in oldDates) {
-        verify(
-          () => firestoreRepository.updateAttendanceAt(
-            date: date,
-            isAttending: false,
-          ),
-        );
-      }
-
-      for (final date in updatedDates) {
-        verify(
-          () => firestoreRepository.updateAttendanceAt(
-            date: date,
-            isAttending: true,
-          ),
-        );
-      }
+      verify(
+        () => firestoreRepository.updateAttendanceAt(
+          date: date,
+          isAttending: true,
+        ),
+      ).called(1);
     });
   });
 }

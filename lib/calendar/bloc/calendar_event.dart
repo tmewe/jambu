@@ -13,10 +13,12 @@ class CalendarAttendanceUpdate extends CalendarEvent {
   const CalendarAttendanceUpdate({
     required this.date,
     required this.isAttending,
+    this.reason,
   });
 
   final DateTime date;
   final bool isAttending;
+  final String? reason;
 
   @override
   List<Object?> get props => [date, isAttending];

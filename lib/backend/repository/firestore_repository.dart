@@ -23,6 +23,7 @@ class FirestoreRepository {
   Future<void> updateAttendanceAt({
     required DateTime date,
     required bool isAttending,
+    String? reason,
   }) async {
     final currentUser = _userRepository.currentUser;
     if (currentUser == null) return;
@@ -31,6 +32,7 @@ class FirestoreRepository {
       date: date,
       isAttending: isAttending,
       user: currentUser,
+      reason: reason,
     );
   }
 

@@ -74,18 +74,21 @@ class CalendarRepository {
     required bool isAttending,
     required List<CalendarWeek> weeks,
     required CalendarFilter filter,
+    String? reason,
   }) {
     final day = weeks.dayAtDate(date);
     if (day == null) {
       return [];
     }
-    final updatedDay = day.copyWith(isUserAttending: isAttending);
+    // ignore: avoid_redundant_argument_values
+    final updatedDay = day.copyWith(isUserAttending: isAttending, reason: null);
     final updatedWeeks = weeks.updateDay(updatedDay);
 
     unawaited(
       _firestoreRepository.updateAttendanceAt(
         date: date,
         isAttending: isAttending,
+        reason: reason,
       ),
     );
 
