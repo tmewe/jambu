@@ -109,6 +109,7 @@ class _CalendarViewState extends State<CalendarView> {
                                     CalendarAttendanceUpdate(
                                       date: day.date.midnight,
                                       isAttending: value,
+                                      reason: day.reason,
                                     ),
                                   );
                             },

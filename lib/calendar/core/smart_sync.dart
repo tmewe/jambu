@@ -31,7 +31,6 @@ class SmartSync {
     await SmartUpload(
       currentUser: _currentUser,
       msEvents: msEvents,
-      oldAttendances: firestoreAttendances,
       updatedAttendances: updatedAttendances,
       msGraphRepository: _msGraphRepository,
       firestoreRepository: _firestoreRepository,

@@ -35,6 +35,7 @@ class FirestoreDatasource {
     required DateTime date,
     required bool isAttending,
     required User user,
+    String? reason,
   }) async {
     final day = DateTime(date.year, date.month, date.day);
     final formattedDate = DateFormat('yyyy-MM-dd').format(day);
@@ -43,21 +44,29 @@ class FirestoreDatasource {
         .collection(Constants.attendancesCollection)
         .doc(formattedDate);
 
+    final entry = Entry(userId: user.id, reason: reason);
     try {
       // Try to update an existing attendance
       // If there is none we continue in the catch block
-      final fieldValue = isAttending
-          ? FieldValue.arrayUnion([Entry(userId: user.id).toMap()])
-          : FieldValue.arrayRemove([Entry(userId: user.id).toMap()]);
-      await attendanceRef.update({Constants.presentField: fieldValue});
+      final entryMap = entry.toMap();
+      final presentFieldValue = isAttending
+          ? FieldValue.arrayUnion([entryMap])
+          : FieldValue.arrayRemove([entryMap]);
+
+      final absensceFieldValue = isAttending
+          ? FieldValue.arrayRemove([entryMap])
+          : FieldValue.arrayUnion([entryMap]);
+
+      await attendanceRef.update({
+        Constants.presentField: presentFieldValue,
+        Constants.absentField: absensceFieldValue
+      });
     } catch (_) {
       // No document found for the given date -> create a new one
-      // if the user is attending
-      if (!isAttending) return;
-
-      final attendance = Attendance.attending(
+      final attendance = Attendance(
         date: day,
-        userIds: [user.id],
+        present: isAttending ? [entry] : [],
+        absent: !isAttending ? [entry] : [],
       );
       await attendanceRef.set(attendance.toFirestore());
     }
