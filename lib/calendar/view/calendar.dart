@@ -150,6 +150,7 @@ class _CalendarDay extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        if (day.reason != null) Text(day.reason!),
         Switch(
           value: day.isUserAttending,
           onChanged: onChanged,
