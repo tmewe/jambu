@@ -32,7 +32,11 @@ class MergeRegularAttendances {
           // we don't want to change it because of an oof ms event
           if (presenceAtDate == null) {
             resultPresences.add(
-              Presence(date: date.midnight, isPresent: true),
+              Presence(
+                date: date.midnight,
+                isPresent: true,
+                reason: 'Regeltermin',
+              ),
             );
           }
         }
