@@ -57,7 +57,6 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
       isAttending: event.isAttending,
       weeks: state.unfilteredWeeks,
       filter: state.filter,
-      reason: event.reason,
     );
 
     final filteredWeeks = _calendarRepository.updateFilter(

@@ -97,5 +97,32 @@ void main() {
         ),
       ).called(1);
     });
+
+    test(
+        'Two attendance update '
+        'where one isAttendig is true and one isAttending is false '
+        'when attendances contain attendance with one present element '
+        'and one absent element',
+        () async {
+      // arrange
+      final presentEntry = Entry(userId: user.id);
+      final attendance = Attendance(date: date, present: [presentEntry]);
+      final upload = FirestoreUpload(
+        currentUser: user,
+        updatedAttendances: [attendance],
+        firestoreRepository: firestoreRepository,
+      );
+
+      // act
+      await upload();
+
+      // assert
+      verify(
+        () => firestoreRepository.updateAttendanceAt(
+          date: date,
+          isAttending: true,
+        ),
+      ).called(1);
+    });
   });
 }

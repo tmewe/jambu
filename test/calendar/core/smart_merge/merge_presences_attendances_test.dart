@@ -251,6 +251,39 @@ void main() {
         expect(presentAttendance.present, hasLength(1));
         expect(presentAttendance.absent, isEmpty);
       });
+
+      test(
+          'Removes reason '
+          'when presence at date has no reason', () {
+        // arrange
+        final presences = [
+          Presence(
+            date: date.add(const Duration(days: 1)),
+            isPresent: false,
+            reason: 'Urlaub',
+          ),
+        ];
+        final attendances = [
+          Attendance(
+            date: date,
+            absent: [Entry(userId: currentUser.id, reason: 'Urlaub')],
+          ),
+        ];
+
+        final merge = MergePresencesAttendances(
+          presences: presences,
+          attendances: attendances,
+          currentUser: currentUser,
+        );
+
+        // act
+        final result = merge();
+
+        // assert
+        expect(result, hasLength(2));
+        expect(result[0].absent[0].reason, isNull);
+        expect(result[1].absent[0].reason, 'Urlaub');
+      });
     });
   });
 }
