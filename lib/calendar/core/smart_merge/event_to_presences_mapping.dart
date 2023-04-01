@@ -12,10 +12,8 @@ class EventToPresencesMapping {
     // Get the duration of the event (could be multiple days)
     final eventDuration = event.end.date.difference(event.start.date).abs();
 
-    var eventLength = 1;
-    if (eventDuration.inHours > 24) {
-      eventLength = eventDuration.inDays + 1;
-    }
+    var eventLength = eventDuration.inHours / 24;
+    eventLength = eventLength < 1 ? 1 : eventLength;
 
     final presences = <Presence>[];
     for (var i = 0; i < eventLength; i++) {

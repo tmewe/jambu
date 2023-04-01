@@ -40,14 +40,14 @@ void main() {
     });
 
     test(
-        'returns five element where isPresent is false '
-        'when event oof for five days', () {
+        'returns two element where isPresent is false '
+        'when event oof for two days', () {
       // arrange
-      const duration = Duration(days: 4);
+      const duration = Duration(days: 2);
       final event = _oofEvent(date: date, duration: duration);
       final mapping = EventToPresencesMapping(event: event);
 
-      final expected = List.generate(5, (i) {
+      final expected = List.generate(2, (i) {
         return Presence(date: date.add(Duration(days: i)), isPresent: false);
       });
 
@@ -59,14 +59,14 @@ void main() {
     });
 
     test(
-        'returns five element where isPresent is true '
-        'when event presence for five days', () {
+        'returns two element where isPresent is true '
+        'when event presence for two days', () {
       // arrange
-      const duration = Duration(days: 4);
+      const duration = Duration(days: 2);
       final event = _presenceEvent(date: date, duration: duration);
       final mapping = EventToPresencesMapping(event: event);
 
-      final expected = List.generate(5, (i) {
+      final expected = List.generate(2, (i) {
         return Presence(date: date.add(Duration(days: i)), isPresent: true);
       });
 
@@ -97,7 +97,7 @@ MSEvent _oofEvent({
 
 MSEvent _presenceEvent({
   required DateTime date,
-  Duration duration = Duration.zero,
+  Duration duration = const Duration(hours: 1),
 }) {
   final startDate = MSDate(date: date, timeZone: '');
   final endDate = MSDate(date: date.add(duration), timeZone: '');
