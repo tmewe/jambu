@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jambu/calendar/model/model.dart';
+import 'package:jambu/calendar/widgets/tag_chip.dart';
 import 'package:jambu/calendar/widgets/widgets.dart';
 
 typedef CreateTagCallback = void Function(String, String);
@@ -43,7 +44,8 @@ class CalendarItem extends StatelessWidget {
             ),
             Wrap(
               crossAxisAlignment: WrapCrossAlignment.center,
-              spacing: 10,
+              spacing: 8,
+              runSpacing: 5,
               children: [
                 PopupMenuButton(
                   icon: const Icon(Icons.sell),
@@ -88,7 +90,7 @@ class CalendarItem extends StatelessWidget {
                     ];
                   },
                 ),
-                ...user.tags.map(Text.new),
+                ...user.tags.map((tag) => TagChip(name: tag, onRemove: () {})),
               ],
             )
           ],
