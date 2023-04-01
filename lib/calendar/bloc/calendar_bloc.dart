@@ -104,6 +104,9 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     final taggedUser = state.weeks.firstUserOrNull(event.userId);
     if (taggedUser != null && taggedUser.tags.contains(event.tagName)) return;
 
+    // Dont't do anything if tag name is empty
+    if (event.tagName.isEmpty) return;
+
     final weeks = await _calendarRepository.addTagToUser(
       weeks: state.unfilteredWeeks,
       tagName: event.tagName,
