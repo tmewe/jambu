@@ -41,7 +41,7 @@ class _CalendarViewState extends State<CalendarView> {
     return BlocBuilder<CalendarBloc, CalendarState>(
       builder: (context, state) {
         if (state.status != CalendarStatus.success) {
-          return const CircularProgressIndicator();
+          return const Center(child: CircularProgressIndicator());
         }
         return Align(
           child: Container(
@@ -103,6 +103,7 @@ class _CalendarViewState extends State<CalendarView> {
                             (day) {
                               return CalendarDayColumn(
                                 day: day,
+                                tags: state.tags,
                                 width: (constraints.maxWidth - 100) / 5,
                               );
                             },

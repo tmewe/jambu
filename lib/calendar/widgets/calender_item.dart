@@ -7,11 +7,13 @@ typedef CreateTagCallback = void Function(String, String);
 class CalendarItem extends StatelessWidget {
   const CalendarItem({
     required this.user,
+    required this.tags,
     required this.onCreate,
     super.key,
   });
 
   final CalendarUser user;
+  final List<String> tags;
   final CreateTagCallback onCreate;
 
   @override
@@ -42,6 +44,24 @@ class CalendarItem extends StatelessWidget {
               crossAxisAlignment: WrapCrossAlignment.center,
               spacing: 10,
               children: [
+                PopupMenuButton(
+                  icon: const Icon(Icons.sell),
+                  itemBuilder: (context) {
+                    return [
+                      ...tags.map(
+                        (tag) => PopupMenuItem(
+                          value: tag,
+                          child: Row(
+                            children: [
+                              const Icon(Icons.sell),
+                              Text(tag),
+                            ],
+                          ),
+                        ),
+                      )
+                    ];
+                  },
+                ),
                 IconButton(
                   onPressed: () {
                     showDialog<void>(

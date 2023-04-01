@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'calendar_bloc.dart';
 
 enum CalendarStatus { initial, loading, success, failure }
@@ -10,6 +9,7 @@ class CalendarState extends Equatable {
     this.unfilteredWeeks = const [],
     this.selectedWeek = 0,
     this.filter = const CalendarFilter(),
+    this.tags = const [],
   });
 
   final CalendarStatus status;
@@ -18,6 +18,7 @@ class CalendarState extends Equatable {
   final List<CalendarWeek> unfilteredWeeks;
   final int selectedWeek;
   final CalendarFilter filter;
+  final List<String> tags;
 
   @override
   List<Object> get props => [
@@ -26,6 +27,7 @@ class CalendarState extends Equatable {
         unfilteredWeeks,
         selectedWeek,
         filter,
+        tags,
       ];
 
   CalendarState copyWith({
@@ -34,6 +36,7 @@ class CalendarState extends Equatable {
     List<CalendarWeek>? unfilteredWeeks,
     int? selectedWeek,
     CalendarFilter? filter,
+    List<String>? tags,
   }) {
     return CalendarState(
       status: status ?? this.status,
@@ -41,6 +44,7 @@ class CalendarState extends Equatable {
       unfilteredWeeks: unfilteredWeeks ?? this.unfilteredWeeks,
       selectedWeek: selectedWeek ?? this.selectedWeek,
       filter: filter ?? this.filter,
+      tags: tags ?? this.tags,
     );
   }
 
