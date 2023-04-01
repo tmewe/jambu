@@ -46,8 +46,27 @@ class CalendarItem extends StatelessWidget {
               children: [
                 PopupMenuButton(
                   icon: const Icon(Icons.sell),
+                  onSelected: (value) {
+                    if (value == 'Erstellen') {
+                      showDialog<void>(
+                        context: context,
+                        builder: (context) => TagDialog(
+                          onSave: (name) => onCreate(name, user.id),
+                        ),
+                      );
+                    }
+                  },
                   itemBuilder: (context) {
                     return [
+                      PopupMenuItem(
+                        value: 'Erstellen',
+                        child: Row(
+                          children: const [
+                            Icon(Icons.add),
+                            Text('Erstellen'),
+                          ],
+                        ),
+                      ),
                       ...tags.map(
                         (tag) => PopupMenuItem(
                           value: tag,
