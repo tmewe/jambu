@@ -115,7 +115,7 @@ class _CalendarViewState extends State<CalendarView> {
                             },
                             icon: const Icon(Icons.arrow_back_ios),
                           ),
-                          ...state.weeks[state.selectedWeek].days.map(
+                          ...state.filteredWeeks[state.selectedWeek].days.map(
                             (day) {
                               return CalendarDayColumn(
                                 day: day,

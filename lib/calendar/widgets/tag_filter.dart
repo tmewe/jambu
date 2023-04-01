@@ -18,6 +18,7 @@ class TagFilter extends StatelessWidget {
   Widget build(BuildContext context) {
     return Wrap(
       spacing: 5,
+      runSpacing: 5,
       crossAxisAlignment: WrapCrossAlignment.center,
       children: [
         const Icon(Icons.sell),
