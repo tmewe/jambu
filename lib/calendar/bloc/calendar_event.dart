@@ -41,3 +41,13 @@ class CalendarFilterUpdate extends CalendarEvent {
   final String? searchText;
   final List<String> tags;
 }
+
+class CalendarAddTag extends CalendarEvent {
+  const CalendarAddTag({
+    required this.tagName,
+    required this.userId,
+  });
+
+  final String tagName;
+  final String userId;
+}

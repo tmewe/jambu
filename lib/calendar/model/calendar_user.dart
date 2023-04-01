@@ -21,4 +21,22 @@ class CalendarUser extends Equatable {
   List<Object> get props {
     return [id, name, isFavorite, tags];
   }
+
+  CalendarUser copyWith({
+    String? id,
+    String? name,
+    String? image,
+    String? jobTitle,
+    bool? isFavorite,
+    List<String>? tags,
+  }) {
+    return CalendarUser(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      image: image ?? this.image,
+      jobTitle: jobTitle ?? this.jobTitle,
+      isFavorite: isFavorite ?? this.isFavorite,
+      tags: tags ?? this.tags,
+    );
+  }
 }

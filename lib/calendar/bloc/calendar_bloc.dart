@@ -25,6 +25,7 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
             .switchMap(mapper);
       },
     );
+    on<CalendarAddTag>(_onCalendarAddTag);
   }
 
   final CalendarRepository _calendarRepository;
@@ -88,5 +89,23 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
       weeks: state.unfilteredWeeks,
     );
     emit(state.copyWith(weeks: filteredWeeks, filter: filter));
+  }
+
+  FutureOr<void> _onCalendarAddTag(
+    CalendarAddTag event,
+    Emitter<CalendarState> emit,
+  ) async {
+    final weeks = await _calendarRepository.createTag(
+      weeks: state.unfilteredWeeks,
+      tagName: event.tagName,
+      userId: event.userId,
+    );
+
+    final filteredWeeks = _calendarRepository.updateFilter(
+      filter: state.filter,
+      weeks: weeks,
+    );
+
+    emit(state.copyWith(unfilteredWeeks: weeks, weeks: filteredWeeks));
   }
 }

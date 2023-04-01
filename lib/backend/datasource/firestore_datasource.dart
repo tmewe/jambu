@@ -82,6 +82,20 @@ class FirestoreDatasource {
     await ref.update({'manualAbsences': fieldValue});
   }
 
+  Future<void> createTag({
+    required String name,
+    required String currentUserId,
+    required String tagUserId,
+  }) async {
+    final ref =
+        _firestore.collection(Constants.usersCollection).doc(currentUserId);
+    await ref.update({
+      Constants.tagsField: FieldValue.arrayUnion([
+        Tag(name: name, userIds: [tagUserId]).toMap()
+      ])
+    });
+  }
+
   Attendance _updateExistingAttendance({
     required Attendance attendance,
     required bool isAttending,
