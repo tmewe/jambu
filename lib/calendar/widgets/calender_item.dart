@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:jambu/calendar/model/model.dart';
 import 'package:jambu/calendar/widgets/widgets.dart';
 
@@ -60,11 +61,12 @@ class CalendarItem extends StatelessWidget {
                     return [
                       PopupMenuItem(
                         value: 'Erstellen',
-                        child: Row(
-                          children: const [
-                            Icon(Icons.add),
-                            Text('Erstellen'),
-                          ],
+                        child: TextField(
+                          autofocus: true,
+                          onSubmitted: (text) {
+                            onCreate(text, user.id);
+                            context.pop();
+                          },
                         ),
                       ),
                       ...tags.map(
@@ -72,7 +74,12 @@ class CalendarItem extends StatelessWidget {
                           value: tag,
                           child: Row(
                             children: [
-                              const Icon(Icons.sell),
+                              Icon(
+                                user.tags.contains(tag)
+                                    ? Icons.check_circle
+                                    : Icons.radio_button_unchecked,
+                              ),
+                              const SizedBox(width: 10),
                               Text(tag),
                             ],
                           ),
@@ -80,17 +87,6 @@ class CalendarItem extends StatelessWidget {
                       )
                     ];
                   },
-                ),
-                IconButton(
-                  onPressed: () {
-                    showDialog<void>(
-                      context: context,
-                      builder: (context) => TagDialog(
-                        onSave: (name) => onCreate(name, user.id),
-                      ),
-                    );
-                  },
-                  icon: const Icon(Icons.add),
                 ),
                 ...user.tags.map(Text.new),
               ],
