@@ -2,13 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:jambu/calendar/model/model.dart';
 import 'package:jambu/calendar/widgets/widgets.dart';
 
+typedef CreateTagCallback = void Function(String, String);
+
 class CalendarItem extends StatelessWidget {
   const CalendarItem({
     required this.user,
+    required this.onCreate,
     super.key,
   });
 
   final CalendarUser user;
+  final CreateTagCallback onCreate;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +23,7 @@ class CalendarItem extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -36,13 +40,14 @@ class CalendarItem extends StatelessWidget {
             ),
             Wrap(
               crossAxisAlignment: WrapCrossAlignment.center,
+              spacing: 10,
               children: [
                 IconButton(
                   onPressed: () {
                     showDialog<void>(
                       context: context,
                       builder: (context) => TagDialog(
-                        onSave: (name) {},
+                        onSave: (name) => onCreate(name, user.id),
                       ),
                     );
                   },

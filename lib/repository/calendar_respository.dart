@@ -56,6 +56,29 @@ class CalendarRepository {
     return [];
   }
 
+  Future<List<CalendarWeek>> createTag({
+    required String tagName,
+    required String userId,
+    required List<CalendarWeek> weeks,
+  }) async {
+    final currentUser = _userRepository.currentUser;
+    if (currentUser == null) return weeks;
+
+    unawaited(
+      _firestoreRepository.createTag(
+        name: tagName,
+        currentUserId: currentUser.id,
+        tagUserId: userId,
+      ),
+    );
+
+    return CalendarAddTags(
+      tagNames: [tagName],
+      userId: userId,
+      weeks: weeks,
+    )();
+  }
+
   Future<List<CalendarWeek>> addTag({
     required String tag,
     required String userId,

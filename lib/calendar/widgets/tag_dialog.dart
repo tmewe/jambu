@@ -30,7 +30,12 @@ class _TagDialogState extends State<TagDialog> {
           children: [
             const Text('Tag anlegen/bearbeiten'),
             TextField(
+              autofocus: true,
               controller: textController,
+              onSubmitted: (text) {
+                widget.onSave(text);
+                context.pop();
+              },
             ),
           ],
         ),

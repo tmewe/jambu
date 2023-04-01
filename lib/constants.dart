@@ -1,10 +1,16 @@
 abstract class Constants {
+  // Outlook
   static const String officeEventSubject = '💼 Im Büro';
   static const String germanTimeZone = 'Europe/Berlin';
+
+  // Collections
   static const String usersCollection = 'users';
   static const String attendancesCollection = 'attendances';
+
+  // Fields
   static const String presentField = 'present';
   static const String absentField = 'absent';
+  static const String tagsField = 'tags';
 
   // TODO(tim): REMOVE
   static const String testCalendarId =

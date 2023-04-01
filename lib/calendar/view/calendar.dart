@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 import 'package:jambu/app_ui/app_ui.dart';
 import 'package:jambu/calendar/bloc/calendar_bloc.dart';
-import 'package:jambu/calendar/model/model.dart';
 import 'package:jambu/calendar/widgets/widgets.dart';
-import 'package:jambu/extension/extension.dart';
 import 'package:jambu/repository/repository.dart';
 
 class Calendar extends StatelessWidget {
@@ -104,17 +101,8 @@ class _CalendarViewState extends State<CalendarView> {
                           ),
                           ...state.weeks[state.selectedWeek].days.map(
                             (day) {
-                              return _CalendarDay(
+                              return CalendarDayColumn(
                                 day: day,
-                                onChanged: (value) {
-                                  context.read<CalendarBloc>().add(
-                                        CalendarAttendanceUpdate(
-                                          date: day.date.midnight,
-                                          isAttending: value,
-                                          reason: day.reason,
-                                        ),
-                                      );
-                                },
                                 width: (constraints.maxWidth - 100) / 5,
                               );
                             },
@@ -139,37 +127,6 @@ class _CalendarViewState extends State<CalendarView> {
           ),
         );
       },
-    );
-  }
-}
-
-class _CalendarDay extends StatelessWidget {
-  const _CalendarDay({
-    required this.day,
-    required this.onChanged,
-    required this.width,
-  });
-
-  final CalendarDay day;
-  final ValueChanged<bool>? onChanged;
-  final double width;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: width,
-      child: Column(
-        children: [
-          if (day.reason != null) Text(day.reason!),
-          Switch(
-            value: day.isUserAttending,
-            onChanged: onChanged,
-          ),
-          Text(day.date.weekdayString),
-          Text(DateFormat('dd').format(day.date)),
-          ...day.users.map((user) => CalendarItem(user: user)),
-        ],
-      ),
     );
   }
 }
