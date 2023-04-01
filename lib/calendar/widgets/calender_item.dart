@@ -5,18 +5,21 @@ import 'package:jambu/calendar/widgets/tag_chip.dart';
 import 'package:jambu/calendar/widgets/widgets.dart';
 
 typedef CreateTagCallback = void Function(String, String);
+typedef RemoveTagCallback = void Function(String, String);
 
 class CalendarItem extends StatelessWidget {
   const CalendarItem({
     required this.user,
     required this.tags,
     required this.onCreate,
+    required this.onRemove,
     super.key,
   });
 
   final CalendarUser user;
   final List<String> tags;
   final CreateTagCallback onCreate;
+  final RemoveTagCallback onRemove;
 
   @override
   Widget build(BuildContext context) {
@@ -90,7 +93,12 @@ class CalendarItem extends StatelessWidget {
                     ];
                   },
                 ),
-                ...user.tags.map((tag) => TagChip(name: tag, onRemove: () {})),
+                ...user.tags.map(
+                  (tag) => TagChip(
+                    name: tag,
+                    onRemove: () => onRemove(tag, user.id),
+                  ),
+                ),
               ],
             )
           ],

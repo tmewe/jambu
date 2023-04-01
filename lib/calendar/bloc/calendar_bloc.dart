@@ -26,6 +26,7 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
       },
     );
     on<CalendarAddTag>(_onCalendarAddTag);
+    on<CalendarRemoveTag>(_onCalendarRemoveTag);
   }
 
   final CalendarRepository _calendarRepository;
@@ -115,6 +116,29 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
         unfilteredWeeks: weeks,
         weeks: filteredWeeks,
         tags: [...state.tags, event.tagName],
+      ),
+    );
+  }
+
+  FutureOr<void> _onCalendarRemoveTag(
+    CalendarRemoveTag event,
+    Emitter<CalendarState> emit,
+  ) async {
+    final weeks = await _calendarRepository.removeTagFromUser(
+      weeks: state.unfilteredWeeks,
+      tag: event.tagName,
+      userId: event.userId,
+    );
+
+    final filteredWeeks = _calendarRepository.updateFilter(
+      filter: state.filter,
+      weeks: weeks,
+    );
+
+    emit(
+      state.copyWith(
+        unfilteredWeeks: weeks,
+        weeks: filteredWeeks,
       ),
     );
   }
