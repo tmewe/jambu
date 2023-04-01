@@ -86,47 +86,52 @@ class _CalendarViewState extends State<CalendarView> {
                     },
                   ),
                   const SizedBox(height: 20),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      IconButton(
-                        onPressed: () {
-                          context.read<CalendarBloc>().add(
-                                CalendarGoToWeek(
-                                  weekNumber: state.selectedWeek - 1,
-                                ),
-                              );
-                        },
-                        icon: const Icon(Icons.arrow_back_ios),
-                      ),
-                      ...state.weeks[state.selectedWeek].days.map(
-                        (day) {
-                          return _CalendarDay(
-                            day: day,
-                            onChanged: (value) {
+                  LayoutBuilder(
+                    builder: (context, constraints) {
+                      return Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          IconButton(
+                            onPressed: () {
                               context.read<CalendarBloc>().add(
-                                    CalendarAttendanceUpdate(
-                                      date: day.date.midnight,
-                                      isAttending: value,
-                                      reason: day.reason,
+                                    CalendarGoToWeek(
+                                      weekNumber: state.selectedWeek - 1,
                                     ),
                                   );
                             },
-                          );
-                        },
-                      ),
-                      IconButton(
-                        onPressed: () {
-                          context.read<CalendarBloc>().add(
-                                CalendarGoToWeek(
-                                  weekNumber: state.selectedWeek + 1,
-                                ),
+                            icon: const Icon(Icons.arrow_back_ios),
+                          ),
+                          ...state.weeks[state.selectedWeek].days.map(
+                            (day) {
+                              return _CalendarDay(
+                                day: day,
+                                onChanged: (value) {
+                                  context.read<CalendarBloc>().add(
+                                        CalendarAttendanceUpdate(
+                                          date: day.date.midnight,
+                                          isAttending: value,
+                                          reason: day.reason,
+                                        ),
+                                      );
+                                },
+                                width: (constraints.maxWidth - 100) / 5,
                               );
-                        },
-                        icon: const Icon(Icons.arrow_forward_ios),
-                      ),
-                    ],
+                            },
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              context.read<CalendarBloc>().add(
+                                    CalendarGoToWeek(
+                                      weekNumber: state.selectedWeek + 1,
+                                    ),
+                                  );
+                            },
+                            icon: const Icon(Icons.arrow_forward_ios),
+                          ),
+                        ],
+                      );
+                    },
                   ),
                 ],
               ),
@@ -142,24 +147,29 @@ class _CalendarDay extends StatelessWidget {
   const _CalendarDay({
     required this.day,
     required this.onChanged,
+    required this.width,
   });
 
   final CalendarDay day;
   final ValueChanged<bool>? onChanged;
+  final double width;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        if (day.reason != null) Text(day.reason!),
-        Switch(
-          value: day.isUserAttending,
-          onChanged: onChanged,
-        ),
-        Text(day.date.weekdayString),
-        Text(DateFormat('dd').format(day.date)),
-        ...day.users.map((user) => CalendarItem(user: user)),
-      ],
+    return SizedBox(
+      width: width,
+      child: Column(
+        children: [
+          if (day.reason != null) Text(day.reason!),
+          Switch(
+            value: day.isUserAttending,
+            onChanged: onChanged,
+          ),
+          Text(day.date.weekdayString),
+          Text(DateFormat('dd').format(day.date)),
+          ...day.users.map((user) => CalendarItem(user: user)),
+        ],
+      ),
     );
   }
 }

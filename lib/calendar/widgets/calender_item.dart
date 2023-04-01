@@ -17,17 +17,29 @@ class CalendarItem extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: Column(
           children: [
-            CircleAvatar(
-              backgroundColor: Colors.black.withOpacity(0.2),
-              foregroundImage:
-                  user.image != null ? NetworkImage(user.image!) : null,
-              radius: 30,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CircleAvatar(
+                  backgroundColor: Colors.black.withOpacity(0.2),
+                  foregroundImage:
+                      user.image != null ? NetworkImage(user.image!) : null,
+                  radius: 30,
+                ),
+                const SizedBox(width: 10),
+                Text(user.name),
+              ],
             ),
-            const SizedBox(width: 10),
-            Text(user.name),
+            Wrap(
+              children: [
+                const Text('Das Tag'),
+                const Text('Das Tag'),
+                const Text('Das Tag'),
+                const Text('Das Tag'),
+              ],
+            )
           ],
         ),
       ),
