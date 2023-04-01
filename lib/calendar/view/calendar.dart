@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jambu/app_ui/app_ui.dart';
 import 'package:jambu/calendar/bloc/calendar_bloc.dart';
+import 'package:jambu/calendar/widgets/tag_filter.dart';
 import 'package:jambu/calendar/widgets/widgets.dart';
 import 'package:jambu/repository/repository.dart';
 
@@ -49,6 +50,7 @@ class _CalendarViewState extends State<CalendarView> {
             child: Padding(
               padding: const EdgeInsets.all(16),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
@@ -82,6 +84,8 @@ class _CalendarViewState extends State<CalendarView> {
                           .add(CalendarFilterUpdate(searchText: searchText));
                     },
                   ),
+                  const SizedBox(height: 10),
+                  TagFilter(tags: state.tags, selectedTags: const []),
                   const SizedBox(height: 20),
                   LayoutBuilder(
                     builder: (context, constraints) {
