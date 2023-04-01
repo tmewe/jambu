@@ -102,8 +102,7 @@ void main() {
         'Two attendance update '
         'where one isAttendig is true and one isAttending is false '
         'when attendances contain attendance with one present element '
-        'and one absent element',
-        () async {
+        'and one absent element', () async {
       // arrange
       final presentEntry = Entry(userId: user.id);
       final attendance = Attendance(date: date, present: [presentEntry]);
