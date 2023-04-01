@@ -50,24 +50,13 @@ class FirestoreDatasource {
       if (snaphot.exists) {
         final attendance = Attendance.fromFirestore(snaphot);
 
-        final present = isAttending
-            ? [
-                ...attendance.present.where((e) => e.userId != user.id),
-                Entry(userId: user.id, reason: reason),
-              ]
-            : attendance.present.where((element) => element.userId != user.id);
-
-        final absent = !isAttending
-            ? [
-                ...attendance.absent.where((e) => e.userId != user.id),
-                Entry(userId: user.id, reason: reason),
-              ]
-            : attendance.absent.where((element) => element.userId != user.id);
-
-        final updatedAttendance = attendance.copyWith(
-          present: present.toSet().toList(),
-          absent: absent.toSet().toList(),
+        final updatedAttendance = _updateExistingAttendance(
+          isAttending: isAttending,
+          attendance: attendance,
+          userId: user.id,
+          reason: reason,
         );
+
         transaction.update(attendanceRef, updatedAttendance.toFirestore());
       } else {
         final entry = Entry(userId: user.id, reason: reason);
@@ -91,5 +80,65 @@ class FirestoreDatasource {
         : FieldValue.arrayRemove([Timestamp.fromDate(date)]);
     final ref = _firestore.collection(Constants.usersCollection).doc(userId);
     await ref.update({'manualAbsences': fieldValue});
+  }
+
+  Attendance _updateExistingAttendance({
+    required Attendance attendance,
+    required bool isAttending,
+    required String userId,
+    String? reason,
+  }) {
+    final present = _updatePresent(
+      isAttending: isAttending,
+      attendance: attendance,
+      reason: reason,
+      userId: userId,
+    );
+
+    final absent = _updateAbsent(
+      isAttending: isAttending,
+      attendance: attendance,
+      reason: reason,
+      userId: userId,
+    );
+
+    final updatedAttendance = attendance.copyWith(
+      present: present.toSet().toList(),
+      absent: absent.toSet().toList(),
+    );
+
+    return updatedAttendance;
+  }
+
+  List<Entry> _updatePresent({
+    required bool isAttending,
+    required Attendance attendance,
+    required String userId,
+    String? reason,
+  }) {
+    if (isAttending) {
+      return [
+        ...attendance.present.where((a) => a.userId != userId),
+        Entry(userId: userId, reason: reason),
+      ];
+    } else {
+      return attendance.present.where((a) => a.userId != userId).toList();
+    }
+  }
+
+  List<Entry> _updateAbsent({
+    required bool isAttending,
+    required Attendance attendance,
+    required String userId,
+    String? reason,
+  }) {
+    if (!isAttending) {
+      return [
+        ...attendance.absent.where((a) => a.userId != userId),
+        Entry(userId: userId, reason: reason),
+      ];
+    } else {
+      return attendance.absent.where((a) => a.userId != userId).toList();
+    }
   }
 }
