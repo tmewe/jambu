@@ -32,13 +32,15 @@ class CalendarGoToWeek extends CalendarEvent {
   final int weekNumber;
 }
 
-class CalendarFilterUpdate extends CalendarEvent {
-  const CalendarFilterUpdate({
-    this.searchText = '',
-    this.tags = const [],
-  });
+class CalendarSearchTextUpdate extends CalendarEvent {
+  const CalendarSearchTextUpdate({this.searchText = ''});
 
-  final String? searchText;
+  final String searchText;
+}
+
+class CalendarTagFilterUpdate extends CalendarEvent {
+  const CalendarTagFilterUpdate({this.tags = const []});
+
   final List<String> tags;
 }
 

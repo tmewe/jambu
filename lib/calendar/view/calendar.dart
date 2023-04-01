@@ -79,13 +79,25 @@ class _CalendarViewState extends State<CalendarView> {
                     controller: searchTextController,
                     onChanged: (searchText) {
                       setState(() {});
-                      context
-                          .read<CalendarBloc>()
-                          .add(CalendarFilterUpdate(searchText: searchText));
+                      context.read<CalendarBloc>().add(
+                            CalendarSearchTextUpdate(searchText: searchText),
+                          );
                     },
                   ),
                   const SizedBox(height: 10),
-                  TagFilter(tags: state.tags, selectedTags: const []),
+                  TagFilter(
+                    tags: state.tags,
+                    selectedTags: state.filter.tags,
+                    onSelectTag: (tag, isSelected) {
+                      final tags = isSelected
+                          ? [...state.filter.tags, tag]
+                          : state.filter.tags.where((t) => t != tag).toList();
+
+                      context
+                          .read<CalendarBloc>()
+                          .add(CalendarTagFilterUpdate(tags: tags));
+                    },
+                  ),
                   const SizedBox(height: 20),
                   LayoutBuilder(
                     builder: (context, constraints) {

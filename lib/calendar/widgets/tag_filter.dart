@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 
+typedef ChipTapCallback = void Function(String, bool);
+
 class TagFilter extends StatelessWidget {
   const TagFilter({
     required this.tags,
     required this.selectedTags,
+    required this.onSelectTag,
     super.key,
   });
 
   final List<String> tags;
   final List<String> selectedTags;
+  final ChipTapCallback onSelectTag;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +24,8 @@ class TagFilter extends StatelessWidget {
         ...tags.map((tag) {
           return FilterChip(
             label: Text(tag),
-            onSelected: (_) {},
+            selected: selectedTags.contains(tag),
+            onSelected: (isSelected) => onSelectTag(tag, isSelected),
           );
         })
       ],
