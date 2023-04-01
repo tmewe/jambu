@@ -100,7 +100,11 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     CalendarAddTag event,
     Emitter<CalendarState> emit,
   ) async {
-    final weeks = await _calendarRepository.createTag(
+    // Don't do anything if user already got the tag
+    final taggedUser = state.weeks.firstUserOrNull(event.userId);
+    if (taggedUser != null && taggedUser.tags.contains(event.tagName)) return;
+
+    final weeks = await _calendarRepository.addTagToUser(
       weeks: state.unfilteredWeeks,
       tagName: event.tagName,
       userId: event.userId,
@@ -115,7 +119,7 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
       state.copyWith(
         unfilteredWeeks: weeks,
         weeks: filteredWeeks,
-        tags: [...state.tags, event.tagName],
+        tags: {...state.tags, event.tagName}.toList(),
       ),
     );
   }

@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:jambu/backend/backend.dart';
-import 'package:jambu/calendar/bloc/calendar_bloc.dart';
 import 'package:jambu/calendar/core/core.dart';
 import 'package:jambu/calendar/core/remove_tag.dart';
 import 'package:jambu/calendar/model/model.dart';
@@ -63,7 +62,7 @@ class CalendarRepository {
     return user != null ? user.tags.map((t) => t.name).toList() : [];
   }
 
-  Future<List<CalendarWeek>> createTag({
+  Future<List<CalendarWeek>> addTagToUser({
     required String tagName,
     required String userId,
     required List<CalendarWeek> weeks,
@@ -72,7 +71,7 @@ class CalendarRepository {
     if (currentUser == null) return weeks;
 
     unawaited(
-      _firestoreRepository.createTag(
+      _firestoreRepository.addTagToUser(
         name: tagName,
         currentUserId: currentUser.id,
         tagUserId: userId,

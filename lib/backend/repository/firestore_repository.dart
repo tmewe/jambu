@@ -58,12 +58,12 @@ class FirestoreRepository {
     );
   }
 
-  Future<void> createTag({
+  Future<void> addTagToUser({
     required String name,
     required String currentUserId,
     required String tagUserId,
   }) async {
-    return _firestoreDatasource.createTag(
+    return _firestoreDatasource.addTagToUser(
       name: name,
       currentUserId: currentUserId,
       tagUserId: tagUserId,

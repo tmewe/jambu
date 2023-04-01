@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jambu/calendar/model/model.dart';
 import 'package:jambu/calendar/widgets/tag_chip.dart';
-import 'package:jambu/calendar/widgets/widgets.dart';
 
 typedef CreateTagCallback = void Function(String, String);
 typedef RemoveTagCallback = void Function(String, String);
@@ -52,20 +51,13 @@ class CalendarItem extends StatelessWidget {
               children: [
                 PopupMenuButton(
                   icon: const Icon(Icons.sell),
-                  onSelected: (value) {
-                    if (value == 'Erstellen') {
-                      showDialog<void>(
-                        context: context,
-                        builder: (context) => TagDialog(
-                          onSave: (name) => onCreate(name, user.id),
-                        ),
-                      );
-                    }
+                  onSelected: (String? value) {
+                    if (value == null) return;
+                    onCreate(value, user.id);
                   },
                   itemBuilder: (context) {
                     return [
-                      PopupMenuItem(
-                        value: 'Erstellen',
+                      PopupMenuItem<String?>(
                         child: TextField(
                           autofocus: true,
                           onSubmitted: (text) {
