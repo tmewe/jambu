@@ -9,11 +9,13 @@ import 'package:jambu/extension/datetime_extension.dart';
 class CalendarDayColumn extends StatelessWidget {
   const CalendarDayColumn({
     required this.day,
+    required this.tags,
     required this.width,
     super.key,
   });
 
   final CalendarDay day;
+  final List<String> tags;
   final double width;
 
   @override
@@ -40,6 +42,7 @@ class CalendarDayColumn extends StatelessWidget {
           ...day.users.map(
             (user) => CalendarItem(
               user: user,
+              tags: tags,
               onCreate: (tag, userId) {
                 context.read<CalendarBloc>().add(
                       CalendarAddTag(

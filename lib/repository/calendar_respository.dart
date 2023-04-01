@@ -56,6 +56,11 @@ class CalendarRepository {
     return [];
   }
 
+  Future<List<String>> fetchTags() async {
+    final user = _userRepository.currentUser;
+    return user != null ? user.tags.map((t) => t.name).toList() : [];
+  }
+
   Future<List<CalendarWeek>> createTag({
     required String tagName,
     required String userId,

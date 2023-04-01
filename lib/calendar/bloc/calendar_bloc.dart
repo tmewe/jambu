@@ -35,7 +35,10 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     Emitter<CalendarState> emit,
   ) async {
     emit(state.copyWith(status: CalendarStatus.loading));
+
     final weeks = await _calendarRepository.fetchCalendar(filter: state.filter);
+    final tags = await _calendarRepository.fetchTags();
+
     final filteredWeeks = _calendarRepository.updateFilter(
       filter: state.filter,
       weeks: weeks,
@@ -45,6 +48,7 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
         status: CalendarStatus.success,
         weeks: filteredWeeks,
         unfilteredWeeks: weeks,
+        tags: tags,
       ),
     );
   }
@@ -106,6 +110,12 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
       weeks: weeks,
     );
 
-    emit(state.copyWith(unfilteredWeeks: weeks, weeks: filteredWeeks));
+    emit(
+      state.copyWith(
+        unfilteredWeeks: weeks,
+        weeks: filteredWeeks,
+        tags: [...state.tags, event.tagName],
+      ),
+    );
   }
 }
