@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:collection/collection.dart';
 import 'package:intl/intl.dart';
 import 'package:jambu/constants.dart';
 import 'package:jambu/extension/extension.dart';
@@ -93,6 +94,29 @@ class FirestoreDatasource {
       Constants.tagsField: FieldValue.arrayUnion([
         Tag(name: name, userIds: [tagUserId]).toMap()
       ])
+    });
+  }
+
+  Future<void> removeTagFromUser({
+    required String name,
+    required String currentUserId,
+    required String tagUserId,
+  }) async {
+    final userRef =
+        _firestore.collection(Constants.usersCollection).doc(currentUserId);
+
+    await _firestore.runTransaction((transaction) async {
+      final snapshot = await transaction.get(userRef);
+      final user = User.fromFirestore(snapshot);
+      final tag = user.tags.firstWhereOrNull((tag) => tag.name == name);
+      if (tag == null || !user.tags.remove(tag)) return;
+
+      final updatedTag = tag.copyWith(
+        userIds: tag.userIds.where((id) => id != tagUserId).toList(),
+      );
+
+      final updatedUser = user.copyWith(tags: [...user.tags, updatedTag]);
+      transaction.set(userRef, updatedUser.toFirestore());
     });
   }
 

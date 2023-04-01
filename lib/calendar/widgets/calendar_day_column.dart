@@ -51,6 +51,14 @@ class CalendarDayColumn extends StatelessWidget {
                       ),
                     );
               },
+              onRemove: (tag, userId) {
+                context.read<CalendarBloc>().add(
+                      CalendarRemoveTag(
+                        tagName: tag,
+                        userId: user.id,
+                      ),
+                    );
+              },
             ),
           ),
         ],

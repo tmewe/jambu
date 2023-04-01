@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:jambu/backend/backend.dart';
+import 'package:jambu/calendar/bloc/calendar_bloc.dart';
 import 'package:jambu/calendar/core/core.dart';
+import 'package:jambu/calendar/core/remove_tag.dart';
 import 'package:jambu/calendar/model/model.dart';
 import 'package:jambu/repository/repository.dart';
 
@@ -91,10 +93,27 @@ class CalendarRepository {
     return [];
   }
 
-  Future<List<CalendarWeek>> removeTag({
+  Future<List<CalendarWeek>> removeTagFromUser({
     required String tag,
+    required String userId,
+    required List<CalendarWeek> weeks,
   }) async {
-    return [];
+    final currentUser = _userRepository.currentUser;
+    if (currentUser == null) return weeks;
+
+    unawaited(
+      _firestoreRepository.removeTagFromUser(
+        name: tag,
+        currentUserId: currentUser.id,
+        tagUserId: userId,
+      ),
+    );
+
+    return RemoveTag(
+      tag: tag,
+      userId: userId,
+      weeks: weeks,
+    )();
   }
 
   List<CalendarWeek> updateAttendanceAt({
