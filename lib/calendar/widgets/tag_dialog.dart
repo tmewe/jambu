@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+typedef StringCallback = void Function(String);
+
 class TagDialog extends StatefulWidget {
-  const TagDialog({super.key});
+  const TagDialog({
+    required this.onSave,
+    super.key,
+  });
+
+  final StringCallback onSave;
 
   @override
   State<TagDialog> createState() => _TagDialogState();
@@ -34,7 +41,10 @@ class _TagDialogState extends State<TagDialog> {
           child: const Text('Abbrechen'),
         ),
         TextButton(
-          onPressed: () {},
+          onPressed: () {
+            widget.onSave(textController.text);
+            context.pop();
+          },
           child: const Text('Speichern'),
         ),
       ],

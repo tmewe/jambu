@@ -41,7 +41,9 @@ class CalendarItem extends StatelessWidget {
                   onPressed: () {
                     showDialog<void>(
                       context: context,
-                      builder: (context) => const TagDialog(),
+                      builder: (context) => TagDialog(
+                        onSave: (name) {},
+                      ),
                     );
                   },
                   icon: const Icon(Icons.add),
