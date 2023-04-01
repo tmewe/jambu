@@ -49,42 +49,45 @@ class CalendarItem extends StatelessWidget {
               spacing: 8,
               runSpacing: 5,
               children: [
-                PopupMenuButton(
-                  icon: const Icon(Icons.sell),
-                  onSelected: (String? value) {
-                    if (value == null) return;
-                    onCreate(value, user.id);
-                  },
-                  itemBuilder: (context) {
-                    return [
-                      PopupMenuItem<String?>(
-                        child: TextField(
-                          autofocus: true,
-                          onSubmitted: (String text) {
-                            if (text.isEmpty) return;
-                            onCreate(text, user.id);
-                            context.pop();
-                          },
-                        ),
-                      ),
-                      ...tags.map(
-                        (tag) => PopupMenuItem(
-                          value: tag,
-                          child: Row(
-                            children: [
-                              Icon(
-                                user.tags.contains(tag)
-                                    ? Icons.check_circle
-                                    : Icons.radio_button_unchecked,
-                              ),
-                              const SizedBox(width: 10),
-                              Text(tag),
-                            ],
+                SizedBox(
+                  width: 25,
+                  height: 25,
+                  child: PopupMenuButton(
+                    icon: const Icon(Icons.sell),
+                    iconSize: 20,
+                    padding: const EdgeInsets.all(3.5),
+                    tooltip: 'Tag hinzufügen',
+                    onSelected: (String? value) {
+                      if (value == null) return;
+                      onCreate(value, user.id);
+                    },
+                    itemBuilder: (context) {
+                      return [
+                        PopupMenuItem<String?>(
+                          child: TextField(
+                            autofocus: true,
+                            onSubmitted: (String text) {
+                              if (text.isEmpty) return;
+                              onCreate(text, user.id);
+                              context.pop();
+                            },
                           ),
                         ),
-                      )
-                    ];
-                  },
+                        ...tags.where((t) => !user.tags.contains(t)).map(
+                              (tag) => PopupMenuItem(
+                                value: tag,
+                                child: Row(
+                                  children: [
+                                    const Icon(Icons.sell_outlined),
+                                    const SizedBox(width: 10),
+                                    Text(tag),
+                                  ],
+                                ),
+                              ),
+                            )
+                      ];
+                    },
+                  ),
                 ),
                 ...user.tags.map(
                   (tag) => TagChip(
