@@ -60,7 +60,8 @@ class CalendarItem extends StatelessWidget {
                       PopupMenuItem<String?>(
                         child: TextField(
                           autofocus: true,
-                          onSubmitted: (text) {
+                          onSubmitted: (String text) {
+                            if (text.isEmpty) return;
                             onCreate(text, user.id);
                             context.pop();
                           },
