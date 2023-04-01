@@ -41,15 +41,14 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     final weeks = await _calendarRepository.fetchCalendar(filter: state.filter);
     final tags = await _calendarRepository.fetchTags();
 
-    final filteredWeeks = _calendarRepository.updateFilter(
-      filter: state.filter,
-      weeks: weeks,
-    );
+    // final filteredWeeks = _calendarRepository.updateFilter(
+    //   filter: state.filter,
+    //   weeks: weeks,
+    // );
     emit(
       state.copyWith(
         status: CalendarStatus.success,
-        weeks: filteredWeeks,
-        unfilteredWeeks: weeks,
+        weeks: weeks,
         tags: tags,
       ),
     );
@@ -62,16 +61,11 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     final weeks = _calendarRepository.updateAttendanceAt(
       date: event.date,
       isAttending: event.isAttending,
-      weeks: state.unfilteredWeeks,
+      weeks: state.weeks,
       filter: state.filter,
     );
 
-    final filteredWeeks = _calendarRepository.updateFilter(
-      filter: state.filter,
-      weeks: weeks,
-    );
-
-    emit(state.copyWith(weeks: filteredWeeks, unfilteredWeeks: weeks));
+    emit(state.copyWith(weeks: weeks));
   }
 
   FutureOr<void> _onCalendarGoToWeek(
@@ -91,12 +85,7 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
       tags: state.filter.tags,
     );
 
-    final filteredWeeks = _calendarRepository.updateFilter(
-      filter: filter,
-      weeks: state.unfilteredWeeks,
-    );
-
-    emit(state.copyWith(weeks: filteredWeeks));
+    emit(state.copyWith(filter: filter));
   }
 
   FutureOr<void> _onCalendarTagFilterUpdate(
@@ -108,12 +97,7 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
       tags: event.tags,
     );
 
-    final filteredWeeks = _calendarRepository.updateFilter(
-      filter: filter,
-      weeks: state.unfilteredWeeks,
-    );
-
-    emit(state.copyWith(weeks: filteredWeeks, filter: filter));
+    emit(state.copyWith(filter: filter));
   }
 
   FutureOr<void> _onCalendarAddTag(
@@ -128,20 +112,14 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     if (event.tagName.isEmpty) return;
 
     final weeks = await _calendarRepository.addTagToUser(
-      weeks: state.unfilteredWeeks,
+      weeks: state.weeks,
       tagName: event.tagName,
       userId: event.userId,
     );
 
-    final filteredWeeks = _calendarRepository.updateFilter(
-      filter: state.filter,
-      weeks: weeks,
-    );
-
     emit(
       state.copyWith(
-        unfilteredWeeks: weeks,
-        weeks: filteredWeeks,
+        weeks: weeks,
         tags: {...state.tags, event.tagName}.toList(),
       ),
     );
@@ -152,20 +130,14 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     Emitter<CalendarState> emit,
   ) async {
     final weeks = await _calendarRepository.removeTagFromUser(
-      weeks: state.unfilteredWeeks,
+      weeks: state.weeks,
       tag: event.tagName,
       userId: event.userId,
     );
 
-    final filteredWeeks = _calendarRepository.updateFilter(
-      filter: state.filter,
-      weeks: weeks,
-    );
-
     emit(
       state.copyWith(
-        unfilteredWeeks: weeks,
-        weeks: filteredWeeks,
+        weeks: weeks,
       ),
     );
   }
