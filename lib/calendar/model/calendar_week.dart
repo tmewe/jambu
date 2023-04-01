@@ -1,6 +1,7 @@
+import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:jambu/calendar/model/calendar_day.dart';
+import 'package:jambu/calendar/model/model.dart';
 
 class CalendarWeek extends Equatable {
   const CalendarWeek({
@@ -93,5 +94,19 @@ extension DayAtDate on List<CalendarWeek> {
     } catch (_) {
       return null;
     }
+  }
+}
+
+extension FindUser on List<CalendarWeek> {
+  // Returns the day on a given day in a list of weeks or null
+  CalendarUser? firstUserOrNull(String userId) {
+    CalendarUser? user;
+    for (final week in this) {
+      for (final day in week.days) {
+        final foundUser = day.users.firstWhereOrNull((e) => e.id == userId);
+        if (foundUser != null) return foundUser;
+      }
+    }
+    return user;
   }
 }

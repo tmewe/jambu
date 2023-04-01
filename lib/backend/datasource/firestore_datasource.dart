@@ -83,17 +83,33 @@ class FirestoreDatasource {
     await ref.update({'manualAbsences': fieldValue});
   }
 
-  Future<void> createTag({
+  Future<void> addTagToUser({
     required String name,
     required String currentUserId,
     required String tagUserId,
   }) async {
-    final ref =
+    final userRef =
         _firestore.collection(Constants.usersCollection).doc(currentUserId);
-    await ref.update({
-      Constants.tagsField: FieldValue.arrayUnion([
-        Tag(name: name, userIds: [tagUserId]).toMap()
-      ])
+
+    await _firestore.runTransaction((transaction) async {
+      final snapshot = await transaction.get(userRef);
+      final user = User.fromFirestore(snapshot);
+      final existingTag = user.tags.firstWhereOrNull((tag) => tag.name == name);
+      Tag? tag;
+
+      // Tag doesn't exist -> create new tag
+      if (existingTag == null || !user.tags.remove(existingTag)) {
+        tag = Tag(name: name, userIds: [tagUserId]);
+      }
+      // Tag exists -> Add user id to tag
+      else {
+        tag = existingTag.copyWith(
+          userIds: [...existingTag.userIds, tagUserId],
+        );
+      }
+
+      final updatedUser = user.copyWith(tags: [...user.tags, tag]);
+      transaction.set(userRef, updatedUser.toFirestore());
     });
   }
 
