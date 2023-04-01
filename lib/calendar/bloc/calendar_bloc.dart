@@ -17,14 +17,15 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     on<CalendarRequested>(_onCalendarRequested);
     on<CalendarAttendanceUpdate>(_onCalenderAttendanceUpdate);
     on<CalendarGoToWeek>(_onCalendarGoToWeek);
-    on<CalendarFilterUpdate>(
-      _onCalendarFilterUpdate,
+    on<CalendarSearchTextUpdate>(
+      _onCalendarSearchTextUpdate,
       transformer: (events, mapper) {
         return events
             .debounceTime(const Duration(milliseconds: 500))
             .switchMap(mapper);
       },
     );
+    on<CalendarTagFilterUpdate>(_onCalendarTagFilterUpdate);
     on<CalendarAddTag>(_onCalendarAddTag);
     on<CalendarRemoveTag>(_onCalendarRemoveTag);
   }
@@ -81,18 +82,37 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     emit(state.copyWith(selectedWeek: event.weekNumber));
   }
 
-  FutureOr<void> _onCalendarFilterUpdate(
-    CalendarFilterUpdate event,
+  FutureOr<void> _onCalendarSearchTextUpdate(
+    CalendarSearchTextUpdate event,
     Emitter<CalendarState> emit,
-  ) async {
+  ) {
     final filter = CalendarFilter(
-      search: event.searchText ?? '',
-      tags: event.tags,
+      search: event.searchText,
+      tags: state.filter.tags,
     );
+
     final filteredWeeks = _calendarRepository.updateFilter(
       filter: filter,
       weeks: state.unfilteredWeeks,
     );
+
+    emit(state.copyWith(weeks: filteredWeeks));
+  }
+
+  FutureOr<void> _onCalendarTagFilterUpdate(
+    CalendarTagFilterUpdate event,
+    Emitter<CalendarState> emit,
+  ) {
+    final filter = CalendarFilter(
+      search: state.filter.search,
+      tags: event.tags,
+    );
+
+    final filteredWeeks = _calendarRepository.updateFilter(
+      filter: filter,
+      weeks: state.unfilteredWeeks,
+    );
+
     emit(state.copyWith(weeks: filteredWeeks, filter: filter));
   }
 
