@@ -1,5 +1,4 @@
 import 'package:jambu/calendar/model/model.dart';
-import 'package:jambu/model/model.dart';
 
 class UpdateTagName {
   const UpdateTagName({

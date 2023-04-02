@@ -1,7 +1,7 @@
 import 'package:jambu/calendar/model/model.dart';
 
-class CalendarAddTags {
-  const CalendarAddTags({
+class AddTags {
+  const AddTags({
     required this.tagNames,
     required this.userId,
     required this.weeks,

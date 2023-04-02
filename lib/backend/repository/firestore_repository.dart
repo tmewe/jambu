@@ -59,24 +59,24 @@ class FirestoreRepository {
   }
 
   Future<void> addTagToUser({
-    required String name,
+    required String tagName,
     required String currentUserId,
     required String tagUserId,
   }) async {
     return _firestoreDatasource.addTagToUser(
-      tagName: name,
+      tagName: tagName,
       currentUserId: currentUserId,
       tagUserId: tagUserId,
     );
   }
 
   Future<void> removeTagFromUser({
-    required String name,
+    required String tagName,
     required String currentUserId,
     required String tagUserId,
   }) async {
     return _firestoreDatasource.removeTagFromUser(
-      tagName: name,
+      tagName: tagName,
       currentUserId: currentUserId,
       tagUserId: tagUserId,
     );
