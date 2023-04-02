@@ -65,8 +65,8 @@ class _CalendarViewState extends State<CalendarView> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 10),
                       SearchBar(
+                        padding: const EdgeInsets.symmetric(vertical: 5),
                         controller: _searchTextController,
                         onChanged: (searchText) {
                           setState(() {});
@@ -77,22 +77,23 @@ class _CalendarViewState extends State<CalendarView> {
                               );
                         },
                       ),
-                      const SizedBox(height: 10),
-                      TagFilter(
-                        tags: state.sortedTags,
-                        selectedTags: state.filter.tags,
-                        onSelectTag: (tag, isSelected) {
-                          final tags = isSelected
-                              ? [...state.filter.tags, tag]
-                              : state.filter.tags
-                                  .where((t) => t != tag)
-                                  .toList();
+                      if (state.tags.isNotEmpty)
+                        TagFilter(
+                          padding: const EdgeInsets.symmetric(vertical: 5),
+                          tags: state.sortedTags,
+                          selectedTags: state.filter.tags,
+                          onSelectTag: (tag, isSelected) {
+                            final tags = isSelected
+                                ? [...state.filter.tags, tag]
+                                : state.filter.tags
+                                    .where((t) => t != tag)
+                                    .toList();
 
-                          context
-                              .read<CalendarBloc>()
-                              .add(CalendarTagFilterUpdate(tags: tags));
-                        },
-                      ),
+                            context
+                                .read<CalendarBloc>()
+                                .add(CalendarTagFilterUpdate(tags: tags));
+                          },
+                        ),
                       const SizedBox(height: 20),
                       LayoutBuilder(
                         builder: (context, constraints) {
