@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+
 import 'package:jambu/calendar/core/core.dart';
 import 'package:jambu/calendar/model/model.dart';
 
@@ -16,5 +17,15 @@ class CalendarFilter extends Equatable {
 
   List<CalendarWeek> applyAll(List<CalendarWeek> weeks) {
     return CalendarFiltering(filter: this, weeks: weeks)();
+  }
+
+  CalendarFilter copyWith({
+    String? search,
+    List<String>? tags,
+  }) {
+    return CalendarFilter(
+      search: search ?? this.search,
+      tags: tags ?? this.tags,
+    );
   }
 }

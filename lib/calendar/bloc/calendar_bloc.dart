@@ -28,6 +28,7 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     on<CalendarTagFilterUpdate>(_onCalendarTagFilterUpdate);
     on<CalendarAddTag>(_onCalendarAddTag);
     on<CalendarRemoveTag>(_onCalendarRemoveTag);
+    on<CalendarUpdateTagName>(_onCalendarUpdateTagName);
   }
 
   final CalendarRepository _calendarRepository;
@@ -41,10 +42,6 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     final weeks = await _calendarRepository.fetchCalendar(filter: state.filter);
     final tags = await _calendarRepository.fetchTags();
 
-    // final filteredWeeks = _calendarRepository.updateFilter(
-    //   filter: state.filter,
-    //   weeks: weeks,
-    // );
     emit(
       state.copyWith(
         status: CalendarStatus.success,
@@ -80,10 +77,7 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     CalendarSearchTextUpdate event,
     Emitter<CalendarState> emit,
   ) {
-    final filter = CalendarFilter(
-      search: event.searchText,
-      tags: state.filter.tags,
-    );
+    final filter = state.filter.copyWith(search: event.searchText);
 
     emit(state.copyWith(filter: filter));
   }
@@ -92,10 +86,7 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     CalendarTagFilterUpdate event,
     Emitter<CalendarState> emit,
   ) {
-    final filter = CalendarFilter(
-      search: state.filter.search,
-      tags: event.tags,
-    );
+    final filter = state.filter.copyWith(tags: event.tags);
 
     emit(state.copyWith(filter: filter));
   }
@@ -135,9 +126,34 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
       userId: event.userId,
     );
 
+    emit(state.copyWith(weeks: weeks));
+  }
+
+  FutureOr<void> _onCalendarUpdateTagName(
+    CalendarUpdateTagName event,
+    Emitter<CalendarState> emit,
+  ) async {
+    final oldTagName = event.tagName;
+    final newTagName = event.newTagName;
+
+    final weeks = await _calendarRepository.updateTagName(
+      weeks: state.weeks,
+      tagName: oldTagName,
+      newTagName: newTagName,
+    );
+
+    var filter = state.filter;
+    if (filter.tags.contains(oldTagName)) {
+      filter = filter.copyWith(
+        tags: [...filter.tags.where((tag) => tag != oldTagName), newTagName],
+      );
+    }
+
     emit(
       state.copyWith(
         weeks: weeks,
+        tags: [...state.tags.where((tag) => tag != oldTagName), newTagName],
+        filter: filter,
       ),
     );
   }

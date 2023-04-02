@@ -63,3 +63,13 @@ class CalendarRemoveTag extends CalendarEvent {
   final String tagName;
   final String userId;
 }
+
+class CalendarUpdateTagName extends CalendarEvent {
+  const CalendarUpdateTagName({
+    required this.tagName,
+    required this.newTagName,
+  });
+
+  final String tagName;
+  final String newTagName;
+}

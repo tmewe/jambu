@@ -85,13 +85,6 @@ class CalendarRepository {
     )();
   }
 
-  Future<List<CalendarWeek>> addTag({
-    required String tag,
-    required String userId,
-  }) async {
-    return [];
-  }
-
   Future<List<CalendarWeek>> removeTagFromUser({
     required String tag,
     required String userId,
@@ -111,6 +104,25 @@ class CalendarRepository {
     return RemoveTag(
       tag: tag,
       userId: userId,
+      weeks: weeks,
+    )();
+  }
+
+  Future<List<CalendarWeek>> updateTagName({
+    required String tagName,
+    required String newTagName,
+    required List<CalendarWeek> weeks,
+  }) async {
+    unawaited(
+      _firestoreRepository.updateTagName(
+        tagName: tagName,
+        newTagName: newTagName,
+      ),
+    );
+
+    return UpdateTagName(
+      tagName: tagName,
+      newTagName: newTagName,
       weeks: weeks,
     )();
   }

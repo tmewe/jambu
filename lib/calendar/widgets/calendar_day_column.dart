@@ -43,7 +43,7 @@ class CalendarDayColumn extends StatelessWidget {
             (user) => CalendarItem(
               user: user,
               tags: tags,
-              onCreate: (tag, userId) {
+              onCreateTag: (tag, userId) {
                 context.read<CalendarBloc>().add(
                       CalendarAddTag(
                         tagName: tag,
@@ -51,11 +51,19 @@ class CalendarDayColumn extends StatelessWidget {
                       ),
                     );
               },
-              onRemove: (tag, userId) {
+              onRemoveTag: (tag, userId) {
                 context.read<CalendarBloc>().add(
                       CalendarRemoveTag(
                         tagName: tag,
                         userId: user.id,
+                      ),
+                    );
+              },
+              onUpdateTagName: (oldName, newName) {
+                context.read<CalendarBloc>().add(
+                      CalendarUpdateTagName(
+                        tagName: oldName,
+                        newTagName: newName,
                       ),
                     );
               },
