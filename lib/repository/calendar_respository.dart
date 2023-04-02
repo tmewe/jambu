@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:jambu/backend/backend.dart';
 import 'package:jambu/calendar/core/core.dart';
-import 'package:jambu/calendar/core/remove_tag.dart';
 import 'package:jambu/calendar/model/model.dart';
 import 'package:jambu/repository/repository.dart';
 
@@ -72,13 +71,13 @@ class CalendarRepository {
 
     unawaited(
       _firestoreRepository.addTagToUser(
-        name: tagName,
+        tagName: tagName,
         currentUserId: currentUser.id,
         tagUserId: userId,
       ),
     );
 
-    return CalendarAddTags(
+    return AddTags(
       tagNames: [tagName],
       userId: userId,
       weeks: weeks,
@@ -95,7 +94,7 @@ class CalendarRepository {
 
     unawaited(
       _firestoreRepository.removeTagFromUser(
-        name: tag,
+        tagName: tag,
         currentUserId: currentUser.id,
         tagUserId: userId,
       ),

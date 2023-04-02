@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:jambu/calendar/model/model.dart';
 import 'package:jambu/calendar/widgets/tag_chip.dart';
 
-typedef CreateTagCallback = void Function(String, String);
+typedef AddTagCallback = void Function(String, String);
 typedef RemoveTagCallback = void Function(String, String);
 typedef UpdateTagNameCallback = void Function(String, String);
 
@@ -11,7 +11,7 @@ class CalendarItem extends StatelessWidget {
   const CalendarItem({
     required this.user,
     required this.tags,
-    required this.onCreateTag,
+    required this.onAddTag,
     required this.onRemoveTag,
     required this.onUpdateTagName,
     super.key,
@@ -19,7 +19,7 @@ class CalendarItem extends StatelessWidget {
 
   final CalendarUser user;
   final List<String> tags;
-  final CreateTagCallback onCreateTag;
+  final AddTagCallback onAddTag;
   final RemoveTagCallback onRemoveTag;
   final UpdateTagNameCallback onUpdateTagName;
 
@@ -50,7 +50,7 @@ class CalendarItem extends StatelessWidget {
             _TagsSection(
               user: user,
               tags: tags,
-              onCreateTag: onCreateTag,
+              onAddTag: onAddTag,
               onRemoveTag: onRemoveTag,
               onUpdateTagName: onUpdateTagName,
             ),
@@ -65,14 +65,14 @@ class _TagsSection extends StatelessWidget {
   const _TagsSection({
     required this.user,
     required this.tags,
-    required this.onCreateTag,
+    required this.onAddTag,
     required this.onRemoveTag,
     required this.onUpdateTagName,
   });
 
   final CalendarUser user;
   final List<String> tags;
-  final CreateTagCallback onCreateTag;
+  final AddTagCallback onAddTag;
   final RemoveTagCallback onRemoveTag;
   final UpdateTagNameCallback onUpdateTagName;
 
@@ -104,7 +104,7 @@ class _TagsSection extends StatelessWidget {
         _TagButton(
           user: user,
           tags: tags,
-          onCreateTag: onCreateTag,
+          onAddTag: onAddTag,
           onRemoveTag: onRemoveTag,
         ),
       ],
@@ -116,13 +116,13 @@ class _TagButton extends StatelessWidget {
   const _TagButton({
     required this.user,
     required this.tags,
-    required this.onCreateTag,
+    required this.onAddTag,
     required this.onRemoveTag,
   });
 
   final CalendarUser user;
   final List<String> tags;
-  final CreateTagCallback onCreateTag;
+  final AddTagCallback onAddTag;
   final RemoveTagCallback onRemoveTag;
 
   @override
@@ -137,7 +137,7 @@ class _TagButton extends StatelessWidget {
         tooltip: 'Tag hinzufügen',
         onSelected: (String? value) {
           if (value == null || value.isEmpty) return;
-          onCreateTag(value, user.id);
+          onAddTag(value, user.id);
         },
         itemBuilder: (context) {
           return [
@@ -146,7 +146,7 @@ class _TagButton extends StatelessWidget {
                 autofocus: true,
                 onSubmitted: (String text) {
                   if (text.isEmpty) return;
-                  onCreateTag(text, user.id);
+                  onAddTag(text, user.id);
                   context.pop();
                 },
               ),

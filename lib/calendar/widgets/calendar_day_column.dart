@@ -43,7 +43,7 @@ class CalendarDayColumn extends StatelessWidget {
             (user) => CalendarItem(
               user: user,
               tags: tags,
-              onCreateTag: (tag, userId) {
+              onAddTag: (tag, userId) {
                 context.read<CalendarBloc>().add(
                       CalendarAddTag(
                         tagName: tag,
