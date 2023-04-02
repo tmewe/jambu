@@ -15,11 +15,12 @@ class CalendarView extends StatefulWidget {
 }
 
 class _CalendarViewState extends State<CalendarView> {
-  final searchTextController = TextEditingController();
+  final _searchTextController = TextEditingController();
+  int _selectedWeek = 0;
 
   @override
   void dispose() {
-    searchTextController.dispose();
+    _searchTextController.dispose();
     super.dispose();
   }
 
@@ -66,7 +67,7 @@ class _CalendarViewState extends State<CalendarView> {
                       ),
                       const SizedBox(height: 10),
                       SearchBar(
-                        controller: searchTextController,
+                        controller: _searchTextController,
                         onChanged: (searchText) {
                           setState(() {});
                           context.read<CalendarBloc>().add(
@@ -100,17 +101,12 @@ class _CalendarViewState extends State<CalendarView> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               IconButton(
-                                onPressed: () {
-                                  context.read<CalendarBloc>().add(
-                                        CalendarGoToWeek(
-                                          weekNumber: state.selectedWeek - 1,
-                                        ),
-                                      );
-                                },
+                                onPressed: _selectedWeek > 0
+                                    ? () => setState(() => _selectedWeek--)
+                                    : null,
                                 icon: const Icon(Icons.arrow_back_ios),
                               ),
-                              ...state.filteredWeeks[state.selectedWeek].days
-                                  .map(
+                              ...state.filteredWeeks[_selectedWeek].days.map(
                                 (day) {
                                   return CalendarDayColumn(
                                     day: day,
@@ -120,13 +116,10 @@ class _CalendarViewState extends State<CalendarView> {
                                 },
                               ),
                               IconButton(
-                                onPressed: () {
-                                  context.read<CalendarBloc>().add(
-                                        CalendarGoToWeek(
-                                          weekNumber: state.selectedWeek + 1,
-                                        ),
-                                      );
-                                },
+                                onPressed:
+                                    _selectedWeek < state.weeks.length - 1
+                                        ? () => setState(() => _selectedWeek++)
+                                        : null,
                                 icon: const Icon(Icons.arrow_forward_ios),
                               ),
                             ],
