@@ -19,6 +19,11 @@ class CalendarState extends Equatable {
 
   List<CalendarWeek> get filteredWeeks => filter.applyAll(weeks);
 
+  List<String> get sortedTags {
+    tags.sort();
+    return tags;
+  }
+
   @override
   List<Object> get props => [
         status,

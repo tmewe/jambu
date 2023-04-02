@@ -89,7 +89,7 @@ class _CalendarViewState extends State<CalendarView> {
                     ),
                     const SizedBox(height: 10),
                     TagFilter(
-                      tags: state.tags,
+                      tags: state.sortedTags,
                       selectedTags: state.filter.tags,
                       onSelectTag: (tag, isSelected) {
                         final tags = isSelected
@@ -122,7 +122,7 @@ class _CalendarViewState extends State<CalendarView> {
                               (day) {
                                 return CalendarDayColumn(
                                   day: day,
-                                  tags: state.tags,
+                                  tags: state.sortedTags,
                                   width: (constraints.maxWidth - 100) / 5,
                                 );
                               },
