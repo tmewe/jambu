@@ -62,7 +62,13 @@ class _TagChipState extends State<TagChip> {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(widget.name),
+            Flexible(
+              child: Text(
+                widget.name,
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
             const SizedBox(width: 3),
             Tooltip(
               message: 'Entfernen',
