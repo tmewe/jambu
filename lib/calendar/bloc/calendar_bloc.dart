@@ -16,7 +16,6 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
         super(const CalendarState()) {
     on<CalendarRequested>(_onCalendarRequested);
     on<CalendarAttendanceUpdate>(_onCalenderAttendanceUpdate);
-    on<CalendarGoToWeek>(_onCalendarGoToWeek);
     on<CalendarSearchTextUpdate>(
       _onCalendarSearchTextUpdate,
       transformer: (events, mapper) {
@@ -63,14 +62,6 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     );
 
     emit(state.copyWith(weeks: weeks));
-  }
-
-  FutureOr<void> _onCalendarGoToWeek(
-    CalendarGoToWeek event,
-    Emitter<CalendarState> emit,
-  ) async {
-    if (event.weekNumber < 0 || event.weekNumber > 3) return;
-    emit(state.copyWith(selectedWeek: event.weekNumber));
   }
 
   FutureOr<void> _onCalendarSearchTextUpdate(

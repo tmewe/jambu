@@ -24,14 +24,6 @@ class CalendarAttendanceUpdate extends CalendarEvent {
   List<Object?> get props => [date, isAttending];
 }
 
-class CalendarGoToWeek extends CalendarEvent {
-  const CalendarGoToWeek({
-    required this.weekNumber,
-  });
-
-  final int weekNumber;
-}
-
 class CalendarSearchTextUpdate extends CalendarEvent {
   const CalendarSearchTextUpdate({this.searchText = ''});
 
