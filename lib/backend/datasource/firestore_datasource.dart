@@ -84,7 +84,7 @@ class FirestoreDatasource {
   }
 
   Future<void> addTagToUser({
-    required String name,
+    required String tagName,
     required String currentUserId,
     required String tagUserId,
   }) async {
@@ -94,12 +94,14 @@ class FirestoreDatasource {
     await _firestore.runTransaction((transaction) async {
       final snapshot = await transaction.get(userRef);
       final user = User.fromFirestore(snapshot);
-      final existingTag = user.tags.firstWhereOrNull((tag) => tag.name == name);
+      final existingTag = user.tags.firstWhereOrNull(
+        (tag) => tag.name == tagName,
+      );
       Tag? tag;
 
       // Tag doesn't exist -> create new tag
       if (existingTag == null || !user.tags.remove(existingTag)) {
-        tag = Tag(name: name, userIds: [tagUserId]);
+        tag = Tag(name: tagName, userIds: [tagUserId]);
       }
       // Tag exists -> Add user id to tag
       else {
@@ -114,7 +116,7 @@ class FirestoreDatasource {
   }
 
   Future<void> removeTagFromUser({
-    required String name,
+    required String tagName,
     required String currentUserId,
     required String tagUserId,
   }) async {
@@ -124,13 +126,37 @@ class FirestoreDatasource {
     await _firestore.runTransaction((transaction) async {
       final snapshot = await transaction.get(userRef);
       final user = User.fromFirestore(snapshot);
-      final tag = user.tags.firstWhereOrNull((tag) => tag.name == name);
-      if (tag == null || !user.tags.remove(tag)) return;
+      final existingTag = user.tags.firstWhereOrNull(
+        (tag) => tag.name == tagName,
+      );
+      if (existingTag == null || !user.tags.remove(existingTag)) return;
 
-      final updatedTag = tag.copyWith(
-        userIds: tag.userIds.where((id) => id != tagUserId).toList(),
+      final updatedTag = existingTag.copyWith(
+        userIds: existingTag.userIds.where((id) => id != tagUserId).toList(),
       );
 
+      final updatedUser = user.copyWith(tags: [...user.tags, updatedTag]);
+      transaction.set(userRef, updatedUser.toFirestore());
+    });
+  }
+
+  Future<void> updateTagName({
+    required String tagName,
+    required String newTagName,
+    required String userId,
+  }) async {
+    final userRef =
+        _firestore.collection(Constants.usersCollection).doc(userId);
+
+    await _firestore.runTransaction((transaction) async {
+      final snapshot = await transaction.get(userRef);
+      final user = User.fromFirestore(snapshot);
+      final existingTag = user.tags.firstWhereOrNull(
+        (tag) => tag.name == tagName,
+      );
+      if (existingTag == null || !user.tags.remove(existingTag)) return;
+
+      final updatedTag = existingTag.copyWith(name: newTagName);
       final updatedUser = user.copyWith(tags: [...user.tags, updatedTag]);
       transaction.set(userRef, updatedUser.toFirestore());
     });

@@ -64,7 +64,7 @@ class FirestoreRepository {
     required String tagUserId,
   }) async {
     return _firestoreDatasource.addTagToUser(
-      name: name,
+      tagName: name,
       currentUserId: currentUserId,
       tagUserId: tagUserId,
     );
@@ -76,9 +76,22 @@ class FirestoreRepository {
     required String tagUserId,
   }) async {
     return _firestoreDatasource.removeTagFromUser(
-      name: name,
+      tagName: name,
       currentUserId: currentUserId,
       tagUserId: tagUserId,
+    );
+  }
+
+  Future<void> updateTagName({
+    required String tagName,
+    required String newTagName,
+  }) async {
+    final user = _userRepository.currentUser;
+    if (user == null) return;
+    return _firestoreDatasource.updateTagName(
+      tagName: tagName,
+      newTagName: newTagName,
+      userId: user.id,
     );
   }
 }
