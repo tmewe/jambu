@@ -11,6 +11,7 @@ abstract class Constants {
   static const String presentField = 'present';
   static const String absentField = 'absent';
   static const String tagsField = 'tags';
+  static const String favoritesField = 'favorites';
 
   // TODO(tim): REMOVE
   static const String testCalendarId =

@@ -162,6 +162,28 @@ class FirestoreDatasource {
     });
   }
 
+  Future<void> addFavorite({
+    required String currentUserId,
+    required String favoriteUserId,
+  }) async {
+    final userRef =
+        _firestore.collection(Constants.usersCollection).doc(currentUserId);
+    await userRef.update({
+      Constants.favoritesField: FieldValue.arrayUnion([favoriteUserId])
+    });
+  }
+
+  Future<void> removeFavorite({
+    required String currentUserId,
+    required String favoriteUserId,
+  }) async {
+    final userRef =
+        _firestore.collection(Constants.usersCollection).doc(currentUserId);
+    await userRef.update({
+      Constants.favoritesField: FieldValue.arrayRemove([favoriteUserId])
+    });
+  }
+
   Attendance _updateExistingAttendance({
     required Attendance attendance,
     required bool isAttending,
