@@ -8,16 +8,17 @@ import 'package:jambu/backend/backend.dart';
 import 'package:jambu/calendar/calendar.dart';
 import 'package:jambu/login/login.dart';
 import 'package:jambu/logout/logout.dart';
+import 'package:jambu/model/model.dart';
 import 'package:jambu/onboarding/onboarding.dart';
 import 'package:jambu/playground/playground.dart';
 
 GoRouter getRouter({
-  required Stream<AuthenticationState> authStateStream,
+  required Stream<User?> userStream,
 }) {
   return GoRouter(
     initialLocation: '/',
     debugLogDiagnostics: true,
-    refreshListenable: GoRouterRefreshStream(authStateStream),
+    refreshListenable: GoRouterRefreshStream(userStream),
     redirect: _redirect,
     routes: [
       GoRoute(
@@ -63,6 +64,8 @@ String? _redirect(BuildContext context, GoRouterState state) {
   if (!isLoggedIn && !isLoggingIn) {
     return '/login';
   } else if (isLoggedIn && isLoggingIn) {
+    return '/';
+  } else if (isLoggedIn) {
     return user.onboardingCompleted ? '/' : '/onboarding';
   }
   return null;

@@ -184,6 +184,12 @@ class FirestoreDatasource {
     });
   }
 
+  Future<void> completeOnboarding({required String userId}) async {
+    final userRef =
+        _firestore.collection(Constants.usersCollection).doc(userId);
+    await userRef.update({Constants.onboardingCompletedField: true});
+  }
+
   Attendance _updateExistingAttendance({
     required Attendance attendance,
     required bool isAttending,

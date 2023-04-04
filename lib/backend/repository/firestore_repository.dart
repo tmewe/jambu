@@ -113,4 +113,11 @@ class FirestoreRepository {
       );
     }
   }
+
+  Future<void> completeOnboarding() async {
+    final user = _userRepository.currentUser;
+    if (user == null) return;
+    await _firestoreDatasource.completeOnboarding(userId: user.id);
+    _userRepository.completeOnboarding();
+  }
 }
