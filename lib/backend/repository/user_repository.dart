@@ -5,6 +5,12 @@ import 'package:jambu/model/model.dart';
 import 'package:jambu/repository/repository.dart';
 import 'package:rxdart/subjects.dart';
 
+enum AuthenticationState {
+  undefiend,
+  loggedIn,
+  loggedOut;
+}
+
 class UserRepository {
   UserRepository({
     required FirestoreDatasource firestoreDatasource,
@@ -15,9 +21,10 @@ class UserRepository {
         _authRepository = authRepository,
         _msGraphRepository = msGraphRepository,
         _photoStorageRepository = photoStorageRepository {
-    _authRepository.userStream.listen((fb_auth.User? firebaseUser) {
+    _authRepository.userStream.skip(1).listen((fb_auth.User? firebaseUser) {
       if (firebaseUser == null) {
         _currentUserSubject.add(null);
+        _authStateSubject.add(AuthenticationState.loggedOut);
         return;
       }
       updateUserFromFirebase(firebaseUser);
@@ -31,8 +38,12 @@ class UserRepository {
 
   final BehaviorSubject<User?> _currentUserSubject =
       BehaviorSubject.seeded(null);
+  final BehaviorSubject<AuthenticationState> _authStateSubject =
+      BehaviorSubject.seeded(AuthenticationState.undefiend);
 
   Stream<User?> get currentUserStream => _currentUserSubject.stream;
+
+  Stream<AuthenticationState> get authState => _authStateSubject.stream;
 
   User? get currentUser => _currentUserSubject.value;
 
@@ -41,6 +52,7 @@ class UserRepository {
     final users = await _firestoreDatasource.getUsers();
     final fetchedUser = users.firstWhereOrNull((u) => u.id == currentUser!.id);
     _currentUserSubject.add(fetchedUser);
+    _authStateSubject.add(AuthenticationState.loggedIn);
     return fetchedUser;
   }
 
@@ -53,6 +65,7 @@ class UserRepository {
 
     if (currentUser != null) {
       _currentUserSubject.add(currentUser);
+      _authStateSubject.add(AuthenticationState.loggedIn);
       return;
     }
 
@@ -77,5 +90,6 @@ class UserRepository {
 
     await _firestoreDatasource.updateUser(newUser);
     _currentUserSubject.add(newUser);
+    _authStateSubject.add(AuthenticationState.loggedIn);
   }
 }

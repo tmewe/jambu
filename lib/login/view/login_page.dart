@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jambu/backend/backend.dart';
 import 'package:jambu/login/bloc/login_bloc.dart';
 import 'package:jambu/repository/repository.dart';
 
@@ -12,7 +13,8 @@ class LoginPage extends StatelessWidget {
       body: BlocProvider(
         create: (_) => LoginBloc(
           authRepository: context.read<AuthRepository>(),
-        ),
+          userRepository: context.read<UserRepository>(),
+        )..add(LoginInitialCheck()),
         child: const LoginView(),
       ),
     );
@@ -25,7 +27,7 @@ class LoginView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final loginStatus = context.select((LoginBloc bloc) => bloc.state.status);
-    if (loginStatus == LoginStatus.initial) {
+    if (loginStatus == LoginStatus.loggedOut) {
       return const WelcomeView();
     } else if (loginStatus == LoginStatus.failure) {
       return const ErrorView();

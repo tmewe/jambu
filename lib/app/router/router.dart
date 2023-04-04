@@ -8,16 +8,15 @@ import 'package:jambu/backend/backend.dart';
 import 'package:jambu/calendar/calendar.dart';
 import 'package:jambu/login/login.dart';
 import 'package:jambu/logout/logout.dart';
-import 'package:jambu/model/model.dart';
 import 'package:jambu/playground/playground.dart';
 
 GoRouter getRouter({
-  required Stream<User?> userStream,
+  required Stream<AuthenticationState> authStateStream,
 }) {
   return GoRouter(
     initialLocation: '/',
     debugLogDiagnostics: true,
-    refreshListenable: GoRouterRefreshStream(userStream),
+    refreshListenable: GoRouterRefreshStream(authStateStream),
     redirect: _redirect,
     routes: [
       GoRoute(
