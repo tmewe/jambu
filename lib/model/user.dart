@@ -2,6 +2,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
+import 'package:jambu/constants.dart';
 import 'package:jambu/model/tag.dart';
 
 @immutable
@@ -38,7 +39,7 @@ class User extends Equatable {
       email: data?['email'] as String,
       imageUrl: data?['imageUrl'] as String?,
       jobTitle: data?['jobTitle'] as String?,
-      favorites: List.from(data?['favorites'] as Iterable),
+      favorites: List.from(data?[Constants.favoritesField] as Iterable),
       tags: List<Map<String, dynamic>>.from(data?['tags'] as Iterable)
           .map(Tag.fromMap)
           .toList(),
