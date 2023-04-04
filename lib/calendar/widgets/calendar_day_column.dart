@@ -67,6 +67,14 @@ class CalendarDayColumn extends StatelessWidget {
                       ),
                     );
               },
+              onUpdateFavorite: (isFavorite) {
+                context.read<CalendarBloc>().add(
+                      CalenderUpdateFavorite(
+                        userId: user.id,
+                        isFavorite: isFavorite,
+                      ),
+                    );
+              },
             ),
           ),
         ],
