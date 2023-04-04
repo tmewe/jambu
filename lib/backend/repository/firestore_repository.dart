@@ -94,4 +94,23 @@ class FirestoreRepository {
       userId: user.id,
     );
   }
+
+  Future<void> updateFavorite({
+    required String userId,
+    required bool isFavorite,
+  }) async {
+    final user = _userRepository.currentUser;
+    if (user == null) return;
+    if (isFavorite) {
+      return _firestoreDatasource.addFavorite(
+        currentUserId: user.id,
+        favoriteUserId: userId,
+      );
+    } else {
+      return _firestoreDatasource.removeFavorite(
+        currentUserId: user.id,
+        favoriteUserId: userId,
+      );
+    }
+  }
 }

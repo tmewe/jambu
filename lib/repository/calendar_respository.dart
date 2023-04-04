@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:jambu/backend/backend.dart';
 import 'package:jambu/calendar/core/core.dart';
+import 'package:jambu/calendar/core/update_favorite.dart';
 import 'package:jambu/calendar/model/model.dart';
 import 'package:jambu/repository/repository.dart';
 
@@ -47,13 +48,6 @@ class CalendarRepository {
     required List<CalendarWeek> weeks,
   }) {
     return CalendarFiltering(filter: filter, weeks: weeks)();
-  }
-
-  Future<List<CalendarWeek>> updateFavorite({
-    required String userId,
-    required bool isFavorite,
-  }) async {
-    return [];
   }
 
   Future<List<String>> fetchTags() async {
@@ -160,5 +154,24 @@ class CalendarRepository {
     }
 
     return updatedWeeks;
+  }
+
+  List<CalendarWeek> updateFavorite({
+    required String userId,
+    required bool isFavorite,
+    required List<CalendarWeek> weeks,
+  }) {
+    unawaited(
+      _firestoreRepository.updateFavorite(
+        userId: userId,
+        isFavorite: isFavorite,
+      ),
+    );
+
+    return UpdateFavorite(
+      userId: userId,
+      isFavorite: isFavorite,
+      weeks: weeks,
+    )();
   }
 }

@@ -65,3 +65,13 @@ class CalendarUpdateTagName extends CalendarEvent {
   final String tagName;
   final String newTagName;
 }
+
+class CalenderUpdateFavorite extends CalendarEvent {
+  const CalenderUpdateFavorite({
+    required this.userId,
+    required this.isFavorite,
+  });
+
+  final String userId;
+  final bool isFavorite;
+}
