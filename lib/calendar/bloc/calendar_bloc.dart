@@ -28,6 +28,7 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     on<CalendarAddTag>(_onCalendarAddTag);
     on<CalendarRemoveTag>(_onCalendarRemoveTag);
     on<CalendarUpdateTagName>(_onCalendarUpdateTagName);
+    on<CalenderUpdateFavorite>(_onCalendarUpdateFavorite);
   }
 
   final CalendarRepository _calendarRepository;
@@ -147,5 +148,18 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
         filter: filter,
       ),
     );
+  }
+
+  FutureOr<void> _onCalendarUpdateFavorite(
+    CalenderUpdateFavorite event,
+    Emitter<CalendarState> emit,
+  ) async {
+    final weeks = _calendarRepository.updateFavorite(
+      userId: event.userId,
+      isFavorite: event.isFavorite,
+      weeks: state.weeks,
+    );
+
+    emit(state.copyWith(weeks: weeks));
   }
 }
