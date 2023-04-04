@@ -8,6 +8,7 @@ import 'package:jambu/backend/backend.dart';
 import 'package:jambu/calendar/calendar.dart';
 import 'package:jambu/login/login.dart';
 import 'package:jambu/logout/logout.dart';
+import 'package:jambu/onboarding/onboarding.dart';
 import 'package:jambu/playground/playground.dart';
 
 GoRouter getRouter({
@@ -33,6 +34,12 @@ GoRouter getRouter({
         ],
       ),
       GoRoute(
+        path: '/onboarding',
+        pageBuilder: (context, state) => const NoTransitionPage(
+          child: OnboardingPage(),
+        ),
+      ),
+      GoRoute(
         path: '/login',
         pageBuilder: (context, state) => const NoTransitionPage(
           child: LoginPage(),
@@ -56,7 +63,7 @@ String? _redirect(BuildContext context, GoRouterState state) {
   if (!isLoggedIn && !isLoggingIn) {
     return '/login';
   } else if (isLoggedIn && isLoggingIn) {
-    return '/';
+    return user.onboardingCompleted ? '/' : '/onboarding';
   }
   return null;
 }
