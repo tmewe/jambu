@@ -28,7 +28,7 @@ class _TagChipState extends State<TagChip> {
   Widget build(BuildContext context) {
     return PopupMenuButton(
       tooltip: 'Bearbeiten',
-      splashRadius: 10,
+      position: PopupMenuPosition.under,
       onOpened: () => _textController.text = widget.name,
       itemBuilder: (context) => [
         PopupMenuItem<String?>(

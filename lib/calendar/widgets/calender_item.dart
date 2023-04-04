@@ -144,6 +144,7 @@ class _TagButton extends StatelessWidget {
       width: 25,
       height: 25,
       child: PopupMenuButton(
+        position: PopupMenuPosition.under,
         icon: const Icon(Icons.sell),
         iconSize: 20,
         padding: const EdgeInsets.all(3.5),
