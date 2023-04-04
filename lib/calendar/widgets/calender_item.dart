@@ -6,6 +6,7 @@ import 'package:jambu/calendar/widgets/tag_chip.dart';
 typedef AddTagCallback = void Function(String, String);
 typedef RemoveTagCallback = void Function(String, String);
 typedef UpdateTagNameCallback = void Function(String, String);
+typedef UpdateFavoriteCallback = void Function(bool);
 
 class CalendarItem extends StatelessWidget {
   const CalendarItem({
@@ -14,6 +15,7 @@ class CalendarItem extends StatelessWidget {
     required this.onAddTag,
     required this.onRemoveTag,
     required this.onUpdateTagName,
+    required this.onUpdateFavorite,
     super.key,
   });
 
@@ -22,6 +24,7 @@ class CalendarItem extends StatelessWidget {
   final AddTagCallback onAddTag;
   final RemoveTagCallback onRemoveTag;
   final UpdateTagNameCallback onUpdateTagName;
+  final UpdateFavoriteCallback onUpdateFavorite;
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +48,11 @@ class CalendarItem extends StatelessWidget {
                 ),
                 const SizedBox(width: 10),
                 Text(user.name),
+                IconButton(
+                  onPressed: () => onUpdateFavorite(!user.isFavorite),
+                  icon: const Icon(Icons.favorite),
+                  color: user.isFavorite ? Colors.orange : Colors.white24,
+                ),
               ],
             ),
             _TagsSection(
