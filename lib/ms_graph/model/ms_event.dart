@@ -87,8 +87,10 @@ class MSEvent extends Equatable {
   // TODO(tim): Filter out jupdate events
   bool get isPresenceWithMultipleAttendees {
     return !isOnlineMeeting &&
-        responseStatus?.response == ResponseStatus.accepted &&
-        attendees.where((a) => a.type == 'required').length > 1;
+        !(location?.isURL ?? false) &&
+        (responseStatus?.response == ResponseStatus.accepted ||
+            responseStatus?.response == ResponseStatus.organizer) &&
+        attendees.where((a) => a.type == 'required').isNotEmpty;
   }
 
   MSEvent copyWith({
