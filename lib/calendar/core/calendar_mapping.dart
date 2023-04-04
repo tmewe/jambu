@@ -65,6 +65,7 @@ class CalendarMapping {
                 .where((tag) => tag.userIds.contains(colleague.id))
                 .map((t) => t.name)
                 .toList(),
+            isFavorite: currentUser.favorites.contains(colleague.id),
           ),
         )
         .toList();
