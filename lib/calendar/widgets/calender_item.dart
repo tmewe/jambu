@@ -47,7 +47,12 @@ class CalendarItem extends StatelessWidget {
                   radius: 30,
                 ),
                 const SizedBox(width: 10),
-                Text(user.name),
+                Flexible(
+                  child: Text(
+                    user.name,
+                    maxLines: 3,
+                  ),
+                ),
                 IconButton(
                   onPressed: () => onUpdateFavorite(!user.isFavorite),
                   icon: const Icon(Icons.favorite),

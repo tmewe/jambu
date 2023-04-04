@@ -84,7 +84,6 @@ class MSEvent extends Equatable {
 
   bool get isWholeDayOOF => isAllDay && showAs == EventStatus.oof;
 
-  // TODO(tim): Filter out jupdate events
   bool get isPresenceWithMultipleAttendees {
     return !isOnlineMeeting &&
         !(location?.isURL ?? false) &&
