@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jambu/backend/backend.dart';
+import 'package:jambu/onboarding/bloc/onboarding_bloc.dart';
 import 'package:jambu/onboarding/view/onboarding_view.dart';
 
 class OnboardingPage extends StatelessWidget {
@@ -6,6 +9,11 @@ class OnboardingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const OnboardingView();
+    return BlocProvider(
+      create: (context) => OnboardingBloc(
+        firestoreRepository: context.read<FirestoreRepository>(),
+      ),
+      child: const OnboardingView(),
+    );
   }
 }
