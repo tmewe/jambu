@@ -11,11 +11,13 @@ class CalendarDayColumn extends StatelessWidget {
     required this.day,
     required this.tags,
     required this.width,
+    this.isBestChoice = false,
     super.key,
   });
 
   final CalendarDay day;
   final List<String> tags;
+  final bool isBestChoice;
   final double width;
 
   @override
@@ -24,7 +26,8 @@ class CalendarDayColumn extends StatelessWidget {
       width: width,
       child: Column(
         children: [
-          if (day.reason != null) Text(day.reason!),
+          Text(isBestChoice ? 'Optimaler Tag' : ''),
+          Text(day.reason != null ? day.reason! : ''),
           Switch(
             value: day.isUserAttending,
             onChanged: (value) {
