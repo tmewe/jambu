@@ -29,7 +29,11 @@ class _CalendarViewState extends State<CalendarView> {
     return BlocBuilder<CalendarBloc, CalendarState>(
       builder: (context, state) {
         if (state.status != CalendarStatus.success) {
-          return const Center(child: CircularProgressIndicator());
+          return const Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
         }
         return Scaffold(
           body: SingleChildScrollView(
