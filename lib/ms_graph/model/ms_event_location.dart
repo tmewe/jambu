@@ -21,6 +21,11 @@ class MSEventLocation {
   final String displayName;
   final String? locationType;
 
+  bool get isURL {
+    if (displayName.isEmpty) return false;
+    return Uri.tryParse(displayName) != null;
+  }
+
   MSEventLocation copyWith({
     String? displayName,
     String? locationType,
