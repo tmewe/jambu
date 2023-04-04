@@ -17,6 +17,7 @@ class User extends Equatable {
     this.tags = const [],
     this.regularAttendances = const [],
     this.manualAbsences = const [],
+    this.onboardingCompleted = false,
   });
 
   final String id;
@@ -28,6 +29,7 @@ class User extends Equatable {
   final List<Tag> tags;
   final List<int> regularAttendances; // In weekdays 1 - 7
   final List<DateTime> manualAbsences;
+  final bool onboardingCompleted;
 
   factory User.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
@@ -48,6 +50,7 @@ class User extends Equatable {
         (data?['manualAbsences'] as Iterable)
             .map((e) => (e as Timestamp).toDate()),
       ),
+      onboardingCompleted: data?['onboardingCompleted'] as bool? ?? false,
     );
   }
 
@@ -62,6 +65,7 @@ class User extends Equatable {
       'tags': tags.map((t) => t.toMap()),
       'regularAttendances': regularAttendances,
       'manualAbsences': manualAbsences.map(Timestamp.fromDate),
+      'onboardingCompleted': onboardingCompleted
     };
   }
 
@@ -70,7 +74,8 @@ class User extends Equatable {
     return 'User(id: $id, name: $name, email: $email imageUrl: $imageUrl, '
         ' jobTitle: $jobTitle, favorites: $favorites, tags: $tags) '
         'regularAttendances: $regularAttendances, '
-        'manualAbsences: $manualAbsences';
+        'manualAbsences: $manualAbsences, '
+        'onboardingCompleted: $onboardingCompleted';
   }
 
   User copyWith({
@@ -83,6 +88,7 @@ class User extends Equatable {
     List<Tag>? tags,
     List<int>? regularAttendances,
     List<DateTime>? manualAbsences,
+    bool? onboardingCompleted,
   }) {
     return User(
       id: id ?? this.id,
@@ -94,6 +100,7 @@ class User extends Equatable {
       tags: tags ?? this.tags,
       regularAttendances: regularAttendances ?? this.regularAttendances,
       manualAbsences: manualAbsences ?? this.manualAbsences,
+      onboardingCompleted: onboardingCompleted ?? this.onboardingCompleted,
     );
   }
 
@@ -106,5 +113,6 @@ class User extends Equatable {
         tags,
         regularAttendances,
         manualAbsences,
+        onboardingCompleted,
       ];
 }
