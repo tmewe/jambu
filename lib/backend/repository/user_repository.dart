@@ -43,7 +43,7 @@ class UserRepository {
 
   Stream<User?> get currentUserStream => _currentUserSubject.stream;
 
-  Stream<AuthenticationState> get authState => _authStateSubject.stream;
+  Stream<AuthenticationState> get authStateStream => _authStateSubject.stream;
 
   User? get currentUser => _currentUserSubject.value;
 
@@ -91,5 +91,11 @@ class UserRepository {
     await _firestoreDatasource.updateUser(newUser);
     _currentUserSubject.add(newUser);
     _authStateSubject.add(AuthenticationState.loggedIn);
+  }
+
+  void completeOnboarding() {
+    _currentUserSubject.add(
+      currentUser?.copyWith(onboardingCompleted: true),
+    );
   }
 }

@@ -28,7 +28,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     Emitter<LoginState> emit,
   ) async {
     await emit.forEach(
-      _userRepository.authState,
+      _userRepository.authStateStream,
       onData: (authState) {
         if (authState == AuthenticationState.loggedOut) {
           return const LoginState(status: LoginStatus.loggedOut);

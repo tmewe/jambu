@@ -19,5 +19,7 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
   FutureOr<void> _onOnboardingCompleted(
     OnboardingCompleted event,
     Emitter<OnboardingState> emit,
-  ) async {}
+  ) async {
+    await _firestoreRepository.completeOnboarding();
+  }
 }
