@@ -2,6 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:jambu/calendar/model/model.dart';
+import 'package:jambu/extension/extension.dart';
 
 class CalendarWeek extends Equatable {
   const CalendarWeek({
@@ -11,6 +12,14 @@ class CalendarWeek extends Equatable {
   final List<CalendarDay> days;
 
   List<DateTime> get recommendedDates => [];
+
+  List<int> get bestChoices {
+    final map = {
+      for (final day in days)
+        day.date.weekday: day.users.where((u) => u.isFavorite).length
+    };
+    return map.maxValues;
+  }
 
   CalendarDay? dayAtDate(DateTime date) {
     final filteredDays = days.where((day) {

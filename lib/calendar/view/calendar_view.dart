@@ -101,6 +101,7 @@ class _CalendarViewState extends State<CalendarView> {
                       const SizedBox(height: 20),
                       LayoutBuilder(
                         builder: (context, constraints) {
+                          final week = state.filteredWeeks[_selectedWeek];
                           return Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -111,11 +112,13 @@ class _CalendarViewState extends State<CalendarView> {
                                     : null,
                                 icon: const Icon(Icons.arrow_back_ios),
                               ),
-                              ...state.filteredWeeks[_selectedWeek].days.map(
+                              ...week.days.map(
                                 (day) {
                                   return CalendarDayColumn(
                                     day: day,
                                     tags: state.sortedTags,
+                                    isBestChoice: week.bestChoices
+                                        .contains(day.date.weekday),
                                     width: (constraints.maxWidth - 100) / 5,
                                   );
                                 },
