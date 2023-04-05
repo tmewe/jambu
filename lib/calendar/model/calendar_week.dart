@@ -52,7 +52,7 @@ class CalendarWeek extends Equatable {
   List<Object> get props => [days];
 }
 
-extension WeekFromDate on List<CalendarWeek> {
+extension CalendarWeekFromDate on List<CalendarWeek> {
   /// Returns the week which contains the date in a list of or null
   CalendarWeek? getWeekFromDate(DateTime date) {
     for (final week in this) {

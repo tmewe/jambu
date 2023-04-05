@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jambu/onboarding/bloc/onboarding_bloc.dart';
+import 'package:jambu/onboarding/widgets/widgets.dart';
 
 class OnboardingView extends StatefulWidget {
   const OnboardingView({super.key});
@@ -26,20 +27,15 @@ class _OnboardingViewState extends State<OnboardingView> {
                   controller: _pageController,
                   physics: const NeverScrollableScrollPhysics(),
                   children: [
-                    Center(
-                      child: ConstrainedBox(
-                        constraints: const BoxConstraints(maxWidth: 800),
-                        child: const Padding(
-                          padding: EdgeInsets.all(8),
-                          child: SizedBox.expand(
-                            child: Material(
-                              color: Colors.grey,
-                              child: Text('1'),
-                            ),
-                          ),
-                        ),
+                    OnboardingContainer(
+                      child: RegularAttendancesOnboarding(
+                        onConfirmTap: (_) {
+                          context
+                              .read<OnboardingBloc>()
+                              .add(OnboardingCompleted());
+                        },
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
