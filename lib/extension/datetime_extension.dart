@@ -17,6 +17,23 @@ extension DayString on DateTime {
         return '-';
     }
   }
+
+  String get weekdayStringShort {
+    switch (weekday) {
+      case 1:
+        return 'Mo';
+      case 2:
+        return 'Di';
+      case 3:
+        return 'Mi';
+      case 4:
+        return 'Do';
+      case 5:
+        return 'Fr';
+      default:
+        return '-';
+    }
+  }
 }
 
 extension Midnight on DateTime {
