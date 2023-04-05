@@ -30,6 +30,17 @@ class _OnboardingViewState extends State<OnboardingView> {
                     OnboardingContainer(
                       child: RegularAttendancesOnboarding(
                         onConfirmTap: (_) {
+                          _pageController.nextPage(
+                            duration: const Duration(milliseconds: 300),
+                            curve: Curves.fastOutSlowIn,
+                          );
+                        },
+                      ),
+                    ),
+                    OnboardingContainer(
+                      child: NotificationsOnboarding(
+                        onConfirmTap: () {},
+                        onDeclineTap: () {
                           context
                               .read<OnboardingBloc>()
                               .add(OnboardingCompleted());
