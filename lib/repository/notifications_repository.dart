@@ -1,5 +1,6 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:jambu/constants.dart';
 
 class NotificationsRepository {
   NotificationsRepository({
@@ -8,20 +9,22 @@ class NotificationsRepository {
 
   final FirebaseMessaging _firebaseMessaging;
 
-  // TODO(tim): Refactor
   Future<void> requestNotifications() async {
     final notificationSettings =
         await _firebaseMessaging.getNotificationSettings();
-    final status = notificationSettings.authorizationStatus;
+    var status = notificationSettings.authorizationStatus;
 
     if (status == AuthorizationStatus.notDetermined) {
-      await FirebaseMessaging.instance.requestPermission();
+      final requestedSettings =
+          await FirebaseMessaging.instance.requestPermission();
+      status = requestedSettings.authorizationStatus;
+    }
+
+    if (status == AuthorizationStatus.authorized) {
       final fcmToken = await _firebaseMessaging.getToken(
-        vapidKey:
-            '''BDwDEXNpZUq9IJQ60LNTt3At9ctSWMBiEo5BMXzB9X2VojyfM0En84zNMr328DhLhruGVJQPCjo2lTJ3YCZhGoY''',
+        vapidKey: Constants.vapidKey,
       );
-      debugPrint('FCM Token');
-      debugPrint(fcmToken);
+      debugPrint('FCM Token: $fcmToken');
     }
   }
 }

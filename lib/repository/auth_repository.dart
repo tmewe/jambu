@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
-import 'package:jambu/repository/repository.dart';
 import 'package:jambu/storage/storage.dart';
 import 'package:rxdart/subjects.dart';
 
@@ -10,11 +9,9 @@ class AuthRepository {
   AuthRepository({
     required FirebaseAuth firebaseAuth,
     required TokenStorage tokenStorage,
-    required NotificationsRepository notificationsRespository,
     bool isWeb = kIsWeb,
   })  : _firebaseAuth = firebaseAuth,
         _tokenStorage = tokenStorage,
-        _notificationsRespository = notificationsRespository,
         _isWeb = isWeb {
     _firebaseAuth.authStateChanges().listen((user) {
       debugPrint('User changed: ${user?.displayName}');
@@ -24,7 +21,6 @@ class AuthRepository {
 
   final FirebaseAuth _firebaseAuth;
   final TokenStorage _tokenStorage;
-  final NotificationsRepository _notificationsRespository;
   final bool _isWeb;
 
   final BehaviorSubject<User?> _userSubject = BehaviorSubject.seeded(null);
@@ -51,7 +47,6 @@ class AuthRepository {
     } else {
       userCredential = await _firebaseAuth.signInWithProvider(msProvider);
     }
-    unawaited(_notificationsRespository.requestNotifications());
     _saveCredential(userCredential);
     return userCredential;
   }

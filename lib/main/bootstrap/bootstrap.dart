@@ -49,7 +49,7 @@ Future<void> bootstrap(AppBuilder builder) async {
       );
     },
     (error, stacktrace) {
-      log('An error occured: $error');
+      debugPrint('An error occured: $error');
     },
   );
 }

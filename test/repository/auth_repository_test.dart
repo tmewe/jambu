@@ -19,22 +19,15 @@ class MockAuthProvider extends Mock implements MicrosoftAuthProvider {}
 
 class MockUser extends Mock implements User {}
 
-class MockNotificationsRepository extends Mock
-    implements NotificationsRepository {}
-
 void main() {
   final firebaseAuth = MockFirebaseAuth();
   final tokenStorage = InMemoryTokenStorage();
-  final notificationsRespository = MockNotificationsRepository();
 
   setUpAll(
     () {
       when(firebaseAuth.authStateChanges).thenAnswer(
         (_) => Stream<User?>.value(null),
       );
-
-      when(notificationsRespository.requestNotifications)
-          .thenAnswer((_) async {});
 
       registerFallbackValue(MockAuthProvider());
       registerFallbackValue(MockUser());
@@ -52,7 +45,6 @@ void main() {
       final sut = AuthRepository(
         firebaseAuth: firebaseAuth,
         tokenStorage: tokenStorage,
-        notificationsRespository: notificationsRespository,
         isWeb: isWeb,
       );
 
@@ -73,7 +65,6 @@ void main() {
       final sut = AuthRepository(
         firebaseAuth: firebaseAuth,
         tokenStorage: tokenStorage,
-        notificationsRespository: notificationsRespository,
         isWeb: isWeb,
       );
 
@@ -91,7 +82,6 @@ void main() {
       sut = AuthRepository(
         firebaseAuth: firebaseAuth,
         tokenStorage: tokenStorage,
-        notificationsRespository: notificationsRespository,
         isWeb: true,
       );
     });

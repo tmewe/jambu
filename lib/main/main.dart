@@ -30,7 +30,6 @@ void main() {
     final authRepository = AuthRepository(
       firebaseAuth: firebaseAuth,
       tokenStorage: tokenStorage,
-      notificationsRespository: notificationsRespository,
     );
 
     final msGraphChopperClient = ChopperClient(
