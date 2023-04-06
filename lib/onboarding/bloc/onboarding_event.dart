@@ -16,4 +16,6 @@ class OnboardingUpdateAttendances extends OnboardingEvent {
   List<Object> get props => [weekdays];
 }
 
+class OnboardingRequestNotifications extends OnboardingEvent {}
+
 class OnboardingCompleted extends OnboardingEvent {}

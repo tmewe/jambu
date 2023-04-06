@@ -12,13 +12,15 @@ class App extends StatelessWidget {
     required UserRepository userRespository,
     required CalendarRepository calendarRepository,
     required PhotoStorageRepository photoStorageRepository,
+    required NotificationsRepository notificationsRepository,
     super.key,
   })  : _authRepository = authRepository,
         _msGraphRepository = msGraphRepository,
         _firestoreRepository = firestoreRepository,
         _userRepository = userRespository,
         _calendarRepository = calendarRepository,
-        _photoStorageRepository = photoStorageRepository;
+        _photoStorageRepository = photoStorageRepository,
+        _notificationsRepository = notificationsRepository;
 
   final AuthRepository _authRepository;
   final MSGraphRepository _msGraphRepository;
@@ -26,6 +28,7 @@ class App extends StatelessWidget {
   final UserRepository _userRepository;
   final CalendarRepository _calendarRepository;
   final PhotoStorageRepository _photoStorageRepository;
+  final NotificationsRepository _notificationsRepository;
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +40,7 @@ class App extends StatelessWidget {
         RepositoryProvider.value(value: _userRepository),
         RepositoryProvider.value(value: _calendarRepository),
         RepositoryProvider.value(value: _photoStorageRepository),
+        RepositoryProvider.value(value: _notificationsRepository),
       ],
       child: const AppView(),
     );
