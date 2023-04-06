@@ -171,9 +171,12 @@ class UserRepository {
     }
   }
 
-  Future<void> completeOnboarding() async {
+  Future<void> completeOnboarding({
+    required List<int> regularAttendances,
+  }) async {
     final user = currentUser;
     if (user == null) return;
+    await updateRegularAttendances(regularAttendances);
     await _firestoreDatasource.completeOnboarding(userId: user.id);
     _currentUserSubject.add(
       currentUser?.copyWith(onboardingCompleted: true),
