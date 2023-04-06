@@ -36,7 +36,13 @@ GoRouter getRouter({
           GoRoute(
             path: 'profile',
             name: 'profile',
-            builder: (context, state) => const ProfilePage(),
+            builder: (context, state) {
+              final extra = state.extra;
+              final user = extra is User ? extra : null;
+              return user != null
+                  ? ProfilePage(user: user)
+                  : const _ErrorPage();
+            },
           ),
         ],
       ),
@@ -75,4 +81,18 @@ String? _redirect(BuildContext context, GoRouterState state) {
     return '/onboarding';
   }
   return state.subloc;
+}
+
+class _ErrorPage extends StatelessWidget {
+  const _ErrorPage();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(),
+      body: const Center(
+        child: Text('Error'),
+      ),
+    );
+  }
 }

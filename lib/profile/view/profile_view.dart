@@ -9,8 +9,8 @@ class ProfileView extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Profil'),
       ),
-      body: const Center(
-        child: Text('Profil'),
+      body: SingleChildScrollView(
+        child: Column(),
       ),
     );
   }

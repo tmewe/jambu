@@ -4,6 +4,7 @@ import 'package:jambu/backend/backend.dart';
 import 'package:jambu/calendar/core/core.dart';
 import 'package:jambu/calendar/core/update_favorite.dart';
 import 'package:jambu/calendar/model/model.dart';
+import 'package:jambu/model/model.dart';
 import 'package:jambu/repository/repository.dart';
 
 // TODO(tim): Add tests
@@ -20,14 +21,15 @@ class CalendarRepository {
   final UserRepository _userRepository;
   final MSGraphRepository _msGraphRepository;
 
-  Future<List<CalendarWeek>> fetchCalendar({
-    CalendarFilter filter = const CalendarFilter(),
-  }) async {
-    final currentUser = await _userRepository.fetchCurrentUser();
-    if (currentUser == null) return [];
+  Future<User?> fetchCurrentUser() {
+    return _userRepository.fetchCurrentUser();
+  }
 
+  Future<List<CalendarWeek>> fetchCalendar({
+    required User user,
+  }) async {
     final attendances = await SmartSync(
-      currentUser: currentUser,
+      currentUser: user,
       firestoreRepository: _firestoreRepository,
       msGraphRepository: _msGraphRepository,
     )();
@@ -35,19 +37,12 @@ class CalendarRepository {
     final users = await _firestoreRepository.getUsers();
 
     final weeks = CalendarMapping(
-      currentUser: currentUser,
+      currentUser: user,
       attendances: attendances,
       users: users,
     )();
 
     return weeks;
-  }
-
-  List<CalendarWeek> updateFilter({
-    required CalendarFilter filter,
-    required List<CalendarWeek> weeks,
-  }) {
-    return CalendarFiltering(filter: filter, weeks: weeks)();
   }
 
   Future<List<String>> fetchTags() async {
@@ -124,7 +119,6 @@ class CalendarRepository {
     required DateTime date,
     required bool isAttending,
     required List<CalendarWeek> weeks,
-    required CalendarFilter filter,
   }) {
     final day = weeks.dayAtDate(date);
     if (day == null) {
