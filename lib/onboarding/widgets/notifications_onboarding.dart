@@ -4,11 +4,13 @@ class NotificationsOnboarding extends StatelessWidget {
   const NotificationsOnboarding({
     required this.onConfirmTap,
     required this.onDeclineTap,
+    required this.onBackTap,
     super.key,
   });
 
   final VoidCallback onConfirmTap;
   final VoidCallback onDeclineTap;
+  final VoidCallback onBackTap;
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +26,11 @@ class NotificationsOnboarding extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            TextButton(
+              onPressed: onBackTap,
+              child: const Text('Zurück'),
+            ),
+            const Spacer(),
             TextButton(
               onPressed: onDeclineTap,
               child: const Text('Später vielleicht'),

@@ -10,11 +10,19 @@ part 'onboarding_state.dart';
 class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
   OnboardingBloc({required FirestoreRepository firestoreRepository})
       : _firestoreRepository = firestoreRepository,
-        super(OnboardingInitial()) {
+        super(const OnboardingState()) {
+    on<OnboardingUpdateAttendances>(_onOnboardingUpdateAttendances);
     on<OnboardingCompleted>(_onOnboardingCompleted);
   }
 
   final FirestoreRepository _firestoreRepository;
+
+  FutureOr<void> _onOnboardingUpdateAttendances(
+    OnboardingUpdateAttendances event,
+    Emitter<OnboardingState> emit,
+  ) async {
+    emit(state.copyWith(regularWeekdays: event.weekdays));
+  }
 
   FutureOr<void> _onOnboardingCompleted(
     OnboardingCompleted event,
