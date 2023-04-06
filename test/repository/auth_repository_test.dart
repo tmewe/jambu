@@ -20,7 +20,7 @@ class MockAuthProvider extends Mock implements MicrosoftAuthProvider {}
 class MockUser extends Mock implements User {}
 
 class MockNotificationsRepository extends Mock
-    implements NotificationsRespository {}
+    implements NotificationsRepository {}
 
 void main() {
   final firebaseAuth = MockFirebaseAuth();

@@ -1,8 +1,8 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
-class NotificationsRespository {
-  NotificationsRespository({
+class NotificationsRepository {
+  NotificationsRepository({
     required FirebaseMessaging firebaseMessaging,
   }) : _firebaseMessaging = firebaseMessaging;
 
