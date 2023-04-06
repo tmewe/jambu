@@ -190,6 +190,15 @@ class FirestoreDatasource {
     await userRef.update({Constants.onboardingCompletedField: true});
   }
 
+  Future<void> updateRegularAttendances({
+    required String userId,
+    required List<int> weekdays,
+  }) async {
+    final userRef =
+        _firestore.collection(Constants.usersCollection).doc(userId);
+    await userRef.update({Constants.regularAttendancesField: weekdays});
+  }
+
   Attendance _updateExistingAttendance({
     required Attendance attendance,
     required bool isAttending,

@@ -120,4 +120,13 @@ class FirestoreRepository {
     await _firestoreDatasource.completeOnboarding(userId: user.id);
     _userRepository.completeOnboarding();
   }
+
+  Future<void> updateRegularAttendances(List<int> weekdays) async {
+    final user = _userRepository.currentUser;
+    if (user == null) return;
+    await _firestoreDatasource.updateRegularAttendances(
+      userId: user.id,
+      weekdays: weekdays,
+    );
+  }
 }

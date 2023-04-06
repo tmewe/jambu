@@ -13,10 +13,12 @@ abstract class Constants {
   static const String tagsField = 'tags';
   static const String favoritesField = 'favorites';
   static const String onboardingCompletedField = 'onboardingCompleted';
+  static const String regularAttendancesField = 'regularAttendances';
 
   // FCM
-  // ignore: lines_longer_than_80_chars
-  static const String vapidKey = 'BDwDEXNpZUq9IJQ60LNTt3At9ctSWMBiEo5BMXzB9X2VojyfM0En84zNMr328DhLhruGVJQPCjo2lTJ3YCZhGoY';
+  static const String vapidKey =
+      // ignore: lines_longer_than_80_chars
+      'BDwDEXNpZUq9IJQ60LNTt3At9ctSWMBiEo5BMXzB9X2VojyfM0En84zNMr328DhLhruGVJQPCjo2lTJ3YCZhGoY';
 
   // TODO(tim): REMOVE
   static const String testCalendarId =
