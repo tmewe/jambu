@@ -2,7 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:jambu/calendar/util/util.dart';
 import 'package:jambu/extension/extension.dart';
-import 'package:jambu/onboarding/widgets/weekday_selector.dart';
+import 'package:jambu/widgets/widgets.dart';
 
 typedef UpdateCallback = void Function(List<int>);
 
@@ -25,30 +25,10 @@ class RegularAttendancesOnboarding extends StatelessWidget {
       children: [
         const Text('An welchen Tagen bist Du normalerweise jede Woche im Büro'),
         const SizedBox(height: 10),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: WeekFromDate(DateTime.now())
-              .workingDays
-              .map(
-                (date) => Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 5),
-                  child: WeekdaySelector(
-                    weekday: date.weekdayStringShort,
-                    isSelected: weekdays.contains(date.weekday),
-                    onTap: () {
-                      final weekday = date.weekday;
-                      if (weekdays.contains(weekday)) {
-                        onDayTap(
-                          weekdays.whereNot((e) => e == weekday).toList(),
-                        );
-                      } else {
-                        onDayTap([...weekdays, weekday]);
-                      }
-                    },
-                  ),
-                ),
-              )
-              .toList(),
+        RegularAttendancesSelector(
+          selectedWeekdays: weekdays,
+          onWeekdayTap: onDayTap,
+          alignment: MainAxisAlignment.center,
         ),
         const SizedBox(height: 10),
         TextButton(

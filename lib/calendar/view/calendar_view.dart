@@ -39,7 +39,7 @@ class _CalendarViewState extends State<CalendarView> {
           body: SingleChildScrollView(
             child: Align(
               child: Container(
-                constraints: const BoxConstraints(maxWidth: maElementWidth),
+                constraints: const BoxConstraints(maxWidth: maxElementWidth),
                 child: Padding(
                   padding: const EdgeInsets.all(16),
                   child: Column(
