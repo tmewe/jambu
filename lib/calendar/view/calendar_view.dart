@@ -67,6 +67,12 @@ class _CalendarViewState extends State<CalendarView> {
                             },
                             child: const Text('Playground'),
                           ),
+                          TextButton(
+                            onPressed: () {
+                              context.goNamed('profile');
+                            },
+                            child: const Text('Profil'),
+                          ),
                         ],
                       ),
                       SearchBar(

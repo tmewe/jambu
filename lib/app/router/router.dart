@@ -11,6 +11,7 @@ import 'package:jambu/logout/logout.dart';
 import 'package:jambu/model/model.dart';
 import 'package:jambu/onboarding/onboarding.dart';
 import 'package:jambu/playground/playground.dart';
+import 'package:jambu/profile/profile.dart';
 
 GoRouter getRouter({
   required Stream<User?> userStream,
@@ -31,6 +32,11 @@ GoRouter getRouter({
             path: 'playground',
             name: 'playground',
             builder: (context, state) => const PlaygroundPage(),
+          ),
+          GoRoute(
+            path: 'profile',
+            name: 'profile',
+            builder: (context, state) => const ProfilePage(),
           ),
         ],
       ),
@@ -65,8 +71,8 @@ String? _redirect(BuildContext context, GoRouterState state) {
     return '/login';
   } else if (isLoggedIn && isLoggingIn) {
     return '/';
-  } else if (isLoggedIn) {
-    return user.onboardingCompleted ? '/' : '/onboarding';
+  } else if (isLoggedIn && !user.onboardingCompleted) {
+    return '/onboarding';
   }
-  return null;
+  return state.subloc;
 }

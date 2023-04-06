@@ -44,5 +44,6 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
   ) async {
     await _firestoreRepository.updateRegularAttendances(state.regularWeekdays);
     await _firestoreRepository.completeOnboarding();
+    emit(state.copyWith(status: OnboardingStatus.completed));
   }
 }

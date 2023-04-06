@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:jambu/onboarding/bloc/onboarding_bloc.dart';
 import 'package:jambu/onboarding/widgets/widgets.dart';
 
@@ -18,7 +19,12 @@ class _OnboardingViewState extends State<OnboardingView> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<OnboardingBloc, OnboardingState>(
+    return BlocConsumer<OnboardingBloc, OnboardingState>(
+      listener: (context, state) {
+        if (state.status == OnboardingStatus.completed) {
+          context.pushReplacement('/');
+        }
+      },
       builder: (context, state) {
         return Scaffold(
           body: Center(
