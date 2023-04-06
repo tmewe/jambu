@@ -1,26 +1,22 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:jambu/calendar/util/util.dart';
 import 'package:jambu/extension/extension.dart';
 import 'package:jambu/onboarding/widgets/weekday_selector.dart';
 
-typedef ConfirmCallback = void Function(List<int>);
+typedef UpdateCallback = void Function(List<int>);
 
-class RegularAttendancesOnboarding extends StatefulWidget {
+class RegularAttendancesOnboarding extends StatelessWidget {
   const RegularAttendancesOnboarding({
+    required this.onDayTap,
     required this.onConfirmTap,
+    this.weekdays = const [],
     super.key,
   });
 
-  final ConfirmCallback onConfirmTap;
-
-  @override
-  State<RegularAttendancesOnboarding> createState() =>
-      _RegularAttendancesOnboardingState();
-}
-
-class _RegularAttendancesOnboardingState
-    extends State<RegularAttendancesOnboarding> {
-  final weekdays = <int>[];
+  final List<int> weekdays;
+  final UpdateCallback onDayTap;
+  final VoidCallback onConfirmTap;
 
   @override
   Widget build(BuildContext context) {
@@ -41,13 +37,13 @@ class _RegularAttendancesOnboardingState
                     isSelected: weekdays.contains(date.weekday),
                     onTap: () {
                       final weekday = date.weekday;
-                      setState(() {
-                        if (weekdays.contains(weekday)) {
-                          weekdays.remove(weekday);
-                        } else {
-                          weekdays.add(weekday);
-                        }
-                      });
+                      if (weekdays.contains(weekday)) {
+                        onDayTap(
+                          weekdays.whereNot((e) => e == weekday).toList(),
+                        );
+                      } else {
+                        onDayTap([...weekdays, weekday]);
+                      }
                     },
                   ),
                 ),
@@ -56,7 +52,7 @@ class _RegularAttendancesOnboardingState
         ),
         const SizedBox(height: 10),
         TextButton(
-          onPressed: () => widget.onConfirmTap(weekdays),
+          onPressed: onConfirmTap,
           child: const Text('Weiter'),
         ),
       ],

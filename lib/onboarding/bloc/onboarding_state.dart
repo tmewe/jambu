@@ -1,10 +1,29 @@
 part of 'onboarding_bloc.dart';
 
-abstract class OnboardingState extends Equatable {
-  const OnboardingState();
-  
-  @override
-  List<Object> get props => [];
-}
+enum OnboardingStatus { ongoing, completed }
 
-class OnboardingInitial extends OnboardingState {}
+class OnboardingState extends Equatable {
+  const OnboardingState({
+    this.status = OnboardingStatus.ongoing,
+    this.regularWeekdays = const [],
+  });
+
+  final OnboardingStatus status;
+  final List<int> regularWeekdays;
+
+  @override
+  List<Object> get props => [
+        status,
+        regularWeekdays,
+      ];
+
+  OnboardingState copyWith({
+    OnboardingStatus? status,
+    List<int>? regularWeekdays,
+  }) {
+    return OnboardingState(
+      status: status ?? this.status,
+      regularWeekdays: regularWeekdays ?? this.regularWeekdays,
+    );
+  }
+}
