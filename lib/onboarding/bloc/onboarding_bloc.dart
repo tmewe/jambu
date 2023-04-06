@@ -10,9 +10,9 @@ part 'onboarding_state.dart';
 
 class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
   OnboardingBloc({
-    required FirestoreRepository firestoreRepository,
+    required UserRepository userRepository,
     required NotificationsRepository notificationsRepository,
-  })  : _firestoreRepository = firestoreRepository,
+  })  : _userRepository = userRepository,
         _notificationsRespository = notificationsRepository,
         super(const OnboardingState()) {
     on<OnboardingUpdateAttendances>(_onOnboardingUpdateAttendances);
@@ -20,7 +20,7 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
     on<OnboardingCompleted>(_onOnboardingCompleted);
   }
 
-  final FirestoreRepository _firestoreRepository;
+  final UserRepository _userRepository;
   final NotificationsRepository _notificationsRespository;
 
   FutureOr<void> _onOnboardingUpdateAttendances(
@@ -42,8 +42,8 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
     OnboardingCompleted event,
     Emitter<OnboardingState> emit,
   ) async {
-    await _firestoreRepository.updateRegularAttendances(state.regularWeekdays);
-    await _firestoreRepository.completeOnboarding();
+    await _userRepository.updateRegularAttendances(state.regularWeekdays);
+    await _userRepository.completeOnboarding();
     emit(state.copyWith(status: OnboardingStatus.completed));
   }
 }

@@ -59,7 +59,7 @@ class CalendarRepository {
     if (currentUser == null) return weeks;
 
     unawaited(
-      _firestoreRepository.addTagToUser(
+      _userRepository.addTagToUser(
         tagName: tagName,
         currentUserId: currentUser.id,
         tagUserId: userId,
@@ -82,7 +82,7 @@ class CalendarRepository {
     if (currentUser == null) return weeks;
 
     unawaited(
-      _firestoreRepository.removeTagFromUser(
+      _userRepository.removeTagFromUser(
         tagName: tag,
         currentUserId: currentUser.id,
         tagUserId: userId,
@@ -102,7 +102,7 @@ class CalendarRepository {
     required List<CalendarWeek> weeks,
   }) async {
     unawaited(
-      _firestoreRepository.updateTagName(
+      _userRepository.updateTagName(
         tagName: tagName,
         newTagName: newTagName,
       ),
@@ -142,9 +142,9 @@ class CalendarRepository {
     );
 
     if (isAttending) {
-      unawaited(_firestoreRepository.removeManualAbsence(date));
+      unawaited(_userRepository.removeManualAbsence(date));
     } else {
-      unawaited(_firestoreRepository.addManualAbsence(date));
+      unawaited(_userRepository.addManualAbsence(date));
     }
 
     return updatedWeeks;
@@ -156,7 +156,7 @@ class CalendarRepository {
     required List<CalendarWeek> weeks,
   }) {
     unawaited(
-      _firestoreRepository.updateFavorite(
+      _userRepository.updateFavorite(
         userId: userId,
         isFavorite: isFavorite,
       ),

@@ -93,9 +93,99 @@ class UserRepository {
     _authStateSubject.add(AuthenticationState.loggedIn);
   }
 
-  void completeOnboarding() {
+  Future<void> addManualAbsence(DateTime date) async {
+    final user = currentUser;
+    if (user == null) return;
+
+    await _firestoreDatasource.updateManualAbsences(
+      date: date,
+      userId: user.id,
+      add: true,
+    );
+  }
+
+  Future<void> removeManualAbsence(DateTime date) async {
+    final user = currentUser;
+    if (user == null) return;
+
+    await _firestoreDatasource.updateManualAbsences(
+      date: date,
+      userId: user.id,
+      add: false,
+    );
+  }
+
+  Future<void> addTagToUser({
+    required String tagName,
+    required String currentUserId,
+    required String tagUserId,
+  }) async {
+    return _firestoreDatasource.addTagToUser(
+      tagName: tagName,
+      currentUserId: currentUserId,
+      tagUserId: tagUserId,
+    );
+  }
+
+  Future<void> removeTagFromUser({
+    required String tagName,
+    required String currentUserId,
+    required String tagUserId,
+  }) async {
+    return _firestoreDatasource.removeTagFromUser(
+      tagName: tagName,
+      currentUserId: currentUserId,
+      tagUserId: tagUserId,
+    );
+  }
+
+  Future<void> updateTagName({
+    required String tagName,
+    required String newTagName,
+  }) async {
+    final user = currentUser;
+    if (user == null) return;
+    return _firestoreDatasource.updateTagName(
+      tagName: tagName,
+      newTagName: newTagName,
+      userId: user.id,
+    );
+  }
+
+  Future<void> updateFavorite({
+    required String userId,
+    required bool isFavorite,
+  }) async {
+    final user = currentUser;
+    if (user == null) return;
+    if (isFavorite) {
+      return _firestoreDatasource.addFavorite(
+        currentUserId: user.id,
+        favoriteUserId: userId,
+      );
+    } else {
+      return _firestoreDatasource.removeFavorite(
+        currentUserId: user.id,
+        favoriteUserId: userId,
+      );
+    }
+  }
+
+  Future<void> completeOnboarding() async {
+    final user = currentUser;
+    if (user == null) return;
+    await _firestoreDatasource.completeOnboarding(userId: user.id);
     _currentUserSubject.add(
       currentUser?.copyWith(onboardingCompleted: true),
+    );
+  }
+
+  Future<void> updateRegularAttendances(List<int> weekdays) async {
+    final user = currentUser;
+    if (user == null) return;
+    await _firestoreDatasource.updateRegularAttendances(
+      userId: user.id,
+      weekdays: weekdays,
     );
   }
 }
