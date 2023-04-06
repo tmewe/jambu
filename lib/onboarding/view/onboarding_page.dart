@@ -12,7 +12,7 @@ class OnboardingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => OnboardingBloc(
-        firestoreRepository: context.read<FirestoreRepository>(),
+        userRepository: context.read<UserRepository>(),
         notificationsRepository: context.read<NotificationsRepository>(),
       ),
       child: const OnboardingView(),
