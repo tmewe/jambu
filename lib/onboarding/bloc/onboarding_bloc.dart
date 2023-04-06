@@ -42,8 +42,9 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
     OnboardingCompleted event,
     Emitter<OnboardingState> emit,
   ) async {
-    await _userRepository.updateRegularAttendances(state.regularWeekdays);
-    await _userRepository.completeOnboarding();
+    await _userRepository.completeOnboarding(
+      regularAttendances: state.regularWeekdays,
+    );
     emit(state.copyWith(status: OnboardingStatus.completed));
   }
 }
