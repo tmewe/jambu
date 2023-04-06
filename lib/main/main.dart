@@ -19,7 +19,7 @@ void main() {
       storage: firebaseStorage,
     );
 
-    final notificationsRespository = NotificationsRespository(
+    final notificationsRespository = NotificationsRepository(
       firebaseMessaging: firebaseMessaging,
     );
 

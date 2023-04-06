@@ -10,7 +10,7 @@ class AuthRepository {
   AuthRepository({
     required FirebaseAuth firebaseAuth,
     required TokenStorage tokenStorage,
-    required NotificationsRespository notificationsRespository,
+    required NotificationsRepository notificationsRespository,
     bool isWeb = kIsWeb,
   })  : _firebaseAuth = firebaseAuth,
         _tokenStorage = tokenStorage,
@@ -24,7 +24,7 @@ class AuthRepository {
 
   final FirebaseAuth _firebaseAuth;
   final TokenStorage _tokenStorage;
-  final NotificationsRespository _notificationsRespository;
+  final NotificationsRepository _notificationsRespository;
   final bool _isWeb;
 
   final BehaviorSubject<User?> _userSubject = BehaviorSubject.seeded(null);
