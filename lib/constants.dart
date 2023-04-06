@@ -14,6 +14,10 @@ abstract class Constants {
   static const String favoritesField = 'favorites';
   static const String onboardingCompletedField = 'onboardingCompleted';
 
+  // FCM
+  // ignore: lines_longer_than_80_chars
+  static const String vapidKey = 'BDwDEXNpZUq9IJQ60LNTt3At9ctSWMBiEo5BMXzB9X2VojyfM0En84zNMr328DhLhruGVJQPCjo2lTJ3YCZhGoY';
+
   // TODO(tim): REMOVE
   static const String testCalendarId =
       // ignore: lines_longer_than_80_chars

@@ -50,12 +50,12 @@ class _OnboardingViewState extends State<OnboardingView> {
                         ),
                         OnboardingContainer(
                           child: NotificationsOnboarding(
-                            onConfirmTap: () {},
-                            onDeclineTap: () {
-                              context
-                                  .read<OnboardingBloc>()
-                                  .add(OnboardingCompleted());
-                            },
+                            onConfirmTap: () => context
+                                .read<OnboardingBloc>()
+                                .add(OnboardingRequestNotifications()),
+                            onDeclineTap: () => context
+                                .read<OnboardingBloc>()
+                                .add(OnboardingCompleted()),
                             onBackTap: () {
                               _pageController.previousPage(
                                 duration: _transitionDuration,
