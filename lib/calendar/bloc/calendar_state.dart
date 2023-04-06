@@ -8,12 +8,14 @@ class CalendarState extends Equatable {
     this.weeks = const [],
     this.filter = const CalendarFilter(),
     this.tags = const [],
+    this.user,
   });
 
   final CalendarStatus status;
   final List<CalendarWeek> weeks;
   final CalendarFilter filter;
   final List<String> tags;
+  final User? user;
 
   List<CalendarWeek> get filteredWeeks => filter.applyAll(weeks);
 
@@ -35,12 +37,14 @@ class CalendarState extends Equatable {
     List<CalendarWeek>? weeks,
     CalendarFilter? filter,
     List<String>? tags,
+    User? user,
   }) {
     return CalendarState(
       status: status ?? this.status,
       weeks: weeks ?? this.weeks,
       filter: filter ?? this.filter,
       tags: tags ?? this.tags,
+      user: user ?? this.user,
     );
   }
 

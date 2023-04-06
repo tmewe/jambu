@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:jambu/calendar/model/model.dart';
+import 'package:jambu/model/model.dart';
 import 'package:jambu/repository/repository.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -39,7 +40,13 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
   ) async {
     emit(state.copyWith(status: CalendarStatus.loading));
 
-    final weeks = await _calendarRepository.fetchCalendar(filter: state.filter);
+    final user = await _calendarRepository.fetchCurrentUser();
+    if (user == null) {
+      emit(state.copyWith(status: CalendarStatus.failure));
+      return;
+    }
+
+    final weeks = await _calendarRepository.fetchCalendar(user: user);
     final tags = await _calendarRepository.fetchTags();
 
     emit(
@@ -47,6 +54,7 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
         status: CalendarStatus.success,
         weeks: weeks,
         tags: tags,
+        user: user,
       ),
     );
   }
@@ -59,7 +67,6 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
       date: event.date,
       isAttending: event.isAttending,
       weeks: state.weeks,
-      filter: state.filter,
     );
 
     emit(state.copyWith(weeks: weeks));

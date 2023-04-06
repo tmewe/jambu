@@ -69,7 +69,7 @@ class _CalendarViewState extends State<CalendarView> {
                           ),
                           TextButton(
                             onPressed: () {
-                              context.goNamed('profile');
+                              context.goNamed('profile', extra: state.user);
                             },
                             child: const Text('Profil'),
                           ),
