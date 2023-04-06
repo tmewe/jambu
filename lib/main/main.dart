@@ -75,6 +75,7 @@ void main() {
       userRespository: userRepository,
       calendarRepository: calendarRepository,
       photoStorageRepository: photoStorageRepository,
+      notificationsRepository: notificationsRespository,
     );
   });
 }

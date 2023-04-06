@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jambu/backend/backend.dart';
 import 'package:jambu/onboarding/bloc/onboarding_bloc.dart';
 import 'package:jambu/onboarding/view/onboarding_view.dart';
+import 'package:jambu/repository/repository.dart';
 
 class OnboardingPage extends StatelessWidget {
   const OnboardingPage({super.key});
@@ -12,6 +13,7 @@ class OnboardingPage extends StatelessWidget {
     return BlocProvider(
       create: (context) => OnboardingBloc(
         firestoreRepository: context.read<FirestoreRepository>(),
+        notificationsRepository: context.read<NotificationsRepository>(),
       ),
       child: const OnboardingView(),
     );
