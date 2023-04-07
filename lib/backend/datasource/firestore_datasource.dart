@@ -155,6 +155,26 @@ class FirestoreDatasource {
     return updatedUser;
   }
 
+  Future<User?> deleteTag({
+    required String tagName,
+    required String currentUserId,
+  }) async {
+    final userRef =
+        _firestore.collection(Constants.usersCollection).doc(currentUserId);
+
+    User? updatedUser;
+    await _firestore.runTransaction((transaction) async {
+      final snapshot = await transaction.get(userRef);
+      final user = User.fromFirestore(snapshot);
+
+      final updatedTags = user.tags.where((t) => t.name != tagName).toList();
+      updatedUser = user.copyWith(tags: updatedTags);
+
+      transaction.set(userRef, updatedUser?.toFirestore());
+    });
+    return updatedUser;
+  }
+
   Future<User?> updateTagName({
     required String tagName,
     required String newTagName,

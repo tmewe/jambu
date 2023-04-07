@@ -15,3 +15,12 @@ class ProfileUpdateAttendances extends ProfileEvent {
   @override
   List<Object> get props => [weekdays];
 }
+
+class ProfileDeleteTag extends ProfileEvent {
+  const ProfileDeleteTag({required this.tag});
+
+  final String tag;
+
+  @override
+  List<Object> get props => [tag];
+}

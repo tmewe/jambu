@@ -151,6 +151,19 @@ class UserRepository {
     return updatedUser;
   }
 
+  Future<User?> deleteTag({required String tagName}) async {
+    final user = currentUser;
+    if (user == null) return null;
+
+    final updatedUser = await _firestoreDatasource.deleteTag(
+      tagName: tagName,
+      currentUserId: user.id,
+    );
+
+    _currentUserSubject.add(updatedUser);
+    return updatedUser;
+  }
+
   Future<User?> updateTagName({
     required String tagName,
     required String newTagName,

@@ -15,6 +15,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   })  : _userRepository = userRepository,
         super(ProfileState(user: user)) {
     on<ProfileUpdateAttendances>(_onProfileUpdateAttendances);
+    on<ProfileDeleteTag>(_onProfileDeleteTag);
   }
 
   final UserRepository _userRepository;
@@ -23,10 +24,24 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     ProfileUpdateAttendances event,
     Emitter<ProfileState> emit,
   ) async {
-    await _userRepository.updateRegularAttendances(event.weekdays);
-    final user = _userRepository.currentUser;
-    if (user != null) {
-      emit(state.copyWith(user: user, regularAttendances: event.weekdays));
+    final updatedUser =
+        await _userRepository.updateRegularAttendances(event.weekdays);
+
+    if (updatedUser != null) {
+      emit(
+        state.copyWith(user: updatedUser),
+      );
+    }
+  }
+
+  FutureOr<void> _onProfileDeleteTag(
+    ProfileDeleteTag event,
+    Emitter<ProfileState> emit,
+  ) async {
+    final updatedUser = await _userRepository.deleteTag(tagName: event.tag);
+
+    if (updatedUser != null) {
+      emit(state.copyWith(user: updatedUser));
     }
   }
 }
