@@ -55,31 +55,43 @@ class _CalendarViewState extends State<CalendarView> {
                             },
                             icon: const Icon(Icons.refresh),
                           ),
-                          TextButton(
-                            onPressed: () {
-                              context.read<AuthRepository>().logout();
-                            },
-                            child: const Text('Abmelden'),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              context.goNamed('playground');
-                            },
-                            child: const Text('Playground'),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              final router = GoRouter.of(context);
-                              router
-                                ..goNamed('profile', extra: state.user)
-                                ..addListener(
-                                  () => routerListener(
-                                    router: router,
-                                    context: context,
-                                  ),
-                                );
-                            },
-                            child: const Text('Profil'),
+                          const Spacer(),
+                          MenuAnchor(
+                            alignmentOffset: const Offset(-37, 0),
+                            menuChildren: [
+                              MenuItemButton(
+                                child: const Text('Mein Profil'),
+                                onPressed: () {
+                                  final router = GoRouter.of(context);
+                                  router
+                                    ..goNamed('profile', extra: state.user)
+                                    ..addListener(
+                                      () => routerListener(
+                                        router: router,
+                                        context: context,
+                                      ),
+                                    );
+                                },
+                              ),
+                              MenuItemButton(
+                                child: const Text('Abmelden'),
+                                onPressed: () =>
+                                    context.read<AuthRepository>().logout(),
+                              ),
+                            ],
+                            builder: (context, controller, child) => IconButton(
+                              onPressed: () => controller.isOpen
+                                  ? controller.close()
+                                  : controller.open(),
+                              icon: CircleAvatar(
+                                foregroundImage: NetworkImage(
+                                  state.user?.imageUrl ?? '',
+                                ),
+                                child: Text(
+                                  state.user?.name.characters.first ?? '',
+                                ),
+                              ),
+                            ),
                           ),
                         ],
                       ),
