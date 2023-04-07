@@ -1,7 +1,4 @@
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:jambu/calendar/util/util.dart';
-import 'package:jambu/extension/extension.dart';
 import 'package:jambu/widgets/widgets.dart';
 
 typedef UpdateCallback = void Function(List<int>);
@@ -31,7 +28,7 @@ class RegularAttendancesOnboarding extends StatelessWidget {
           alignment: MainAxisAlignment.center,
         ),
         const SizedBox(height: 10),
-        TextButton(
+        FilledButton.tonal(
           onPressed: onConfirmTap,
           child: const Text('Weiter'),
         ),
