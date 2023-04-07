@@ -190,17 +190,16 @@ class UserRepository {
     );
   }
 
-  Future<void> updateRegularAttendances(List<int> weekdays) async {
+  Future<User?> updateRegularAttendances(List<int> weekdays) async {
     final user = currentUser;
-    if (user == null) return;
+    if (user == null) return null;
 
-    await _firestoreDatasource.updateRegularAttendances(
+    final updatedUser = await _firestoreDatasource.updateRegularAttendances(
       userId: user.id,
       weekdays: weekdays,
     );
 
-    _currentUserSubject.add(
-      currentUser?.copyWith(regularAttendances: weekdays),
-    );
+    _currentUserSubject.add(updatedUser);
+    return updatedUser;
   }
 }

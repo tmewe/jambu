@@ -196,13 +196,21 @@ class FirestoreDatasource {
     await userRef.update({Constants.onboardingCompletedField: true});
   }
 
-  Future<void> updateRegularAttendances({
+  Future<User?> updateRegularAttendances({
     required String userId,
     required List<int> weekdays,
   }) async {
     final userRef =
         _firestore.collection(Constants.usersCollection).doc(userId);
-    await userRef.update({Constants.regularAttendancesField: weekdays});
+
+    User? updatedUser;
+    await _firestore.runTransaction((transaction) async {
+      final snapshot = await transaction.get(userRef);
+      final user = User.fromFirestore(snapshot);
+      updatedUser = user.copyWith(regularAttendances: weekdays);
+      transaction.set(userRef, updatedUser?.toFirestore());
+    });
+    return updatedUser;
   }
 
   Attendance _updateExistingAttendance({
