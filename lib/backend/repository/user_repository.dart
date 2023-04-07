@@ -115,41 +115,48 @@ class UserRepository {
     );
   }
 
-  Future<void> addTagToUser({
+  Future<User?> addTagToUser({
     required String tagName,
     required String currentUserId,
     required String tagUserId,
   }) async {
-    return _firestoreDatasource.addTagToUser(
+    final updatedUser = await _firestoreDatasource.addTagToUser(
       tagName: tagName,
       currentUserId: currentUserId,
       tagUserId: tagUserId,
     );
+
+    _currentUserSubject.add(updatedUser);
+    return updatedUser;
   }
 
-  Future<void> removeTagFromUser({
+  Future<User?> removeTagFromUser({
     required String tagName,
     required String currentUserId,
     required String tagUserId,
   }) async {
-    return _firestoreDatasource.removeTagFromUser(
+    final updatedUser = await _firestoreDatasource.removeTagFromUser(
       tagName: tagName,
       currentUserId: currentUserId,
       tagUserId: tagUserId,
     );
+
+    return updatedUser;
   }
 
-  Future<void> updateTagName({
+  Future<User?> updateTagName({
     required String tagName,
     required String newTagName,
   }) async {
     final user = currentUser;
-    if (user == null) return;
-    return _firestoreDatasource.updateTagName(
+    if (user == null) return null;
+
+    final updatedUser = await _firestoreDatasource.updateTagName(
       tagName: tagName,
       newTagName: newTagName,
       userId: user.id,
     );
+    return updatedUser;
   }
 
   Future<void> updateFavorite({

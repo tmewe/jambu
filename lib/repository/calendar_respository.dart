@@ -50,69 +50,69 @@ class CalendarRepository {
     return user != null ? user.tags.map((t) => t.name).toList() : [];
   }
 
-  Future<List<CalendarWeek>> addTagToUser({
+  Future<CalendarUpdate> addTagToUser({
     required String tagName,
     required String userId,
     required List<CalendarWeek> weeks,
   }) async {
     final currentUser = _userRepository.currentUser;
-    if (currentUser == null) return weeks;
+    if (currentUser == null) return CalendarUpdate(weeks: weeks);
 
-    unawaited(
-      _userRepository.addTagToUser(
-        tagName: tagName,
-        currentUserId: currentUser.id,
-        tagUserId: userId,
-      ),
+    final updatedUser = await _userRepository.addTagToUser(
+      tagName: tagName,
+      currentUserId: currentUser.id,
+      tagUserId: userId,
     );
 
-    return AddTags(
+    final updatedWeeks = AddTags(
       tagNames: [tagName],
       userId: userId,
       weeks: weeks,
     )();
+
+    return CalendarUpdate(weeks: updatedWeeks, user: updatedUser);
   }
 
-  Future<List<CalendarWeek>> removeTagFromUser({
+  Future<CalendarUpdate> removeTagFromUser({
     required String tag,
     required String userId,
     required List<CalendarWeek> weeks,
   }) async {
     final currentUser = _userRepository.currentUser;
-    if (currentUser == null) return weeks;
+    if (currentUser == null) return CalendarUpdate(weeks: weeks);
 
-    unawaited(
-      _userRepository.removeTagFromUser(
-        tagName: tag,
-        currentUserId: currentUser.id,
-        tagUserId: userId,
-      ),
+    final updatedUser = await _userRepository.removeTagFromUser(
+      tagName: tag,
+      currentUserId: currentUser.id,
+      tagUserId: userId,
     );
 
-    return RemoveTag(
+    final updatedWeeks = RemoveTag(
       tag: tag,
       userId: userId,
       weeks: weeks,
     )();
+
+    return CalendarUpdate(weeks: updatedWeeks, user: updatedUser);
   }
 
-  Future<List<CalendarWeek>> updateTagName({
+  Future<CalendarUpdate> updateTagName({
     required String tagName,
     required String newTagName,
     required List<CalendarWeek> weeks,
   }) async {
-    unawaited(
-      _userRepository.updateTagName(
-        tagName: tagName,
-        newTagName: newTagName,
-      ),
+    final updatedUser = await _userRepository.updateTagName(
+      tagName: tagName,
+      newTagName: newTagName,
     );
 
-    return UpdateTagName(
+    final updatedWeeks = UpdateTagName(
       tagName: tagName,
       newTagName: newTagName,
       weeks: weeks,
     )();
+
+    return CalendarUpdate(weeks: updatedWeeks, user: updatedUser);
   }
 
   List<CalendarWeek> updateAttendanceAt({

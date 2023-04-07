@@ -83,7 +83,7 @@ class FirestoreDatasource {
     await ref.update({'manualAbsences': fieldValue});
   }
 
-  Future<void> addTagToUser({
+  Future<User?> addTagToUser({
     required String tagName,
     required String currentUserId,
     required String tagUserId,
@@ -91,6 +91,7 @@ class FirestoreDatasource {
     final userRef =
         _firestore.collection(Constants.usersCollection).doc(currentUserId);
 
+    User? updatedUser;
     await _firestore.runTransaction((transaction) async {
       final snapshot = await transaction.get(userRef);
       final user = User.fromFirestore(snapshot);
@@ -110,12 +111,13 @@ class FirestoreDatasource {
         );
       }
 
-      final updatedUser = user.copyWith(tags: [...user.tags, tag]);
-      transaction.set(userRef, updatedUser.toFirestore());
+      updatedUser = user.copyWith(tags: [...user.tags, tag]);
+      transaction.set(userRef, updatedUser?.toFirestore());
     });
+    return updatedUser;
   }
 
-  Future<void> removeTagFromUser({
+  Future<User?> removeTagFromUser({
     required String tagName,
     required String currentUserId,
     required String tagUserId,
@@ -123,6 +125,7 @@ class FirestoreDatasource {
     final userRef =
         _firestore.collection(Constants.usersCollection).doc(currentUserId);
 
+    User? updatedUser;
     await _firestore.runTransaction((transaction) async {
       final snapshot = await transaction.get(userRef);
       final user = User.fromFirestore(snapshot);
@@ -135,12 +138,13 @@ class FirestoreDatasource {
         userIds: existingTag.userIds.where((id) => id != tagUserId).toList(),
       );
 
-      final updatedUser = user.copyWith(tags: [...user.tags, updatedTag]);
-      transaction.set(userRef, updatedUser.toFirestore());
+      updatedUser = user.copyWith(tags: [...user.tags, updatedTag]);
+      transaction.set(userRef, updatedUser?.toFirestore());
     });
+    return updatedUser;
   }
 
-  Future<void> updateTagName({
+  Future<User?> updateTagName({
     required String tagName,
     required String newTagName,
     required String userId,
@@ -148,6 +152,7 @@ class FirestoreDatasource {
     final userRef =
         _firestore.collection(Constants.usersCollection).doc(userId);
 
+    User? updatedUser;
     await _firestore.runTransaction((transaction) async {
       final snapshot = await transaction.get(userRef);
       final user = User.fromFirestore(snapshot);
@@ -157,9 +162,10 @@ class FirestoreDatasource {
       if (existingTag == null || !user.tags.remove(existingTag)) return;
 
       final updatedTag = existingTag.copyWith(name: newTagName);
-      final updatedUser = user.copyWith(tags: [...user.tags, updatedTag]);
-      transaction.set(userRef, updatedUser.toFirestore());
+      updatedUser = user.copyWith(tags: [...user.tags, updatedTag]);
+      transaction.set(userRef, updatedUser?.toFirestore());
     });
+    return updatedUser;
   }
 
   Future<void> addFavorite({
