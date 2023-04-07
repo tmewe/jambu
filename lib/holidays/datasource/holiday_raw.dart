@@ -1,6 +1,7 @@
-// ignore_for_file: public_member_api_docs
 // ignore_for_file: sort_constructors_first
 import 'dart:convert';
+
+import 'package:jambu/model/model.dart';
 
 class HolidayRaw {
   const HolidayRaw({
@@ -36,6 +37,14 @@ class HolidayRaw {
 
   factory HolidayRaw.fromJson(dynamic source) =>
       HolidayRaw.fromMap(source as Map<String, dynamic>);
+
+  Holiday toModel() {
+    return Holiday(
+      name: name.first.text,
+      date: startDate,
+      nationwide: nationwide,
+    );
+  }
 }
 
 class Name {
