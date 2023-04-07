@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:jambu/app_ui/app_ui.dart';
 import 'package:jambu/model/model.dart';
 import 'package:jambu/profile/bloc/profile_bloc.dart';
@@ -29,15 +30,40 @@ class ProfileView extends StatelessWidget {
                       _GeneralInfo(user: state.user),
                       const SizedBox(height: 40),
                       _RegularAttendances(
-                        selectedWeekdays: state.regularAttendances,
+                        selectedWeekdays: state.user.regularAttendances,
                         onDayTap: (weekdays) => context
                             .read<ProfileBloc>()
                             .add(ProfileUpdateAttendances(weekdays: weekdays)),
                       ),
                       const SizedBox(height: 40),
                       _Tags(
-                        tags: state.tags,
-                        onDeleteTap: (_) {},
+                        tags: state.tagNames,
+                        onDeleteTap: (tag) {
+                          showDialog<void>(
+                            context: context,
+                            builder: (_) => AlertDialog(
+                              title: const Text('Tag löschen?'),
+                              content: Text(
+                                "Möchtest du den Tag '$tag' wirklich löschen?",
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => context.pop(),
+                                  child: const Text('Abbrechen'),
+                                ),
+                                FilledButton(
+                                  onPressed: () {
+                                    context
+                                        .read<ProfileBloc>()
+                                        .add(ProfileDeleteTag(tag: tag));
+                                    context.pop();
+                                  },
+                                  child: const Text('Löschen'),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
                       ),
                     ],
                   ),
@@ -135,19 +161,24 @@ class _Tags extends StatelessWidget {
           text: 'Deine Tags:',
         ),
         const SizedBox(height: 20),
-        Wrap(
-          spacing: 5,
-          runSpacing: 5,
-          crossAxisAlignment: WrapCrossAlignment.center,
-          children: [
-            ...tags.map((tag) {
-              return Chip(
-                label: Text(tag),
-                onDeleted: () => onDeleteTap(tag),
-              );
-            }),
-          ],
-        ),
+        if (tags.isNotEmpty)
+          Wrap(
+            spacing: 5,
+            runSpacing: 5,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            children: [
+              ...tags.map((tag) {
+                return Chip(
+                  label: Text(tag),
+                  onDeleted: () => onDeleteTap(tag),
+                );
+              }),
+            ],
+          ),
+        if (tags.isEmpty)
+          const Text(
+            'Hier erscheinen deine Tags sobald du welche hinzugefügt hast.',
+          ),
       ],
     );
   }

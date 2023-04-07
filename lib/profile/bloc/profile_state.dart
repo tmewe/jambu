@@ -2,31 +2,20 @@
 part of 'profile_bloc.dart';
 
 class ProfileState extends Equatable {
-  ProfileState({
+  const ProfileState({
     required this.user,
-    List<int>? regularAttendances,
-    List<String>? tags,
-  }) {
-    this.regularAttendances = regularAttendances ?? user.regularAttendances;
-    this.tags = tags ?? user.tags.map((t) => t.name).toList();
-  }
+  });
 
   final User user;
-  late final List<int> regularAttendances;
-  late final List<String> tags;
+
+  List<String> get tagNames => user.tags.map((t) => t.name).toList();
 
   @override
-  List<Object> get props => [user, regularAttendances, tags];
+  List<Object> get props => [user];
 
-  ProfileState copyWith({
-    User? user,
-    List<int>? regularAttendances,
-    List<String>? tags,
-  }) {
+  ProfileState copyWith({User? user}) {
     return ProfileState(
       user: user ?? this.user,
-      regularAttendances: regularAttendances ?? this.regularAttendances,
-      tags: tags ?? this.tags,
     );
   }
 }
