@@ -9,12 +9,14 @@ class CalendarMapping {
     required this.currentUser,
     required this.attendances,
     required this.users,
+    this.holidays = const [],
     this.today,
   });
 
   final User currentUser;
   final List<Attendance> attendances;
   final List<User> users;
+  final List<Holiday> holidays;
   final DateTime? today;
 
   List<CalendarWeek> call() {
@@ -36,11 +38,14 @@ class CalendarMapping {
         );
         final isUserAttending = presentEntry != null && absentEntry == null;
         final reason = presentEntry?.reason ?? absentEntry?.reason;
+        final holiday = holidays.atDate(date);
+
         final day = CalendarDay(
           date: date,
           isUserAttending: isUserAttending,
           users: _colleaguesAtDay(attendance),
           reason: reason,
+          holidayName: holiday?.name,
         );
         days.add(day);
       }

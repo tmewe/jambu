@@ -4,6 +4,7 @@ import 'package:jambu/backend/backend.dart';
 import 'package:jambu/calendar/core/core.dart';
 import 'package:jambu/calendar/core/update_favorite.dart';
 import 'package:jambu/calendar/model/model.dart';
+import 'package:jambu/holidays/repository/repository.dart';
 import 'package:jambu/model/model.dart';
 import 'package:jambu/repository/repository.dart';
 
@@ -12,13 +13,16 @@ class CalendarRepository {
     required FirestoreRepository firestoreRepository,
     required UserRepository userRepository,
     required MSGraphRepository msGraphRepository,
+    required HolidaysRepository holidaysRepository,
   })  : _firestoreRepository = firestoreRepository,
         _userRepository = userRepository,
-        _msGraphRepository = msGraphRepository;
+        _msGraphRepository = msGraphRepository,
+        _holidaysRepository = holidaysRepository;
 
   final FirestoreRepository _firestoreRepository;
   final UserRepository _userRepository;
   final MSGraphRepository _msGraphRepository;
+  final HolidaysRepository _holidaysRepository;
 
   Future<User?> fetchCurrentUser() {
     return _userRepository.fetchCurrentUser();
@@ -35,10 +39,13 @@ class CalendarRepository {
 
     final users = await _firestoreRepository.getUsers();
 
+    final holidays = await _holidaysRepository.fetchHolidays();
+
     final weeks = CalendarMapping(
       currentUser: user,
       attendances: attendances,
       users: users,
+      holidays: holidays,
     )();
 
     return weeks;

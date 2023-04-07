@@ -27,7 +27,7 @@ class HolidayRaw {
       endDate: map['endDate'] as String,
       type: map['type'] as String,
       name: List<Name>.from(
-        (map['name'] as List<int>).map<Name>(
+        (map['name'] as List<dynamic>).map<Name>(
           (x) => Name.fromMap(x as Map<String, dynamic>),
         ),
       ),
@@ -38,10 +38,13 @@ class HolidayRaw {
   factory HolidayRaw.fromJson(dynamic source) =>
       HolidayRaw.fromMap(source as Map<String, dynamic>);
 
-  Holiday toModel() {
+  Holiday? toModel() {
+    final date = DateTime.tryParse(startDate);
+    if (date == null) return null;
+
     return Holiday(
       name: name.first.text,
-      date: startDate,
+      date: date,
       nationwide: nationwide,
     );
   }
