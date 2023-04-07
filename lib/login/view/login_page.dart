@@ -48,7 +48,8 @@ class WelcomeView extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const Text('Willkommen bei jambu.'),
-          TextButton(
+          const SizedBox(height: 10),
+          FilledButton(
             onPressed: () {
               context.read<LoginBloc>().add(LoginRequested());
             },

@@ -26,7 +26,7 @@ class NotificationsOnboarding extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TextButton(
+            FilledButton.tonal(
               onPressed: onBackTap,
               child: const Text('Zurück'),
             ),
@@ -35,7 +35,7 @@ class NotificationsOnboarding extends StatelessWidget {
               onPressed: onDeclineTap,
               child: const Text('Später vielleicht'),
             ),
-            TextButton(
+            FilledButton.tonal(
               onPressed: onConfirmTap,
               child: const Text('Bestätigen'),
             ),
