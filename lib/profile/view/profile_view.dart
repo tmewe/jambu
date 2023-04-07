@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:jambu/app_ui/app_ui.dart';
 import 'package:jambu/model/model.dart';
 import 'package:jambu/profile/bloc/profile_bloc.dart';
-import 'package:jambu/profile/widgets/widgets.dart';
 import 'package:jambu/widgets/widgets.dart';
 
 class ProfileView extends StatelessWidget {
@@ -128,7 +127,7 @@ class _RegularAttendances extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const ProfileSectionHeader(
+        const _ProfileSectionHeader(
           text: 'An welchen Tagen bist Du normalerweise jede Woche im Büro?',
         ),
         const SizedBox(height: 20),
@@ -157,7 +156,7 @@ class _Tags extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const ProfileSectionHeader(
+        const _ProfileSectionHeader(
           text: 'Deine Tags:',
         ),
         const SizedBox(height: 20),
@@ -181,5 +180,18 @@ class _Tags extends StatelessWidget {
           ),
       ],
     );
+  }
+}
+
+class _ProfileSectionHeader extends StatelessWidget {
+  const _ProfileSectionHeader({
+    required this.text,
+  });
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(text, style: Theme.of(context).textTheme.titleLarge);
   }
 }
