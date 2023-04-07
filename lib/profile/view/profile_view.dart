@@ -34,6 +34,11 @@ class ProfileView extends StatelessWidget {
                             .read<ProfileBloc>()
                             .add(ProfileUpdateAttendances(weekdays: weekdays)),
                       ),
+                      const SizedBox(height: 40),
+                      _Tags(
+                        tags: state.tags,
+                        onDeleteTap: (_) {},
+                      ),
                     ],
                   ),
                 ),
@@ -104,6 +109,44 @@ class _RegularAttendances extends StatelessWidget {
         RegularAttendancesSelector(
           selectedWeekdays: selectedWeekdays,
           onWeekdayTap: onDayTap,
+        ),
+      ],
+    );
+  }
+}
+
+typedef StringCallback = void Function(String);
+
+class _Tags extends StatelessWidget {
+  const _Tags({
+    required this.tags,
+    required this.onDeleteTap,
+  });
+
+  final List<String> tags;
+  final StringCallback onDeleteTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const ProfileSectionHeader(
+          text: 'Deine Tags:',
+        ),
+        const SizedBox(height: 20),
+        Wrap(
+          spacing: 5,
+          runSpacing: 5,
+          crossAxisAlignment: WrapCrossAlignment.center,
+          children: [
+            ...tags.map((tag) {
+              return Chip(
+                label: Text(tag),
+                onDeleted: () => onDeleteTap(tag),
+              );
+            }),
+          ],
         ),
       ],
     );
