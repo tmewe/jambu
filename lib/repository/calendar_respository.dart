@@ -7,7 +7,6 @@ import 'package:jambu/calendar/model/model.dart';
 import 'package:jambu/model/model.dart';
 import 'package:jambu/repository/repository.dart';
 
-// TODO(tim): Add tests
 class CalendarRepository {
   CalendarRepository({
     required FirestoreRepository firestoreRepository,
