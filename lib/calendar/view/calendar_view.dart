@@ -69,7 +69,15 @@ class _CalendarViewState extends State<CalendarView> {
                           ),
                           TextButton(
                             onPressed: () {
-                              context.goNamed('profile', extra: state.user);
+                              final router = GoRouter.of(context);
+                              router
+                                ..goNamed('profile', extra: state.user)
+                                ..addListener(
+                                  () => routerListener(
+                                    router: router,
+                                    context: context,
+                                  ),
+                                );
                             },
                             child: const Text('Profil'),
                           ),
@@ -148,6 +156,18 @@ class _CalendarViewState extends State<CalendarView> {
           ),
         );
       },
+    );
+  }
+
+  void routerListener({
+    required GoRouter router,
+    required BuildContext context,
+  }) {
+    if (!GoRouter.of(context).location.contains('profile')) {
+      context.read<CalendarBloc>().add(CalendarRefresh());
+    }
+    router.removeListener(
+      () => routerListener(router: router, context: context),
     );
   }
 }
