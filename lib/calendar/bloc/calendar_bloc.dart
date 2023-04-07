@@ -175,12 +175,12 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     CalenderUpdateFavorite event,
     Emitter<CalendarState> emit,
   ) async {
-    final weeks = _calendarRepository.updateFavorite(
+    final update = await _calendarRepository.updateFavorite(
       userId: event.userId,
       isFavorite: event.isFavorite,
       weeks: state.weeks,
     );
 
-    emit(state.copyWith(weeks: weeks));
+    emit(state.copyWith(weeks: update.weeks, user: update.user));
   }
 }
