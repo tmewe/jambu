@@ -169,6 +169,8 @@ class _Tags extends StatelessWidget {
               ...tags.map((tag) {
                 return Chip(
                   label: Text(tag),
+                  deleteIcon: const Icon(Icons.clear, size: 18),
+                  deleteButtonTooltipMessage: 'Löschen',
                   onDeleted: () => onDeleteTap(tag),
                 );
               }),

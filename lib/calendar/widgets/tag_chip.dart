@@ -52,33 +52,11 @@ class _TagChipState extends State<TagChip> {
           ),
         ),
       ],
-      // child: Text(widget.name),
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
-          color: Colors.white30,
-        ),
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Flexible(
-              child: Text(
-                widget.name,
-                maxLines: 3,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-            const SizedBox(width: 3),
-            Tooltip(
-              message: 'Entfernen',
-              child: InkWell(
-                onTap: widget.onRemove,
-                child: const Icon(Icons.clear, size: 15),
-              ),
-            ),
-          ],
-        ),
+      child: Chip(
+        label: Text(widget.name),
+        deleteIcon: const Icon(Icons.clear, size: 18),
+        deleteButtonTooltipMessage: 'Entfernen',
+        onDeleted: widget.onRemove,
       ),
     );
   }
