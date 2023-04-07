@@ -115,15 +115,16 @@ class CalendarRepository {
     return CalendarUpdate(weeks: updatedWeeks, user: updatedUser);
   }
 
-  List<CalendarWeek> updateAttendanceAt({
+  Future<CalendarUpdate> updateAttendanceAt({
     required DateTime date,
     required bool isAttending,
     required List<CalendarWeek> weeks,
-  }) {
+  }) async {
     final day = weeks.dayAtDate(date);
     if (day == null) {
-      return [];
+      return CalendarUpdate(weeks: weeks);
     }
+
     final updatedDay = day.copyWithoutReason(isUserAttending: isAttending);
     final updatedWeeks = weeks.updateDay(updatedDay);
 
@@ -141,13 +142,14 @@ class CalendarRepository {
       ),
     );
 
+    final User? updatedUser;
     if (isAttending) {
-      unawaited(_userRepository.removeManualAbsence(date));
+      updatedUser = await _userRepository.removeManualAbsence(date);
     } else {
-      unawaited(_userRepository.addManualAbsence(date));
+      updatedUser = await _userRepository.addManualAbsence(date);
     }
 
-    return updatedWeeks;
+    return CalendarUpdate(weeks: updatedWeeks, user: updatedUser);
   }
 
   Future<CalendarUpdate> updateFavorite({
