@@ -158,6 +158,7 @@ class _TagButton extends StatelessWidget {
             PopupMenuItem<String?>(
               child: TextField(
                 autofocus: true,
+                decoration: const InputDecoration(hintText: 'Neuer Tag'),
                 onSubmitted: (String text) {
                   if (text.isEmpty) return;
                   onAddTag(text, user.id);
