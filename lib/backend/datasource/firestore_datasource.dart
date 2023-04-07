@@ -168,26 +168,26 @@ class FirestoreDatasource {
     return updatedUser;
   }
 
-  Future<void> addFavorite({
+  Future<User?> updateFavorite({
     required String currentUserId,
     required String favoriteUserId,
+    required bool isFavorite,
   }) async {
     final userRef =
         _firestore.collection(Constants.usersCollection).doc(currentUserId);
-    await userRef.update({
-      Constants.favoritesField: FieldValue.arrayUnion([favoriteUserId])
-    });
-  }
 
-  Future<void> removeFavorite({
-    required String currentUserId,
-    required String favoriteUserId,
-  }) async {
-    final userRef =
-        _firestore.collection(Constants.usersCollection).doc(currentUserId);
-    await userRef.update({
-      Constants.favoritesField: FieldValue.arrayRemove([favoriteUserId])
+    User? updatedUser;
+    await _firestore.runTransaction((transaction) async {
+      final snapshot = await transaction.get(userRef);
+      final user = User.fromFirestore(snapshot);
+      updatedUser = user.copyWith(
+        favorites: isFavorite
+            ? [...user.favorites, favoriteUserId]
+            : user.favorites.where((f) => f != favoriteUserId).toList(),
+      );
+      transaction.set(userRef, updatedUser?.toFirestore());
     });
+    return updatedUser;
   }
 
   Future<void> completeOnboarding({required String userId}) async {

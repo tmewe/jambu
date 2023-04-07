@@ -141,6 +141,7 @@ class UserRepository {
       tagUserId: tagUserId,
     );
 
+    _currentUserSubject.add(updatedUser);
     return updatedUser;
   }
 
@@ -156,26 +157,24 @@ class UserRepository {
       newTagName: newTagName,
       userId: user.id,
     );
+
+    _currentUserSubject.add(updatedUser);
     return updatedUser;
   }
 
-  Future<void> updateFavorite({
+  Future<User?> updateFavorite({
     required String userId,
     required bool isFavorite,
   }) async {
     final user = currentUser;
-    if (user == null) return;
-    if (isFavorite) {
-      return _firestoreDatasource.addFavorite(
-        currentUserId: user.id,
-        favoriteUserId: userId,
-      );
-    } else {
-      return _firestoreDatasource.removeFavorite(
-        currentUserId: user.id,
-        favoriteUserId: userId,
-      );
-    }
+    if (user == null) return null;
+
+    final updatedUser = _firestoreDatasource.updateFavorite(
+      currentUserId: user.id,
+      favoriteUserId: userId,
+      isFavorite: isFavorite,
+    );
+    return updatedUser;
   }
 
   Future<void> completeOnboarding({
@@ -185,6 +184,7 @@ class UserRepository {
     if (user == null) return;
     await updateRegularAttendances(regularAttendances);
     await _firestoreDatasource.completeOnboarding(userId: user.id);
+
     _currentUserSubject.add(
       currentUser?.copyWith(onboardingCompleted: true),
     );

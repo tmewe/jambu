@@ -150,22 +150,22 @@ class CalendarRepository {
     return updatedWeeks;
   }
 
-  List<CalendarWeek> updateFavorite({
+  Future<CalendarUpdate> updateFavorite({
     required String userId,
     required bool isFavorite,
     required List<CalendarWeek> weeks,
-  }) {
-    unawaited(
-      _userRepository.updateFavorite(
-        userId: userId,
-        isFavorite: isFavorite,
-      ),
+  }) async {
+    final updatedUser = await _userRepository.updateFavorite(
+      userId: userId,
+      isFavorite: isFavorite,
     );
 
-    return UpdateFavorite(
+    final updatedWeeks = UpdateFavorite(
       userId: userId,
       isFavorite: isFavorite,
       weeks: weeks,
     )();
+
+    return CalendarUpdate(weeks: updatedWeeks, user: updatedUser);
   }
 }
