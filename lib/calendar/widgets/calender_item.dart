@@ -140,47 +140,41 @@ class _TagButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 25,
-      height: 25,
-      child: PopupMenuButton(
-        position: PopupMenuPosition.under,
-        icon: const Icon(Icons.sell),
-        iconSize: 20,
-        padding: const EdgeInsets.all(3.5),
-        tooltip: 'Tag hinzufügen',
-        onSelected: (String? value) {
-          if (value == null || value.isEmpty) return;
-          onAddTag(value, user.id);
-        },
-        itemBuilder: (context) {
-          return [
-            PopupMenuItem<String?>(
-              child: TextField(
-                autofocus: true,
-                decoration: const InputDecoration(hintText: 'Neuer Tag'),
-                onSubmitted: (String text) {
-                  if (text.isEmpty) return;
-                  onAddTag(text, user.id);
-                  context.pop();
-                },
-              ),
+    return PopupMenuButton(
+      position: PopupMenuPosition.under,
+      icon: const Icon(Icons.sell),
+      tooltip: 'Tag hinzufügen',
+      onSelected: (String? value) {
+        if (value == null || value.isEmpty) return;
+        onAddTag(value, user.id);
+      },
+      itemBuilder: (context) {
+        return [
+          PopupMenuItem<String?>(
+            child: TextField(
+              autofocus: true,
+              decoration: const InputDecoration(hintText: 'Neuer Tag'),
+              onSubmitted: (String text) {
+                if (text.isEmpty) return;
+                onAddTag(text, user.id);
+                context.pop();
+              },
             ),
-            ...tags.where((t) => !user.tags.contains(t)).map(
-                  (tag) => PopupMenuItem(
-                    value: tag,
-                    child: Row(
-                      children: [
-                        const Icon(Icons.sell_outlined),
-                        const SizedBox(width: 10),
-                        Text(tag),
-                      ],
-                    ),
+          ),
+          ...tags.where((t) => !user.tags.contains(t)).map(
+                (tag) => PopupMenuItem(
+                  value: tag,
+                  child: Row(
+                    children: [
+                      const Icon(Icons.sell_outlined),
+                      const SizedBox(width: 10),
+                      Text(tag),
+                    ],
                   ),
-                )
-          ];
-        },
-      ),
+                ),
+              )
+        ];
+      },
     );
   }
 }
