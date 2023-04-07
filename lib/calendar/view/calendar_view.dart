@@ -145,6 +145,7 @@ class _CalendarViewState extends State<CalendarView> {
                                     tags: state.sortedTags,
                                     isBestChoice: week.bestChoices
                                         .contains(day.date.weekday),
+                                    holidayName: day.holidayName,
                                     width: (constraints.maxWidth - 100) / 5,
                                   );
                                 },
