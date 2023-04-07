@@ -75,13 +75,13 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     CalendarAttendanceUpdate event,
     Emitter<CalendarState> emit,
   ) async {
-    final weeks = _calendarRepository.updateAttendanceAt(
+    final update = await _calendarRepository.updateAttendanceAt(
       date: event.date,
       isAttending: event.isAttending,
       weeks: state.weeks,
     );
 
-    emit(state.copyWith(weeks: weeks));
+    emit(state.copyWith(weeks: update.weeks, user: update.user));
   }
 
   FutureOr<void> _onCalendarSearchTextUpdate(

@@ -71,16 +71,27 @@ class FirestoreDatasource {
     });
   }
 
-  Future<void> updateManualAbsences({
+  Future<User?> updateManualAbsences({
     required DateTime date,
     required String userId,
     required bool add,
   }) async {
-    final fieldValue = add
-        ? FieldValue.arrayUnion([Timestamp.fromDate(date)])
-        : FieldValue.arrayRemove([Timestamp.fromDate(date)]);
-    final ref = _firestore.collection(Constants.usersCollection).doc(userId);
-    await ref.update({'manualAbsences': fieldValue});
+    final userRef =
+        _firestore.collection(Constants.usersCollection).doc(userId);
+
+    User? updatedUser;
+    await _firestore.runTransaction((transaction) async {
+      final snapshot = await transaction.get(userRef);
+      final user = User.fromFirestore(snapshot);
+
+      updatedUser = user.copyWith(
+        manualAbsences: add
+            ? [...user.manualAbsences, date]
+            : user.manualAbsences.where((d) => !d.isSameDay(date)).toList(),
+      );
+      transaction.set(userRef, updatedUser?.toFirestore());
+    });
+    return updatedUser;
   }
 
   Future<User?> addTagToUser({

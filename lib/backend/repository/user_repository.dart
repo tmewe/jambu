@@ -93,26 +93,32 @@ class UserRepository {
     _authStateSubject.add(AuthenticationState.loggedIn);
   }
 
-  Future<void> addManualAbsence(DateTime date) async {
+  Future<User?> addManualAbsence(DateTime date) async {
     final user = currentUser;
-    if (user == null) return;
+    if (user == null) return null;
 
-    await _firestoreDatasource.updateManualAbsences(
+    final updatedUser = await _firestoreDatasource.updateManualAbsences(
       date: date,
       userId: user.id,
       add: true,
     );
+
+    _currentUserSubject.add(updatedUser);
+    return updatedUser;
   }
 
-  Future<void> removeManualAbsence(DateTime date) async {
+  Future<User?> removeManualAbsence(DateTime date) async {
     final user = currentUser;
-    if (user == null) return;
+    if (user == null) return null;
 
-    await _firestoreDatasource.updateManualAbsences(
+    final updatedUser = await _firestoreDatasource.updateManualAbsences(
       date: date,
       userId: user.id,
       add: false,
     );
+
+    _currentUserSubject.add(updatedUser);
+    return updatedUser;
   }
 
   Future<User?> addTagToUser({
