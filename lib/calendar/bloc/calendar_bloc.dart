@@ -42,6 +42,7 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     final user = await _calendarRepository.fetchCurrentUser();
     if (user != state.user) {
       emit(state.copyWith(user: user));
+      add(const CalendarTagFilterUpdate());
       add(CalendarRequested());
     }
   }
