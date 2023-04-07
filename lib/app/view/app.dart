@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jambu/app/app.dart';
+import 'package:jambu/app_ui/app_ui.dart';
 import 'package:jambu/backend/backend.dart';
 import 'package:jambu/repository/repository.dart';
 
@@ -54,7 +55,7 @@ class AppView extends StatelessWidget {
   Widget build(BuildContext context) {
     final authState = context.read<UserRepository>().currentUserStream;
     return MaterialApp.router(
-      theme: ThemeData(useMaterial3: true),
+      theme: const AppTheme().themeData,
       debugShowCheckedModeBanner: false,
       routerConfig: getRouter(userStream: authState),
     );
