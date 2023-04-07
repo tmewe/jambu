@@ -1,6 +1,7 @@
 import 'package:chopper/chopper.dart';
 import 'package:jambu/app/app.dart';
 import 'package:jambu/backend/backend.dart';
+import 'package:jambu/holidays/holidays.dart';
 import 'package:jambu/main/bootstrap/bootstrap.dart';
 import 'package:jambu/ms_graph/ms_graph.dart';
 import 'package:jambu/repository/repository.dart';
@@ -21,6 +22,11 @@ void main() {
 
     final notificationsRespository = NotificationsRepository(
       firebaseMessaging: firebaseMessaging,
+    );
+
+    final holidaysDatasource = HolidaysDatasource();
+    final holidaysRepository = HolidaysRepository(
+      datasource: holidaysDatasource,
     );
 
     final firestoreDatasource = FirestoreDatasource(
@@ -65,6 +71,7 @@ void main() {
       firestoreRepository: firestoreRepository,
       userRepository: userRepository,
       msGraphRepository: msGraphRepository,
+      holidaysRepository: holidaysRepository,
     );
 
     return App(

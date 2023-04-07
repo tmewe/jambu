@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:jambu/holidays/datasource/datasource.dart';
 import 'package:jambu/model/model.dart';
 
@@ -10,6 +11,6 @@ class HolidaysRepository {
 
   Future<List<Holiday>> fetchHolidays() async {
     final holidaysRaw = await _datasource.fetchHolidays();
-    return holidaysRaw.map((e) => e.toModel()).toList();
+    return holidaysRaw.map((e) => e.toModel()).whereNotNull().toList();
   }
 }
