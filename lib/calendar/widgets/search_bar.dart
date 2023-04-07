@@ -32,7 +32,7 @@ class SearchBar extends StatelessWidget {
       ),
       contentPadding: const EdgeInsets.all(16),
       filled: true,
-      hintText: 'Suche',
+      hintText: 'Suche nach jambitees',
       prefixIcon: const Icon(
         Icons.search,
         size: 24,
