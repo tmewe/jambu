@@ -9,6 +9,8 @@ abstract class CalendarEvent extends Equatable {
 
 class CalendarRequested extends CalendarEvent {}
 
+class CalendarRefresh extends CalendarEvent {}
+
 class CalendarAttendanceUpdate extends CalendarEvent {
   const CalendarAttendanceUpdate({
     required this.date,

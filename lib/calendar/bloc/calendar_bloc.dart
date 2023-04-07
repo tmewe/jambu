@@ -15,6 +15,7 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     required CalendarRepository calendarRepository,
   })  : _calendarRepository = calendarRepository,
         super(const CalendarState()) {
+    on<CalendarRefresh>(_onCalendarRefresh);
     on<CalendarRequested>(_onCalendarRequested);
     on<CalendarAttendanceUpdate>(_onCalenderAttendanceUpdate);
     on<CalendarSearchTextUpdate>(
@@ -33,6 +34,17 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
   }
 
   final CalendarRepository _calendarRepository;
+
+  FutureOr<void> _onCalendarRefresh(
+    CalendarRefresh event,
+    Emitter<CalendarState> emit,
+  ) async {
+    final user = await _calendarRepository.fetchCurrentUser();
+    if (user != state.user) {
+      emit(state.copyWith(user: user));
+      add(CalendarRequested());
+    }
+  }
 
   FutureOr<void> _onCalendarRequested(
     CalendarRequested event,

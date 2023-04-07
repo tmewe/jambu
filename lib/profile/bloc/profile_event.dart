@@ -6,3 +6,12 @@ abstract class ProfileEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
+
+class ProfileUpdateAttendances extends ProfileEvent {
+  const ProfileUpdateAttendances({required this.weekdays});
+
+  final List<int> weekdays;
+
+  @override
+  List<Object> get props => [weekdays];
+}

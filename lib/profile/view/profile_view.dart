@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jambu/app_ui/app_ui.dart';
+import 'package:jambu/model/model.dart';
 import 'package:jambu/profile/bloc/profile_bloc.dart';
-import 'package:jambu/profile/widgets/regular_attendances.dart';
 import 'package:jambu/profile/widgets/widgets.dart';
+import 'package:jambu/widgets/widgets.dart';
 
 class ProfileView extends StatelessWidget {
   const ProfileView({super.key});
@@ -25,9 +26,14 @@ class ProfileView extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      GeneralInfo(user: state.user),
+                      _GeneralInfo(user: state.user),
                       const SizedBox(height: 40),
-                      const RegularAttendances(),
+                      _RegularAttendances(
+                        selectedWeekdays: state.regularAttendances,
+                        onDayTap: (weekdays) => context
+                            .read<ProfileBloc>()
+                            .add(ProfileUpdateAttendances(weekdays: weekdays)),
+                      ),
                     ],
                   ),
                 ),
@@ -36,6 +42,70 @@ class ProfileView extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+}
+
+class _GeneralInfo extends StatelessWidget {
+  const _GeneralInfo({
+    required this.user,
+  });
+
+  final User user;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        CircleAvatar(
+          foregroundImage: NetworkImage(user.imageUrl!),
+          radius: 60,
+          child: Text(user.name.characters.first),
+        ),
+        const SizedBox(width: 20),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              user.name,
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+            const SizedBox(height: 5),
+            Text(
+              user.jobTitle ?? '',
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class _RegularAttendances extends StatelessWidget {
+  const _RegularAttendances({
+    required this.selectedWeekdays,
+    required this.onDayTap,
+  });
+
+  final List<int> selectedWeekdays;
+  final WeekdaySelectedCallback onDayTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const ProfileSectionHeader(
+          text: 'An welchen Tagen bist Du normalerweise jede Woche im Büro?',
+        ),
+        const SizedBox(height: 20),
+        RegularAttendancesSelector(
+          selectedWeekdays: selectedWeekdays,
+          onWeekdayTap: onDayTap,
+        ),
+      ],
     );
   }
 }
