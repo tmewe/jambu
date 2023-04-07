@@ -113,7 +113,7 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     // Dont't do anything if tag name is empty
     if (event.tagName.isEmpty) return;
 
-    final weeks = await _calendarRepository.addTagToUser(
+    final update = await _calendarRepository.addTagToUser(
       weeks: state.weeks,
       tagName: event.tagName,
       userId: event.userId,
@@ -121,8 +121,9 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
 
     emit(
       state.copyWith(
-        weeks: weeks,
+        weeks: update.weeks,
         tags: {...state.tags, event.tagName}.toList(),
+        user: update.user,
       ),
     );
   }
@@ -131,13 +132,13 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     CalendarRemoveTag event,
     Emitter<CalendarState> emit,
   ) async {
-    final weeks = await _calendarRepository.removeTagFromUser(
+    final update = await _calendarRepository.removeTagFromUser(
       weeks: state.weeks,
       tag: event.tagName,
       userId: event.userId,
     );
 
-    emit(state.copyWith(weeks: weeks));
+    emit(state.copyWith(weeks: update.weeks, user: update.user));
   }
 
   FutureOr<void> _onCalendarUpdateTagName(
@@ -147,7 +148,7 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     final oldTagName = event.tagName;
     final newTagName = event.newTagName;
 
-    final weeks = await _calendarRepository.updateTagName(
+    final update = await _calendarRepository.updateTagName(
       weeks: state.weeks,
       tagName: oldTagName,
       newTagName: newTagName,
@@ -162,9 +163,10 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
 
     emit(
       state.copyWith(
-        weeks: weeks,
+        weeks: update.weeks,
         tags: [...state.tags.where((tag) => tag != oldTagName), newTagName],
         filter: filter,
+        user: update.user,
       ),
     );
   }
