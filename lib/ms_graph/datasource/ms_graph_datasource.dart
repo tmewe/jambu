@@ -16,7 +16,7 @@ class MSGraphDataSource {
   Future<MSUser?> me() async {
     final response = await _msGraphAPI.me();
 
-    if (response.statusCode != 200) {
+    if (response.statusCode < 200 || response.statusCode >= 300) {
       return null;
     }
 
@@ -26,7 +26,7 @@ class MSGraphDataSource {
   Future<Uint8List?> fetchProfilePhoto() async {
     final response = await _msGraphAPI.photo();
 
-    if (response.statusCode != 200) {
+    if (!response.isSuccessful) {
       return null;
     }
 
@@ -36,7 +36,7 @@ class MSGraphDataSource {
   Future<List<MSCalendar>> fetchCalendars() async {
     final response = await _msGraphAPI.calendars();
 
-    if (response.statusCode != 200) {
+    if (!response.isSuccessful) {
       return [];
     }
 
@@ -54,7 +54,7 @@ class MSGraphDataSource {
     final jsonCalendar = calendar.toJson();
     final response = await _msGraphAPI.createCalendar(jsonCalendar);
 
-    if (response.statusCode != 200) {
+    if (!response.isSuccessful) {
       return null;
     }
     final jsonBody =
@@ -113,7 +113,7 @@ class MSGraphDataSource {
           )
         : await _msGraphAPI.calendarEventsFromMainCalendar(filter: filter);
 
-    if (response.statusCode != 200) {
+    if (!response.isSuccessful) {
       return [];
     }
 
