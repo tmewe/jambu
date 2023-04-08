@@ -57,7 +57,7 @@ class _CalendarViewState extends State<CalendarView> {
                           ),
                           const Spacer(),
                           MenuAnchor(
-                            alignmentOffset: const Offset(-37, 0),
+                            alignmentOffset: const Offset(-62, 0),
                             menuChildren: [
                               MenuItemButton(
                                 child: const Text('Mein Profil'),
@@ -74,6 +74,10 @@ class _CalendarViewState extends State<CalendarView> {
                                 },
                               ),
                               MenuItemButton(
+                                trailingIcon: const Icon(
+                                  Icons.logout,
+                                  size: 18,
+                                ),
                                 child: const Text('Abmelden'),
                                 onPressed: () =>
                                     context.read<AuthRepository>().logout(),
