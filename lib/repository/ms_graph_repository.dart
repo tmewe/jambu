@@ -31,9 +31,10 @@ class MSGraphRepository {
     return _msGraphDataSource.createCalendar(msCalendar);
   }
 
-  Future<List<MSEvent>> fetchEventsStartingToday() {
+  Future<List<MSEvent>> fetchEventsStartingToday({String? calendarId}) {
     return _msGraphDataSource.fetchEventsStarting(
       fromDate: DateTime.now().midnight,
+      calendarId: calendarId,
     );
   }
 
@@ -69,10 +70,15 @@ class MSGraphRepository {
     required DateTime date,
     required bool isAttending,
   }) async {
-    final eventsAtDate = await _msGraphDataSource.fetchEventsAt(date);
+    final eventsAtDate = await _msGraphDataSource.fetchEventsAt(
+      date,
+      // TODO(tim): Just for testing - REMOVE
+      calendarId: kDebugMode ? Constants.testCalendarId : null,
+    );
     final officeEventAtDate = eventsAtDate.firstWhereOrNull(
       (event) => event.subject == Constants.officeEventSubject,
     );
+    
     if (officeEventAtDate == null && isAttending) {
       await _msGraphDataSource.createEvent(MSEvent.office(date: date));
     } else if (officeEventAtDate != null &&

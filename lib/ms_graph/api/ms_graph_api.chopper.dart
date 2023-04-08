@@ -70,14 +70,40 @@ class _$MSGraphAPI extends MSGraphAPI {
   }
 
   @override
-  Future<Response<dynamic>> calendarEvents({
+  Future<Response<dynamic>> calendarEventsFromMainCalendar({
     required String filter,
     String select = 'subject, showAs, isOnlineMeeting, start, '
         'end, location, responseStatus, isAllDay, attendees',
     int top = 100,
   }) {
-    final Uri $url = Uri.parse(
-        '/v1.0/me/calendars/AAMkAGYwY2Y0MWM4LWE2MzItNDk5Ny05NzIzLWFjNjUwZjI3Y2UwYwBGAAAAAABd4EEhe61iSIEnLzkh3SdoBwDnm8A17Q_oQ41X7GXJE69AAAAAAAEGAADnm8A17Q_oQ41X7GXJE69AAACKlQf_AAA=/events');
+    final Uri $url = Uri.parse('/v1.0/me/calendar/events');
+    final Map<String, dynamic> $params = <String, dynamic>{
+      'filter': filter,
+      'select': select,
+      'top': top,
+    };
+    final Map<String, String> $headers = {
+      'Prefer': 'outlook.timezone = "Europe/Berlin"',
+    };
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      parameters: $params,
+      headers: $headers,
+    );
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> calendarEventsFromCalendar({
+    required String calendarId,
+    required String filter,
+    String select = 'subject, showAs, isOnlineMeeting, start, '
+        'end, location, responseStatus, isAllDay, attendees',
+    int top = 100,
+  }) {
+    final Uri $url = Uri.parse('/v1.0/me/calendars/${calendarId}/events');
     final Map<String, dynamic> $params = <String, dynamic>{
       'filter': filter,
       'select': select,

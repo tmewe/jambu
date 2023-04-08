@@ -64,7 +64,10 @@ class MSGraphDataSource {
     return calendarId;
   }
 
-  Future<List<MSEvent>> fetchEventsStarting({DateTime? fromDate}) async {
+  Future<List<MSEvent>> fetchEventsStarting({
+    DateTime? fromDate,
+    String? calendarId,
+  }) async {
     fromDate ??= DateTime.now();
 
     // Subtract one hour to make sure all events at the start date
@@ -72,26 +75,43 @@ class MSGraphDataSource {
     final startDate = fromDate.midnight.subtract(const Duration(hours: 1));
     final endDate = fromDate.add(const Duration(days: 28, hours: 1));
 
-    return _fetchEvents(startDate: startDate, endDate: endDate);
+    return _fetchEvents(
+      startDate: startDate,
+      endDate: endDate,
+      calendarId: calendarId,
+    );
   }
 
-  Future<List<MSEvent>> fetchEventsAt(DateTime date) async {
+  Future<List<MSEvent>> fetchEventsAt(
+    DateTime date, {
+    String? calendarId,
+  }) async {
     final startDate = date.midnight.subtract(const Duration(hours: 1));
     final endDate = date.add(const Duration(days: 1, hours: 1));
 
-    return _fetchEvents(startDate: startDate, endDate: endDate);
+    return _fetchEvents(
+      startDate: startDate,
+      endDate: endDate,
+      calendarId: calendarId,
+    );
   }
 
   Future<List<MSEvent>> _fetchEvents({
     required DateTime startDate,
     required DateTime endDate,
+    String? calendarId,
   }) async {
     final startDateString = DateFormat('yyyy-MM-ddTHH:mm').format(startDate);
     final endDateString = DateFormat('yyyy-MM-ddTHH:mm').format(endDate);
     final filter = "start/dateTime ge '$startDateString' "
         "and end/dateTime le '$endDateString'";
 
-    final response = await _msGraphAPI.calendarEvents(filter: filter);
+    final response = calendarId != null
+        ? await _msGraphAPI.calendarEventsFromCalendar(
+            calendarId: calendarId,
+            filter: filter,
+          )
+        : await _msGraphAPI.calendarEventsFromMainCalendar(filter: filter);
 
     if (response.statusCode != 200) {
       return [];
