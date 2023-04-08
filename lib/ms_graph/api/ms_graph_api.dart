@@ -24,6 +24,11 @@ abstract class MSGraphAPI extends ChopperService {
   )
   Future<Response<dynamic>> createCalendar(@Body() String data);
 
+  @Delete(path: 'me/calendars/{id}')
+  Future<Response<dynamic>> deleteCalendar({
+    @Path('id') required String calendarId,
+  });
+
   @Get(
     path: 'me/calendar/events',
     headers: {'Prefer': 'outlook.timezone = "${Constants.germanTimeZone}"'},

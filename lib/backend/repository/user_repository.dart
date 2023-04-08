@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:collection/collection.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fb_auth;
 import 'package:jambu/backend/datasource/datasource.dart';
+import 'package:jambu/extension/extension.dart';
 import 'package:jambu/model/model.dart';
 import 'package:jambu/repository/repository.dart';
 import 'package:rxdart/subjects.dart';
@@ -159,6 +162,8 @@ class UserRepository {
       tagName: tagName,
       currentUserId: user.id,
     );
+
+    unawaited(_msGraphRepository.deleteCalendar(name: tagName.calendarName));
 
     _currentUserSubject.add(updatedUser);
     return updatedUser;
