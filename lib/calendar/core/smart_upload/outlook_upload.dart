@@ -62,7 +62,7 @@ class OutlookUpload {
   }) {
     var requestIndex = 0;
 
-    final deleteRequests = eventsToRemove.mapIndexed((index, event) {
+    final deleteRequests = eventsToRemove.map((event) {
       return MSBatchRequest.deleteEvent(
         id: requestIndex++,
         eventId: event.id ?? '0',
@@ -71,7 +71,7 @@ class OutlookUpload {
       );
     });
 
-    final addRequests = eventsToAdd.mapIndexed((index, event) {
+    final addRequests = eventsToAdd.map((event) {
       return MSBatchRequest.createEvent(
         id: requestIndex++,
         event: event,
