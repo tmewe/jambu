@@ -63,14 +63,21 @@ class OutlookUpload {
     var requestIndex = 0;
 
     final deleteRequests = eventsToRemove.mapIndexed((index, event) {
-      return MSBatchRequest.deleteOfficeEvent(
+      return MSBatchRequest.deleteEvent(
         id: requestIndex++,
         eventId: event.id ?? '0',
+        // TODO(tim): Just for testing - REMOVE
+        calendarId: kDebugMode ? Constants.testCalendarId : null,
       );
     });
 
     final addRequests = eventsToAdd.mapIndexed((index, event) {
-      return MSBatchRequest.createOfficeEvent(id: requestIndex++, event: event);
+      return MSBatchRequest.createEvent(
+        id: requestIndex++,
+        event: event,
+        // TODO(tim): Just for testing - REMOVE
+        calendarId: kDebugMode ? Constants.testCalendarId : null,
+      );
     });
 
     return [...deleteRequests, ...addRequests].take(20).toList();

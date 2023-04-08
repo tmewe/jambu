@@ -1,9 +1,10 @@
+// ignore_for_file: sort_constructors_first
+
 import 'dart:convert';
 import 'dart:io';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
-import 'package:jambu/constants.dart';
 
 import 'package:jambu/ms_graph/model/model.dart';
 
@@ -17,35 +18,41 @@ class MSBatchRequest extends Equatable {
     this.headers,
   });
 
-  factory MSBatchRequest.createOfficeEvent({
-    required int id,
-    required MSEvent event,
-  }) {
-    return MSBatchRequest(
-      id: id,
-      method: 'POST',
-      url: '/me/calendars/${Constants.testCalendarId}/events',
-      headers: {'content-type': ContentType.json.mimeType},
-      body: event.toMap(),
-    );
-  }
-
-  factory MSBatchRequest.deleteOfficeEvent({
-    required int id,
-    required String eventId,
-  }) {
-    return MSBatchRequest(
-      id: id,
-      method: 'DELETE',
-      url: '/me/calendars/${Constants.testCalendarId}/events/$eventId',
-    );
-  }
-
   final int id;
   final String method;
   final String url;
   final Map<String, dynamic>? body;
   final Map<String, String>? headers;
+
+  factory MSBatchRequest.createEvent({
+    required int id,
+    required MSEvent event,
+    String? calendarId,
+  }) {
+    return MSBatchRequest(
+      id: id,
+      method: 'POST',
+      url: calendarId != null
+          ? '/me/calendars/$calendarId/events'
+          : 'me/calendar/events',
+      headers: {'content-type': ContentType.json.mimeType},
+      body: event.toMap(),
+    );
+  }
+
+  factory MSBatchRequest.deleteEvent({
+    required int id,
+    required String eventId,
+    String? calendarId,
+  }) {
+    return MSBatchRequest(
+      id: id,
+      method: 'DELETE',
+      url: calendarId != null
+          ? '/me/calendars/$calendarId/events/$eventId'
+          : 'me/calendar/events/$eventId',
+    );
+  }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
