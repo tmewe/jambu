@@ -25,10 +25,10 @@ class MSGraphRepository {
     return _msGraphDataSource.fetchCalendars();
   }
 
-  Future<void> createCalendar({required String name, Color? color}) async {
+  Future<String?> createCalendar({required String name, Color? color}) async {
     final hexColor = color != null ? '#${color.value.toRadixString(16)}' : null;
     final msCalendar = MSCalendar(name: name, hexColor: hexColor);
-    await _msGraphDataSource.createCalendar(msCalendar);
+    return _msGraphDataSource.createCalendar(msCalendar);
   }
 
   Future<List<MSEvent>> eventsFromToday() {

@@ -50,9 +50,19 @@ class MSGraphDataSource {
     return calendars;
   }
 
-  Future<void> createCalendar(MSCalendar calendar) async {
+  /// Create a new calendar and returns the id
+  Future<String?> createCalendar(MSCalendar calendar) async {
     final jsonCalendar = calendar.toJson();
-    await _msGraphAPI.createCalendar(jsonCalendar);
+    final response = await _msGraphAPI.createCalendar(jsonCalendar);
+
+    if (response.statusCode != 200) {
+      return null;
+    }
+    final jsonBody =
+        jsonDecode(response.body.toString()) as Map<String, dynamic>;
+    final calendarId = jsonBody['id'] as String?;
+    debugPrint('Created new calendar: ${calendar.name}');
+    return calendarId;
   }
 
   Future<List<MSEvent>> eventsFrom({DateTime? fromDate}) async {
