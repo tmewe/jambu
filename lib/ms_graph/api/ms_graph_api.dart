@@ -25,10 +25,22 @@ abstract class MSGraphAPI extends ChopperService {
   Future<Response<dynamic>> createCalendar(@Body() String data);
 
   @Get(
-    path: 'me/calendars/${Constants.testCalendarId}/events',
+    path: 'me/calendar/events',
     headers: {'Prefer': 'outlook.timezone = "${Constants.germanTimeZone}"'},
   )
-  Future<Response<dynamic>> calendarEvents({
+  Future<Response<dynamic>> calendarEventsFromMainCalendar({
+    @Query() required String filter,
+    @Query() String select = 'subject, showAs, isOnlineMeeting, start, '
+        'end, location, responseStatus, isAllDay, attendees',
+    @Query() int top = 100,
+  });
+
+  @Get(
+    path: 'me/calendars/{id}/events',
+    headers: {'Prefer': 'outlook.timezone = "${Constants.germanTimeZone}"'},
+  )
+  Future<Response<dynamic>> calendarEventsFromCalendar({
+    @Path('id') required String calendarId,
     @Query() required String filter,
     @Query() String select = 'subject, showAs, isOnlineMeeting, start, '
         'end, location, responseStatus, isAllDay, attendees',

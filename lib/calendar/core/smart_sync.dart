@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:jambu/backend/backend.dart';
 import 'package:jambu/calendar/core/core.dart';
+import 'package:jambu/constants.dart';
 import 'package:jambu/model/model.dart';
 import 'package:jambu/repository/repository.dart';
 
@@ -19,7 +20,10 @@ class SmartSync {
 
   Future<List<Attendance>> call() async {
     debugPrint('Start smart sync');
-    final msEvents = await _msGraphRepository.fetchEventsStartingToday();
+    final msEvents = await _msGraphRepository.fetchEventsStartingToday(
+      // TODO(tim): Just for testing
+      calendarId: kDebugMode ? Constants.testCalendarId : null,
+    );
     final firestoreAttendances = await _firestoreRepository.getAttendances();
 
     final updatedAttendances = SmartMerge(
