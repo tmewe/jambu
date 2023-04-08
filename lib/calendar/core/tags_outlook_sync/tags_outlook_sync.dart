@@ -2,6 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:jambu/calendar/model/model.dart';
 import 'package:jambu/model/model.dart';
 import 'package:jambu/ms_graph/model/ms_event.dart';
+import 'package:jambu/ms_graph/ms_graph.dart';
 import 'package:jambu/repository/repository.dart';
 
 class TagsOutlookSync {
@@ -59,7 +60,26 @@ class TagsOutlookSync {
           existingEvents.toSet().difference(updatedEvents.toSet()).toList();
 
       //  Events in Batch Request konvertieren
+      var requestIndex = 0;
+      final addRequests = eventsToAdd.map(
+        (event) => MSBatchRequest.createEvent(
+          id: requestIndex++,
+          event: event,
+          calendarId: calendarId,
+        ),
+      );
+
+      final deleteRequests = eventsToRemove.map(
+        (event) => MSBatchRequest.deleteEvent(
+          id: requestIndex++,
+          eventId: event.id ?? '0',
+          calendarId: calendarId,
+        ),
+      );
+
       //  Batch Request hochladen
+      final requests = [...deleteRequests, ...addRequests];
+      await _msGraphRepository.uploadBatchRequest(requests);
     }
   }
 }
