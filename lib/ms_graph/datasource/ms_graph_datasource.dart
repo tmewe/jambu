@@ -64,6 +64,11 @@ class MSGraphDataSource {
     return calendarId;
   }
 
+  Future<void> deleteCalendar(String calendarId) async {
+    final response = await _msGraphAPI.deleteCalendar(calendarId: calendarId);
+    debugPrint(response.toString());
+  }
+
   Future<List<MSEvent>> fetchEventsStarting({
     DateTime? fromDate,
     String? calendarId,

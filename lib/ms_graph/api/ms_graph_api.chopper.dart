@@ -70,6 +70,17 @@ class _$MSGraphAPI extends MSGraphAPI {
   }
 
   @override
+  Future<Response<dynamic>> deleteCalendar({required String calendarId}) {
+    final Uri $url = Uri.parse('/v1.0/me/calendars/${calendarId}');
+    final Request $request = Request(
+      'DELETE',
+      $url,
+      client.baseUrl,
+    );
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
   Future<Response<dynamic>> calendarEventsFromMainCalendar({
     required String filter,
     String select = 'subject, showAs, isOnlineMeeting, start, '
