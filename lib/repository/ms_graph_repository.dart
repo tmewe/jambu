@@ -35,6 +35,10 @@ class MSGraphRepository {
     return _msGraphDataSource.eventsFrom(fromDate: DateTime.now().midnight);
   }
 
+  Future<List<MSEvent>> fetchEventsFromCalendar(String calendarId) async {
+    return [];
+  }
+
   Future<void> createEventAt({required DateTime dateTime}) async {
     final startDate = DateTime(dateTime.year, dateTime.month, dateTime.day);
     final tomorrow = dateTime.add(const Duration(days: 1));
