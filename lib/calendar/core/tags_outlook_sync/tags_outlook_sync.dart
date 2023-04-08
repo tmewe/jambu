@@ -24,19 +24,17 @@ class TagsOutlookSync {
 
     // Über alle Tags iterieren
     for (final tag in _tags) {
-      
-      //  Checken ob Kalendar für Tag existiert
-      var calendarId = calendars
-          .firstWhereOrNull((calendar) => calendar.name == tag.name)
-          ?.id;
+      //  Checken ob Kalendar für Tag existiert -> sonst Kalendar anlegen
+      final calendarId = calendars
+              .firstWhereOrNull((calendar) => calendar.name == tag.name)
+              ?.id ??
+          await _msGraphRepository.createCalendar(name: tag.name);
 
-      if (calendarId == null) {
-        // Kalendar anlegen
-      }
+      if (calendarId == null) return;
 
       //  Alle Events fetchen
       final existingEvents =
-          await _msGraphRepository.fetchEventsFromCalendar(calendarId!);
+          await _msGraphRepository.fetchEventsFromCalendar(calendarId);
 
       //  Nutzer mit Tag in Events mappen
       final updatedEvents = _attendances
