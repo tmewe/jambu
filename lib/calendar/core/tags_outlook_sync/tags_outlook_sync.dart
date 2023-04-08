@@ -1,7 +1,7 @@
 import 'package:collection/collection.dart';
+import 'package:jambu/calendar/core/tags_outlook_sync/tag_updates.dart';
 import 'package:jambu/calendar/model/model.dart';
-import 'package:jambu/model/model.dart';
-import 'package:jambu/ms_graph/model/ms_event.dart';
+import 'package:jambu/extension/extension.dart';
 import 'package:jambu/ms_graph/ms_graph.dart';
 import 'package:jambu/repository/repository.dart';
 
@@ -9,26 +9,26 @@ class TagsOutlookSync {
   const TagsOutlookSync({
     required MSGraphRepository msGraphRepository,
     required List<CalendarWeek> attendances,
-    required List<Tag> tags,
+    required Iterable<String> tagNames,
   })  : _msGraphRepository = msGraphRepository,
         _attendances = attendances,
-        _tags = tags;
+        _tagNames = tagNames;
 
   final MSGraphRepository _msGraphRepository;
   final List<CalendarWeek> _attendances;
-  final List<Tag> _tags;
+  final Iterable<String> _tagNames;
 
   Future<void> call() async {
     // Alle Kalendar fetchen
     final calendars = await _msGraphRepository.fetchCalendars();
 
     // Über alle Tags iterieren
-    for (final tag in _tags) {
+    for (final tag in _tagNames) {
       //  Checken ob Kalendar für Tag existiert -> sonst Kalendar anlegen
       final calendarId = calendars
-              .firstWhereOrNull((calendar) => calendar.name == tag.name)
+              .firstWhereOrNull((calendar) => calendar.name == tag.calendarName)
               ?.id ??
-          await _msGraphRepository.createCalendar(name: tag.name);
+          await _msGraphRepository.createCalendar(name: tag.calendarName);
 
       if (calendarId == null) return;
 
@@ -36,32 +36,15 @@ class TagsOutlookSync {
       final existingEvents =
           await _msGraphRepository.fetchEventsFromCalendar(calendarId);
 
-      //  Nutzer mit Tag in Events mappen
-      final updatedEvents = _attendances
-          .map((a) => a.days)
-          .expand((e) => e)
-          .map((day) {
-            return day.users.where((user) => user.tags.contains(tag.name)).map(
-                  (user) => MSEvent.fromUser(
-                    date: day.date,
-                    userName: user.name,
-                  ),
-                );
-          })
-          .expand((e) => e)
-          .toList();
-
-      //  Events, die zu adden sind bestimmen (neu - existiert)
-      final eventsToAdd =
-          updatedEvents.toSet().difference(existingEvents.toSet()).toList();
-
-      //  Events, die zu löschen sind bestimmen (existiert - neu)
-      final eventsToRemove =
-          existingEvents.toSet().difference(updatedEvents.toSet()).toList();
+      final updates = TagUpdates(
+        tagName: tag,
+        attendances: _attendances,
+        eventsForTag: existingEvents,
+      )();
 
       //  Events in Batch Request konvertieren
       var requestIndex = 0;
-      final addRequests = eventsToAdd.map(
+      final addRequests = updates.eventsToAdd.map(
         (event) => MSBatchRequest.createEvent(
           id: requestIndex++,
           event: event,
@@ -69,7 +52,7 @@ class TagsOutlookSync {
         ),
       );
 
-      final deleteRequests = eventsToRemove.map(
+      final deleteRequests = updates.eventsToRemove.map(
         (event) => MSBatchRequest.deleteEvent(
           id: requestIndex++,
           eventId: event.id ?? '0',
