@@ -17,8 +17,8 @@ class MSGraphRepository {
     return _msGraphDataSource.me();
   }
 
-  Future<Uint8List?> profilePhoto() {
-    return _msGraphDataSource.profilePhoto();
+  Future<Uint8List?> fetchProfilePhoto() {
+    return _msGraphDataSource.fetchProfilePhoto();
   }
 
   Future<List<MSCalendar>> fetchCalendars() {
@@ -31,8 +31,10 @@ class MSGraphRepository {
     return _msGraphDataSource.createCalendar(msCalendar);
   }
 
-  Future<List<MSEvent>> eventsFromToday() {
-    return _msGraphDataSource.eventsFrom(fromDate: DateTime.now().midnight);
+  Future<List<MSEvent>> fetchEventsStartingToday() {
+    return _msGraphDataSource.fetchEventsStarting(
+      fromDate: DateTime.now().midnight,
+    );
   }
 
   Future<List<MSEvent>> fetchEventsFromCalendar(String calendarId) async {
@@ -67,7 +69,7 @@ class MSGraphRepository {
     required DateTime date,
     required bool isAttending,
   }) async {
-    final eventsAtDate = await _msGraphDataSource.eventsAt(date: date);
+    final eventsAtDate = await _msGraphDataSource.fetchEventsAt(date);
     final officeEventAtDate = eventsAtDate.firstWhereOrNull(
       (event) => event.subject == Constants.officeEventSubject,
     );

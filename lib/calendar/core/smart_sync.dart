@@ -19,7 +19,7 @@ class SmartSync {
 
   Future<List<Attendance>> call() async {
     debugPrint('Start smart sync');
-    final msEvents = await _msGraphRepository.eventsFromToday();
+    final msEvents = await _msGraphRepository.fetchEventsStartingToday();
     final firestoreAttendances = await _firestoreRepository.getAttendances();
 
     final updatedAttendances = SmartMerge(

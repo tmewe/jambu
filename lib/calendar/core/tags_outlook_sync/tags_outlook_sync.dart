@@ -1,7 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:jambu/calendar/model/model.dart';
 import 'package:jambu/model/model.dart';
-import 'package:jambu/ms_graph/model/ms_calendar.dart';
 import 'package:jambu/ms_graph/model/ms_event.dart';
 import 'package:jambu/repository/repository.dart';
 

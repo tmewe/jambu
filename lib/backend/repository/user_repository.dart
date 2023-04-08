@@ -71,7 +71,7 @@ class UserRepository {
 
     final msUser = await _msGraphRepository.me();
     final name = firebaseUser.displayName;
-    final msPhoto = await _msGraphRepository.profilePhoto();
+    final msPhoto = await _msGraphRepository.fetchProfilePhoto();
 
     String? photoUrl;
     if (msPhoto != null && name != null) {
