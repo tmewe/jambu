@@ -1,4 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+// ignore_for_file: sort_constructors_first
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
@@ -10,6 +10,7 @@ import 'package:jambu/ms_graph/model/ms_date.dart';
 import 'package:jambu/ms_graph/model/ms_event_attendee.dart';
 import 'package:jambu/ms_graph/model/ms_event_location.dart';
 import 'package:jambu/ms_graph/model/ms_event_response_status.dart';
+import 'package:meta/meta.dart';
 
 @immutable
 class MSEvent extends Equatable {
@@ -29,6 +30,20 @@ class MSEvent extends Equatable {
 
   factory MSEvent.office({required DateTime date}) => MSEvent(
         subject: Constants.officeEventSubject,
+        isAllDay: true,
+        isOnlineMeeting: false,
+        start: MSDate.german(date: date.midnight),
+        end: MSDate.german(date: date.add(const Duration(days: 1)).midnight),
+        showAs: EventStatus.free,
+        isReminderOn: false,
+      );
+
+  factory MSEvent.fromUser({
+    required DateTime date,
+    required String userName,
+  }) =>
+      MSEvent(
+        subject: userName,
         isAllDay: true,
         isOnlineMeeting: false,
         start: MSDate.german(date: date.midnight),
