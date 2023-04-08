@@ -73,9 +73,6 @@ class OutlookUpload {
       return MSBatchRequest.createOfficeEvent(id: requestIndex++, event: event);
     });
 
-    // TODO(tim): Enable as many batch requests as needed
-    // MS Graph currently supports only 20 requests per batch
-    // https://learn.microsoft.com/en-us/graph/json-batching
     return [...deleteRequests, ...addRequests].take(20).toList();
   }
 
