@@ -39,7 +39,7 @@ class MSGraphRepository {
   }
 
   Future<List<MSEvent>> fetchEventsFromCalendar(String calendarId) async {
-    return [];
+    return _msGraphDataSource.fetchEventsStarting(calendarId: calendarId);
   }
 
   Future<void> createEventAt({required DateTime dateTime}) async {
