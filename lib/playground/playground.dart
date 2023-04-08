@@ -39,7 +39,7 @@ class PlaygroundPage extends StatelessWidget {
             ),
             TextButton(
               onPressed: () {
-                context.read<MSGraphRepository>().calendars();
+                context.read<MSGraphRepository>().fetchCalendars();
               },
               child: const Text('Kalender'),
             ),
