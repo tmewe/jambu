@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
@@ -24,7 +23,7 @@ class MSGraphDataSource {
     return MSUser.fromJson(response.body.toString());
   }
 
-  Future<Uint8List?> profilePhoto() async {
+  Future<Uint8List?> fetchProfilePhoto() async {
     final response = await _msGraphAPI.photo();
 
     if (response.statusCode != 200) {
@@ -65,7 +64,7 @@ class MSGraphDataSource {
     return calendarId;
   }
 
-  Future<List<MSEvent>> eventsFrom({DateTime? fromDate}) async {
+  Future<List<MSEvent>> fetchEventsStarting({DateTime? fromDate}) async {
     fromDate ??= DateTime.now();
 
     // Subtract one hour to make sure all events at the start date
@@ -76,7 +75,7 @@ class MSGraphDataSource {
     return _fetchEvents(startDate: startDate, endDate: endDate);
   }
 
-  Future<List<MSEvent>> eventsAt({required DateTime date}) async {
+  Future<List<MSEvent>> fetchEventsAt(DateTime date) async {
     final startDate = date.midnight.subtract(const Duration(hours: 1));
     final endDate = date.add(const Duration(days: 1, hours: 1));
 

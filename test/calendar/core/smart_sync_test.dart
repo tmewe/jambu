@@ -35,7 +35,8 @@ void main() {
         'when the events from outlook are empty', () async {
       // arrange
       final fsAttendances = _attendances;
-      when(msGraphRepository.eventsFromToday).thenAnswer((_) async => []);
+      when(msGraphRepository.fetchEventsStartingToday)
+          .thenAnswer((_) async => []);
       when(firestoreRepository.getAttendances).thenAnswer((_) async {
         return fsAttendances;
       });
