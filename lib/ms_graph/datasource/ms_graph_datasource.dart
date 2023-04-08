@@ -34,7 +34,7 @@ class MSGraphDataSource {
     return response.bodyBytes;
   }
 
-  Future<List<MSCalendar>> calendars() async {
+  Future<List<MSCalendar>> fetchCalendars() async {
     final response = await _msGraphAPI.calendars();
 
     if (response.statusCode != 200) {

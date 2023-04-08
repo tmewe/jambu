@@ -21,9 +21,8 @@ class MSGraphRepository {
     return _msGraphDataSource.profilePhoto();
   }
 
-  Future<void> calendars() async {
-    final calendars = await _msGraphDataSource.calendars();
-    debugPrint('$calendars');
+  Future<List<MSCalendar>> fetchCalendars() {
+    return _msGraphDataSource.fetchCalendars();
   }
 
   Future<void> createCalendar({required String name, Color? color}) async {
