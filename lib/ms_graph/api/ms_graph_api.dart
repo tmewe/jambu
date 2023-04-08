@@ -48,11 +48,13 @@ abstract class MSGraphAPI extends ChopperService {
   });
 
   @Post(
+    // TODO(tim): Just for testing - REMOVE
     path: 'me/calendars/${Constants.testCalendarId}/events',
     headers: {'content-type': 'application/json'},
   )
   Future<Response<dynamic>> createEvent(@Body() String data);
 
+  // TODO(tim): Just for testing - REMOVE
   @Delete(path: 'me/calendars/${Constants.testCalendarId}/events/{id}')
   Future<Response<dynamic>> deleteEvent({
     @Path() required String id,
