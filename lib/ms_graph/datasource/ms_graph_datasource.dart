@@ -108,8 +108,11 @@ class MSGraphDataSource {
   Future<void> uploadBatchRequest(List<MSBatchRequest> requests) async {
     if (requests.isEmpty) return;
 
+    // TODO(tim): Enable as many batch requests as needed
+    // MS Graph currently supports only 20 requests per batch
+    // https://learn.microsoft.com/en-us/graph/json-batching
     final requestMap = {
-      'requests': requests.map((e) => e.toMap()).toList(),
+      'requests': requests.take(20).map((e) => e.toMap()).toList(),
     };
     await _msGraphAPI.batch(jsonEncode(requestMap));
   }
