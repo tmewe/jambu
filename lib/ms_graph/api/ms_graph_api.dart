@@ -29,6 +29,15 @@ abstract class MSGraphAPI extends ChopperService {
     @Path('id') required String calendarId,
   });
 
+  @Patch(
+    path: 'me/calendars/{id}',
+    headers: {'content-type': 'application/json'},
+  )
+  Future<Response<dynamic>> updateCalendar({
+    @Path('id') required String calendarId,
+    @Body() required String data,
+  });
+
   @Get(
     path: 'me/calendar/events',
     headers: {'Prefer': 'outlook.timezone = "${Constants.germanTimeZone}"'},

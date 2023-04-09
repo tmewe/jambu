@@ -65,8 +65,18 @@ class MSGraphDataSource {
   }
 
   Future<void> deleteCalendar(String calendarId) async {
-    final response = await _msGraphAPI.deleteCalendar(calendarId: calendarId);
-    debugPrint(response.toString());
+    await _msGraphAPI.deleteCalendar(calendarId: calendarId);
+  }
+
+  Future<void> updateCalendarName({
+    required String calendarId,
+    required String newCalendarName,
+  }) async {
+    final requestMap = {'name': newCalendarName};
+    await _msGraphAPI.updateCalendar(
+      calendarId: calendarId,
+      data: jsonEncode(requestMap),
+    );
   }
 
   Future<List<MSEvent>> fetchEventsStarting({

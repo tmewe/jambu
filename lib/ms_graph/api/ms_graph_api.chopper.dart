@@ -81,6 +81,26 @@ class _$MSGraphAPI extends MSGraphAPI {
   }
 
   @override
+  Future<Response<dynamic>> updateCalendar({
+    required String calendarId,
+    required String data,
+  }) {
+    final Uri $url = Uri.parse('/v1.0/me/calendars/${calendarId}');
+    final Map<String, String> $headers = {
+      'content-type': 'application/json',
+    };
+    final $body = data;
+    final Request $request = Request(
+      'PATCH',
+      $url,
+      client.baseUrl,
+      body: $body,
+      headers: $headers,
+    );
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
   Future<Response<dynamic>> calendarEventsFromMainCalendar({
     required String filter,
     String select = 'subject, showAs, isOnlineMeeting, start, '

@@ -40,6 +40,22 @@ class MSGraphRepository {
     }
   }
 
+  Future<void> updateCalendarName({
+    required String calendarName,
+    required String newCalendarName,
+  }) async {
+    final calendars = await _msGraphDataSource.fetchCalendars();
+    final calendarId = calendars
+        .firstWhereOrNull((calendar) => calendar.name == calendarName)
+        ?.id;
+    if (calendarId != null) {
+      await _msGraphDataSource.updateCalendarName(
+        calendarId: calendarId,
+        newCalendarName: newCalendarName,
+      );
+    }
+  }
+
   Future<List<MSEvent>> fetchEventsStartingToday({String? calendarId}) {
     return _msGraphDataSource.fetchEventsStarting(
       fromDate: DateTime.now().midnight,
