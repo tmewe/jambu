@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:jambu/backend/backend.dart';
 import 'package:jambu/calendar/core/core.dart';
 import 'package:jambu/model/model.dart';
+import 'package:jambu/ms_graph/ms_graph.dart';
 import 'package:jambu/repository/repository.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -35,8 +36,11 @@ void main() {
         'when the events from outlook are empty', () async {
       // arrange
       final fsAttendances = _attendances;
-      when(msGraphRepository.fetchEventsStartingToday)
-          .thenAnswer((_) async => []);
+      when(
+        () => msGraphRepository.fetchEventsStartingToday(
+          calendarId: any(named: 'calendarId'),
+        ),
+      ).thenAnswer((_) async => <MSEvent>[]);
       when(firestoreRepository.getAttendances).thenAnswer((_) async {
         return fsAttendances;
       });

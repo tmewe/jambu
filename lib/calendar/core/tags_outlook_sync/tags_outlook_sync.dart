@@ -52,13 +52,14 @@ class TagsOutlookSync {
         ),
       );
 
-      final deleteRequests = updates.eventsToRemove.map(
-        (event) => MSBatchRequest.deleteEvent(
-          id: requestIndex++,
-          eventId: event.id ?? '0',
-          calendarId: calendarId,
-        ),
-      );
+      final deleteRequests =
+          updates.eventsToRemove.map((e) => e.id).whereNotNull().map(
+                (id) => MSBatchRequest.deleteEvent(
+                  id: requestIndex++,
+                  eventId: id,
+                  calendarId: calendarId,
+                ),
+              );
 
       //  Batch Request hochladen
       final requests = [...deleteRequests, ...addRequests];

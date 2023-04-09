@@ -2,7 +2,10 @@ import 'package:jambu/calendar/model/model.dart';
 import 'package:jambu/ms_graph/ms_graph.dart';
 
 class TagEventsUpdates {
-  TagEventsUpdates({required this.eventsToAdd, required this.eventsToRemove});
+  TagEventsUpdates({
+    required this.eventsToAdd,
+    required this.eventsToRemove,
+  });
 
   final List<MSEvent> eventsToAdd;
   final List<MSEvent> eventsToRemove;
