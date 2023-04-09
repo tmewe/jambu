@@ -5,6 +5,7 @@ import 'package:jambu/calendar/core/core.dart';
 import 'package:jambu/calendar/core/tags_outlook_sync/tags_outlook_sync.dart';
 import 'package:jambu/calendar/core/update_favorite.dart';
 import 'package:jambu/calendar/model/model.dart';
+import 'package:jambu/extension/extension.dart';
 import 'package:jambu/holidays/repository/repository.dart';
 import 'package:jambu/model/model.dart';
 import 'package:jambu/repository/repository.dart';
@@ -142,6 +143,13 @@ class CalendarRepository {
       newTagName: newTagName,
       weeks: weeks,
     )();
+
+    unawaited(
+      _msGraphRepository.updateCalendarName(
+        calendarName: tagName.calendarName,
+        newCalendarName: newTagName.calendarName,
+      ),
+    );
 
     return CalendarUpdate(weeks: updatedWeeks, user: updatedUser);
   }
