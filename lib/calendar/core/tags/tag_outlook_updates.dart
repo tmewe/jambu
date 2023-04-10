@@ -11,8 +11,8 @@ class TagEventsUpdates {
   final List<MSEvent> eventsToRemove;
 }
 
-class TagUpdates {
-  TagUpdates({
+class TagOutlookUpdates {
+  TagOutlookUpdates({
     required String tagName,
     required List<CalendarWeek> attendances,
     required List<MSEvent> eventsForTag,
