@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:jambu/constants.dart';
 import 'package:jambu/extension/extension.dart';
@@ -33,30 +32,30 @@ class OutlookUpload {
         .where((event) => event.subject == Constants.officeEventSubject)
         .toList();
 
-    final updatedEvents =
-        userAttendances.map((e) => MSEvent.office(date: e.date));
+    // final updatedEvents =
+    //     userAttendances.map((e) => MSEvent.office(date: e.date));
 
-    final eventsToAdd = updatedEvents
-        .toSet()
-        .difference(officeEvents.toSet())
-        .where((e) => e.start.date.isAfter(uploadDate))
-        .toList();
+    // final eventsToAdd = updatedEvents
+    //     .toSet()
+    //     .difference(officeEvents.toSet())
+    //     .where((e) => e.start.date.isAfter(uploadDate))
+    //     .toList();
 
-    final eventsToRemove = officeEvents
-        .toSet()
-        .difference(updatedEvents.toSet())
-        .where((e) => e.start.date.isAfter(uploadDate))
-        .toList();
+    // final eventsToRemove = officeEvents
+    //     .toSet()
+    //     .difference(updatedEvents.toSet())
+    //     .where((e) => e.start.date.isAfter(uploadDate))
+    //     .toList();
 
-    // final eventsToRemove = getEventsToRemove(
-    //   events: officeEvents,
-    //   userAttendances: userAttendances,
-    // ).where((e) => e.start.date.isAfter(uploadDate)).toList();
+    final eventsToRemove = getEventsToRemove(
+      events: officeEvents,
+      userAttendances: userAttendances,
+    ).where((e) => e.start.date.isAfter(uploadDate)).toList();
 
-    // final eventsToAdd = getEventsToAdd(
-    //   events: officeEvents,
-    //   userAttendances: userAttendances,
-    // ).where((e) => e.start.date.isAfter(uploadDate)).toList();
+    final eventsToAdd = getEventsToAdd(
+      events: officeEvents,
+      userAttendances: userAttendances,
+    ).where((e) => e.start.date.isAfter(uploadDate)).toList();
 
     final requests = mapEventsToRequests(
       eventsToRemove: eventsToRemove,
@@ -102,32 +101,40 @@ class OutlookUpload {
     required List<MSEvent> events,
     required List<Attendance> userAttendances,
   }) {
-    final eventsToRemove = <MSEvent>[];
-    for (final event in events) {
-      final attendance = userAttendances.firstWhereOrNull(
-        (a) => a.date.isSameDay(event.start.date),
-      );
-      if (attendance == null) {
-        eventsToRemove.add(event);
-      }
-    }
-    return eventsToRemove;
+    final updatedEvents =
+        userAttendances.map((e) => MSEvent.office(date: e.date));
+
+    return events.toSet().difference(updatedEvents.toSet()).toList();
+    // final eventsToRemove = <MSEvent>[];
+    // for (final event in events) {
+    //   final attendance = userAttendances.firstWhereOrNull(
+    //     (a) => a.date.isSameDay(event.start.date),
+    //   );
+    //   if (attendance == null) {
+    //     eventsToRemove.add(event);
+    //   }
+    // }
+    // return eventsToRemove;
   }
 
   List<MSEvent> getEventsToAdd({
     required List<MSEvent> events,
     required List<Attendance> userAttendances,
   }) {
-    final eventsToAdd = <MSEvent>[];
-    for (final attendance in userAttendances) {
-      final msEvent = events.firstWhereOrNull(
-        (e) => e.start.date.isSameDay(attendance.date),
-      );
+    final updatedEvents =
+        userAttendances.map((e) => MSEvent.office(date: e.date));
 
-      if (msEvent == null) {
-        eventsToAdd.add(MSEvent.office(date: attendance.date));
-      }
-    }
-    return eventsToAdd;
+    return updatedEvents.toSet().difference(events.toSet()).toList();
+    // final eventsToAdd = <MSEvent>[];
+    // for (final attendance in userAttendances) {
+    //   final msEvent = events.firstWhereOrNull(
+    //     (e) => e.start.date.isSameDay(attendance.date),
+    //   );
+
+    //   if (msEvent == null) {
+    //     eventsToAdd.add(MSEvent.office(date: attendance.date));
+    //   }
+    // }
+    // return eventsToAdd;
   }
 }
