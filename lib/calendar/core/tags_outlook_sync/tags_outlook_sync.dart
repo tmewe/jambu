@@ -19,7 +19,6 @@ class TagsOutlookSync {
   final Iterable<String> _tagNames;
 
   Future<void> call() async {
-    // Alle Kalendar fetchen
     final calendars = await _msGraphRepository.fetchCalendars();
 
     for (final tag in _tagNames) {
@@ -31,7 +30,7 @@ class TagsOutlookSync {
 
       if (calendarId == null) return;
 
-      // Fetch all events for calendar
+      // Fetch all events from calendar
       final existingEvents =
           await _msGraphRepository.fetchEventsFromCalendar(calendarId);
 
