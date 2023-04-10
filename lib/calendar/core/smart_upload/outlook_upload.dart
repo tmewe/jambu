@@ -33,15 +33,30 @@ class OutlookUpload {
         .where((event) => event.subject == Constants.officeEventSubject)
         .toList();
 
-    final eventsToRemove = getEventsToRemove(
-      events: officeEvents,
-      userAttendances: userAttendances,
-    ).where((e) => e.start.date.isAfter(uploadDate)).toList();
+    final updatedEvents =
+        userAttendances.map((e) => MSEvent.office(date: e.date));
 
-    final eventsToAdd = getEventsToAdd(
-      events: officeEvents,
-      userAttendances: userAttendances,
-    ).where((e) => e.start.date.isAfter(uploadDate)).toList();
+    final eventsToAdd = updatedEvents
+        .toSet()
+        .difference(officeEvents.toSet())
+        .where((e) => e.start.date.isAfter(uploadDate))
+        .toList();
+
+    final eventsToRemove = officeEvents
+        .toSet()
+        .difference(updatedEvents.toSet())
+        .where((e) => e.start.date.isAfter(uploadDate))
+        .toList();
+
+    // final eventsToRemove = getEventsToRemove(
+    //   events: officeEvents,
+    //   userAttendances: userAttendances,
+    // ).where((e) => e.start.date.isAfter(uploadDate)).toList();
+
+    // final eventsToAdd = getEventsToAdd(
+    //   events: officeEvents,
+    //   userAttendances: userAttendances,
+    // ).where((e) => e.start.date.isAfter(uploadDate)).toList();
 
     final requests = mapEventsToRequests(
       eventsToRemove: eventsToRemove,
