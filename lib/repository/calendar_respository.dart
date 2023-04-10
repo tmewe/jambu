@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:jambu/backend/backend.dart';
 import 'package:jambu/calendar/core/core.dart';
+import 'package:jambu/calendar/core/favorites/favorites.dart';
 import 'package:jambu/calendar/core/tags_outlook_sync/tags_outlook_sync.dart';
-import 'package:jambu/calendar/core/update_favorite.dart';
 import 'package:jambu/calendar/model/model.dart';
 import 'package:jambu/extension/extension.dart';
 import 'package:jambu/holidays/repository/repository.dart';
@@ -55,6 +55,14 @@ class CalendarRepository {
         msGraphRepository: _msGraphRepository,
         attendances: weeks,
         tagNames: user.tags.map((t) => t.name),
+      )(),
+    );
+
+    unawaited(
+      FavoritesOutlookSync(
+        msGraphRepository: _msGraphRepository,
+        attendances: weeks,
+        favoriteUserIds: user.favorites,
       )(),
     );
 
@@ -206,6 +214,14 @@ class CalendarRepository {
       isFavorite: isFavorite,
       weeks: weeks,
     )();
+
+    unawaited(
+      FavoritesOutlookSync(
+        msGraphRepository: _msGraphRepository,
+        attendances: updatedWeeks,
+        favoriteUserIds: updatedUser?.favorites ?? [],
+      )(),
+    );
 
     return CalendarUpdate(weeks: updatedWeeks, user: updatedUser);
   }

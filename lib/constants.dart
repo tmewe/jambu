@@ -2,6 +2,7 @@ abstract class Constants {
   // Outlook
   static const String officeEventSubject = '💼 Im Büro';
   static const String germanTimeZone = 'Europe/Berlin';
+  static const String favoritesCalendarName = 'Favoriten (jambu)';
 
   // Collections
   static const String usersCollection = 'users';
