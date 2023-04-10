@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:jambu/calendar/core/tags_outlook_sync/tag_updates.dart';
+import 'package:jambu/calendar/core/core.dart';
 import 'package:jambu/calendar/model/model.dart';
 import 'package:jambu/ms_graph/ms_graph.dart';
 
@@ -24,7 +24,7 @@ void main() {
           days: [CalendarDay(date: date, isUserAttending: false)],
         );
 
-        final updates = TagUpdates(
+        final updates = TagOutlookUpdates(
           tagName: tagName,
           attendances: [week],
           eventsForTag: [],
@@ -51,7 +51,7 @@ void main() {
           ],
         );
 
-        final updates = TagUpdates(
+        final updates = TagOutlookUpdates(
           tagName: tagName,
           attendances: [week],
           eventsForTag: [],
@@ -76,7 +76,7 @@ void main() {
           ],
         );
 
-        final updates = TagUpdates(
+        final updates = TagOutlookUpdates(
           tagName: tagName,
           attendances: [week],
           eventsForTag: [MSEvent.fromUser(date: date, userName: user.name)],
@@ -100,7 +100,7 @@ void main() {
           ],
         );
 
-        final updates = TagUpdates(
+        final updates = TagOutlookUpdates(
           tagName: tagName,
           attendances: [week],
           eventsForTag: [],
@@ -134,7 +134,7 @@ void main() {
           ],
         );
 
-        final updates = TagUpdates(
+        final updates = TagOutlookUpdates(
           tagName: tagName,
           attendances: [week],
           eventsForTag: [],
@@ -170,7 +170,7 @@ void main() {
           ],
         );
 
-        final updates = TagUpdates(
+        final updates = TagOutlookUpdates(
           tagName: tagName,
           attendances: [week],
           eventsForTag: [],
@@ -200,7 +200,7 @@ void main() {
           days: [CalendarDay(date: date, isUserAttending: false)],
         );
 
-        final updates = TagUpdates(
+        final updates = TagOutlookUpdates(
           tagName: tagName,
           attendances: [week],
           eventsForTag: [],
@@ -221,7 +221,7 @@ void main() {
           days: [CalendarDay(date: date, isUserAttending: false)],
         );
 
-        final updates = TagUpdates(
+        final updates = TagOutlookUpdates(
           tagName: tagName,
           attendances: [week],
           eventsForTag: [],
@@ -249,7 +249,7 @@ void main() {
           ],
         );
 
-        final updates = TagUpdates(
+        final updates = TagOutlookUpdates(
           tagName: tagName,
           attendances: [week],
           eventsForTag: [
@@ -279,7 +279,7 @@ void main() {
           ],
         );
 
-        final updates = TagUpdates(
+        final updates = TagOutlookUpdates(
           tagName: tagName,
           attendances: [week],
           eventsForTag: [

@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:jambu/backend/backend.dart';
 import 'package:jambu/calendar/core/core.dart';
 import 'package:jambu/calendar/core/favorites/favorites.dart';
-import 'package:jambu/calendar/core/tags_outlook_sync/tags_outlook_sync.dart';
 import 'package:jambu/calendar/model/model.dart';
 import 'package:jambu/extension/extension.dart';
 import 'package:jambu/holidays/repository/repository.dart';

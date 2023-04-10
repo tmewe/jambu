@@ -1,5 +1,5 @@
 import 'package:collection/collection.dart';
-import 'package:jambu/calendar/core/tags_outlook_sync/tag_updates.dart';
+import 'package:jambu/calendar/core/tags/tag_outlook_updates.dart';
 import 'package:jambu/calendar/model/model.dart';
 import 'package:jambu/extension/extension.dart';
 import 'package:jambu/ms_graph/ms_graph.dart';
@@ -34,7 +34,7 @@ class TagsOutlookSync {
       final existingEvents =
           await _msGraphRepository.fetchEventsFromCalendar(calendarId);
 
-      final updates = TagUpdates(
+      final updates = TagOutlookUpdates(
         tagName: tag,
         attendances: _attendances,
         eventsForTag: existingEvents,
