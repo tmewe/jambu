@@ -22,9 +22,8 @@ class TagsOutlookSync {
     // Alle Kalendar fetchen
     final calendars = await _msGraphRepository.fetchCalendars();
 
-    // Über alle Tags iterieren
     for (final tag in _tagNames) {
-      //  Checken ob Kalendar für Tag existiert -> sonst Kalendar anlegen
+      //  Check if calendar for tag already exists -> otherwise create one
       final calendarId = calendars
               .firstWhereOrNull((calendar) => calendar.name == tag.calendarName)
               ?.id ??
@@ -32,7 +31,7 @@ class TagsOutlookSync {
 
       if (calendarId == null) return;
 
-      //  Alle Events fetchen
+      // Fetch all events for calendar
       final existingEvents =
           await _msGraphRepository.fetchEventsFromCalendar(calendarId);
 
@@ -42,7 +41,7 @@ class TagsOutlookSync {
         eventsForTag: existingEvents,
       )();
 
-      //  Events in Batch Request konvertieren
+      //  Convert events to batch requests
       var requestIndex = 0;
       final addRequests = updates.eventsToAdd.map(
         (event) => MSBatchRequest.createEvent(
@@ -61,7 +60,7 @@ class TagsOutlookSync {
                 ),
               );
 
-      //  Batch Request hochladen
+      //  Upload batch requests
       final requests = [...deleteRequests, ...addRequests];
       await _msGraphRepository.uploadBatchRequest(requests);
     }

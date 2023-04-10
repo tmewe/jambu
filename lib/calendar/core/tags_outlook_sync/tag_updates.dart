@@ -25,7 +25,7 @@ class TagUpdates {
   final List<MSEvent> _events;
 
   TagEventsUpdates call() {
-    //  Nutzer mit Tag in Events mappen
+    //  Map users with given tag to events
     final updatedEvents = _attendances
         .map((a) => a.days)
         .expand((e) => e)
@@ -40,11 +40,9 @@ class TagUpdates {
         .expand((e) => e)
         .toList();
 
-    //  Events, die zu adden sind bestimmen (neu - existiert)
     final eventsToAdd =
         updatedEvents.toSet().difference(_events.toSet()).toList();
 
-    //  Events, die zu löschen sind bestimmen (existiert - neu)
     final eventsToRemove =
         _events.toSet().difference(updatedEvents.toSet()).toList();
 
