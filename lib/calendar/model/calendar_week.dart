@@ -11,8 +11,6 @@ class CalendarWeek extends Equatable {
 
   final List<CalendarDay> days;
 
-  List<DateTime> get recommendedDates => [];
-
   List<int> get bestChoices {
     final map = {
       for (final day in days)
@@ -29,15 +27,18 @@ class CalendarWeek extends Equatable {
   }
 
   CalendarWeek updateDay(CalendarDay day) {
-    final filteredDays = days.where((e) {
-      return !DateUtils.isSameDay(e.date, day.date);
+    final dayInWeek = days.firstWhereOrNull((d) {
+      return DateUtils.isSameDay(d.date, day.date);
     });
-    final newDays = [...filteredDays, day]
-      ..sort((a, b) => a.date.compareTo(b.date));
 
-    return copyWith(
-      days: newDays,
-    );
+    // ignore: avoid_returning_this
+    if (dayInWeek == null) return this;
+
+    days.remove(dayInWeek);
+
+    final newDays = [...days, day]..sort((a, b) => a.date.compareTo(b.date));
+
+    return copyWith(days: newDays);
   }
 
   CalendarWeek copyWith({
@@ -69,12 +70,16 @@ extension CalendarWeekFromDate on List<CalendarWeek> {
 extension UpdateWeek on List<CalendarWeek> {
   /// Updates a week in a list of weeks
   List<CalendarWeek> updateWeek(CalendarWeek week) {
-    final filteredWeeks = where((e) {
-      return !DateUtils.isSameDay(e.days.first.date, week.days.first.date);
+    final weekInWeeks = firstWhereOrNull((w) {
+      return DateUtils.isSameDay(w.days.first.date, week.days.first.date);
     });
-    final newWeeks = [...filteredWeeks, week]..sort((a, b) {
-        return a.days.first.date.compareTo(b.days.first.date);
-      });
+
+    if (weekInWeeks == null) return this;
+
+    remove(weekInWeeks);
+    final newWeeks = [...this, week]
+      ..sort((a, b) => a.days.first.date.compareTo(b.days.first.date));
+
     return newWeeks;
   }
 }
@@ -94,20 +99,15 @@ extension UpdateDay on List<CalendarWeek> {
 extension DayAtDate on List<CalendarWeek> {
   // Returns the day on a given day in a list of weeks or null
   CalendarDay? dayAtDate(DateTime date) {
-    final week = getWeekFromDate(date);
-    if (week == null) {
-      return null;
+    for (final week in this) {
+      final day = week.dayAtDate(date);
+      if (day != null) return day;
     }
-    try {
-      return week.days.firstWhere((day) => DateUtils.isSameDay(day.date, date));
-    } catch (_) {
-      return null;
-    }
+    return null;
   }
 }
 
 extension FindUser on List<CalendarWeek> {
-  // Returns the day on a given day in a list of weeks or null
   CalendarUser? firstUserOrNull(String userId) {
     CalendarUser? user;
     for (final week in this) {
