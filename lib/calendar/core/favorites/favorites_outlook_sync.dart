@@ -36,9 +36,9 @@ class FavoritesOutlookSync {
         await _msGraphRepository.fetchEventsFromCalendar(calendarId);
 
     final updates = FavoritesOutlookUpdates(
-      userIds: _favoriteUserIds.toList(),
+      favoriteUserIds: _favoriteUserIds.toList(),
       attendances: _attendances,
-      eventsForUserId: existingEvents,
+      favoriteEvents: existingEvents,
     )();
 
     //  Convert events to batch requests

@@ -13,16 +13,16 @@ class FavoriteEventsUpdates {
 
 class FavoritesOutlookUpdates {
   FavoritesOutlookUpdates({
-    required List<String> userIds,
+    required List<String> favoriteUserIds,
     required List<CalendarWeek> attendances,
-    required List<MSEvent> eventsForUserId,
-  })  : _userIds = userIds,
+    required List<MSEvent> favoriteEvents,
+  })  : _favoriteUserIds = favoriteUserIds,
         _attendances = attendances,
-        _events = eventsForUserId;
+        _favoriteEvents = favoriteEvents;
 
-  final List<String> _userIds;
+  final List<String> _favoriteUserIds;
   final List<CalendarWeek> _attendances;
-  final List<MSEvent> _events;
+  final List<MSEvent> _favoriteEvents;
 
   FavoriteEventsUpdates call() {
     //  Map users with given user id to events
@@ -30,7 +30,9 @@ class FavoritesOutlookUpdates {
         .map((a) => a.days)
         .expand((e) => e)
         .map((day) {
-          return day.users.where((user) => _userIds.contains(user.id)).map(
+          return day.users
+              .where((user) => _favoriteUserIds.contains(user.id))
+              .map(
                 (user) => MSEvent.fromUser(
                   date: day.date,
                   userName: user.name,
@@ -41,10 +43,10 @@ class FavoritesOutlookUpdates {
         .toList();
 
     final eventsToAdd =
-        updatedEvents.toSet().difference(_events.toSet()).toList();
+        updatedEvents.toSet().difference(_favoriteEvents.toSet()).toList();
 
     final eventsToRemove =
-        _events.toSet().difference(updatedEvents.toSet()).toList();
+        _favoriteEvents.toSet().difference(updatedEvents.toSet()).toList();
 
     return FavoriteEventsUpdates(
       eventsToAdd: eventsToAdd,
