@@ -42,15 +42,23 @@ class FavoritesOutlookUpdates {
         .expand((e) => e)
         .toList();
 
+    final uniqueFavoriteEvents = _favoriteEvents.toSet();
+    final uniqueUpdatedEvents = updatedEvents.toSet();
+
+    final duplicateEvents = [..._favoriteEvents];
+    for (final unique in uniqueFavoriteEvents) {
+      if (duplicateEvents.contains(unique)) duplicateEvents.remove(unique);
+    }
+
     final eventsToAdd =
-        updatedEvents.toSet().difference(_favoriteEvents.toSet()).toList();
+        uniqueUpdatedEvents.difference(uniqueFavoriteEvents).toList();
 
     final eventsToRemove =
-        _favoriteEvents.toSet().difference(updatedEvents.toSet()).toList();
+        uniqueFavoriteEvents.difference(uniqueUpdatedEvents).toList();
 
     return FavoriteEventsUpdates(
       eventsToAdd: eventsToAdd,
-      eventsToRemove: eventsToRemove,
+      eventsToRemove: [...eventsToRemove, ...duplicateEvents],
     );
   }
 }

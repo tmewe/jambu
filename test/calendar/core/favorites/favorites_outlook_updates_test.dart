@@ -261,6 +261,52 @@ void main() {
         // assert
         expect(result.eventsToRemove, hasLength(1));
       });
+
+      test('contains duplicate events', () {
+        // arrange
+        const anotherUser = CalendarUser(id: '1', name: 'Another');
+        final week = CalendarWeek(
+          days: [
+            CalendarDay(
+              date: date,
+              isUserAttending: true,
+              users: [user, anotherUser],
+            ),
+          ],
+        );
+
+        final duplicateEventUser = MSEvent.fromUser(
+          date: date,
+          userName: user.name,
+        );
+
+        final duplicateEventAnotherUser = MSEvent.fromUser(
+          date: date,
+          userName: anotherUser.name,
+        );
+
+        final updates = FavoritesOutlookUpdates(
+          favoriteUserIds: [user.id, anotherUser.id],
+          attendances: [week],
+          favoriteEvents: [
+            duplicateEventUser,
+            duplicateEventUser,
+            duplicateEventUser,
+            duplicateEventAnotherUser,
+            duplicateEventAnotherUser,
+          ],
+        );
+
+        // act
+        final result = updates();
+
+        // assert
+        expect(result.eventsToRemove, [
+          duplicateEventUser,
+          duplicateEventUser,
+          duplicateEventAnotherUser,
+        ]);
+      });
     });
   });
 }
