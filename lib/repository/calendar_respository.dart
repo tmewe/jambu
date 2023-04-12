@@ -36,17 +36,15 @@ class CalendarRepository {
       currentUser: user,
       firestoreRepository: _firestoreRepository,
       msGraphRepository: _msGraphRepository,
+      holidaysRepository: _holidaysRepository,
     )();
 
     final users = await _firestoreRepository.getUsers();
-
-    final holidays = await _holidaysRepository.fetchHolidays();
 
     final weeks = CalendarMapping(
       currentUser: user,
       attendances: attendances,
       users: users,
-      holidays: holidays,
     )();
 
     unawaited(

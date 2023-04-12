@@ -142,7 +142,7 @@ class _TagButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return PopupMenuButton(
       position: PopupMenuPosition.under,
-      icon: const Icon(Icons.sell),
+      icon: const Icon(Icons.add_circle),
       tooltip: 'Tag hinzufügen',
       onSelected: (String? value) {
         if (value == null || value.isEmpty) return;
