@@ -1,33 +1,48 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:jambu/backend/backend.dart';
 import 'package:jambu/calendar/core/core.dart';
+import 'package:jambu/holidays/datasource/holiday_raw.dart';
+import 'package:jambu/holidays/holidays.dart';
 import 'package:jambu/model/model.dart';
 import 'package:jambu/ms_graph/ms_graph.dart';
 import 'package:jambu/repository/repository.dart';
 import 'package:mocktail/mocktail.dart';
 
-class MocKMSGraphRepository extends Mock implements MSGraphRepository {}
+class MockMSGraphRepository extends Mock implements MSGraphRepository {}
 
-class MocKFirestoreRepository extends Mock implements FirestoreRepository {}
+class MockFirestoreRepository extends Mock implements FirestoreRepository {}
+
+class MockHolidaysRepository extends Mock implements HolidaysRepository {}
+
+class MockHolidayRaw extends Mock implements HolidayRaw {}
 
 void main() {
   late MSGraphRepository msGraphRepository;
   late FirestoreRepository firestoreRepository;
+  late HolidaysRepository holidaysRepository;
   late SmartSync smartSync;
 
   setUp(() {
-    msGraphRepository = MocKMSGraphRepository();
-    firestoreRepository = MocKFirestoreRepository();
+    msGraphRepository = MockMSGraphRepository();
+    firestoreRepository = MockFirestoreRepository();
+    holidaysRepository = MockHolidaysRepository();
     const currentUser = User(id: '0', name: 'Test User', email: 't@gmail.com');
+
     smartSync = SmartSync(
       currentUser: currentUser,
       firestoreRepository: firestoreRepository,
       msGraphRepository: msGraphRepository,
+      holidaysRepository: holidaysRepository,
     );
+
+    registerFallbackValue(MockHolidayRaw());
 
     when(() => msGraphRepository.uploadBatchRequest(any())).thenAnswer(
       (_) async {},
     );
+
+    when(holidaysRepository.fetchNationwideHolidaysInNextFourWeeks)
+        .thenAnswer((_) async => []);
   });
 
   group('SmartSync', () {

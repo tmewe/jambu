@@ -7,14 +7,12 @@ class CalendarDay extends Equatable {
     required this.isUserAttending,
     this.users = const [],
     this.reason,
-    this.holidayName,
   });
 
   final DateTime date;
   final bool isUserAttending;
   final List<CalendarUser> users;
   final String? reason;
-  final String? holidayName;
 
   CalendarDay copyWith({
     DateTime? date,
@@ -28,7 +26,6 @@ class CalendarDay extends Equatable {
       isUserAttending: isUserAttending ?? this.isUserAttending,
       users: users ?? this.users,
       reason: reason ?? this.reason,
-      holidayName: holidayName ?? this.holidayName,
     );
   }
 
@@ -44,7 +41,6 @@ class CalendarDay extends Equatable {
       isUserAttending: isUserAttending ?? this.isUserAttending,
       users: users ?? this.users,
       reason: reason,
-      holidayName: holidayName ?? this.holidayName,
     );
   }
 

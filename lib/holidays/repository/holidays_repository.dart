@@ -9,8 +9,12 @@ class HolidaysRepository {
 
   final HolidaysDatasource _datasource;
 
-  Future<List<Holiday>> fetchHolidays() async {
+  Future<List<Holiday>> fetchNationwideHolidaysInNextFourWeeks() async {
     final holidaysRaw = await _datasource.fetchHolidays();
-    return holidaysRaw.map((e) => e.toModel()).whereNotNull().toList();
+    return holidaysRaw.map((e) => e.toModel()).whereNotNull().where((h) {
+      return h.nationwide &&
+          h.date.isAfter(DateTime.now().subtract(const Duration(days: 1))) &&
+          h.date.isBefore(DateTime.now().add(const Duration(days: 29)));
+    }).toList();
   }
 }

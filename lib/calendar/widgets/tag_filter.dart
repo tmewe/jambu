@@ -25,7 +25,7 @@ class TagFilter extends StatelessWidget {
         runSpacing: 5,
         crossAxisAlignment: WrapCrossAlignment.center,
         children: [
-          const Icon(Icons.sell),
+          const Icon(Icons.sell_outlined),
           ...tags.map((tag) {
             return FilterChip(
               label: Text(tag),
