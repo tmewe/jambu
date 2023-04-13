@@ -83,11 +83,11 @@ class MSGraphDataSource {
     DateTime? fromDate,
     String? calendarId,
   }) async {
-    fromDate ??= DateTime.now();
+    fromDate ??= DateTime.now().midnight.firstDateOfWeek;
 
     // Subtract one hour to make sure all events at the start date
     // are included
-    final startDate = fromDate.midnight.subtract(const Duration(hours: 1));
+    final startDate = fromDate.subtract(const Duration(hours: 1));
     final endDate = fromDate.add(const Duration(days: 28, hours: 1));
 
     return _fetchEvents(

@@ -42,6 +42,12 @@ extension Midnight on DateTime {
   }
 }
 
+extension FirstDateOfWeek on DateTime {
+  DateTime get firstDateOfWeek {
+    return subtract(Duration(days: weekday - 1));
+  }
+}
+
 extension IsSameDay on DateTime {
   bool isSameDay(DateTime date) {
     return DateUtils.isSameDay(this, date);

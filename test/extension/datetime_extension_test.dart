@@ -59,6 +59,19 @@ void main() {
     });
   });
 
+  group('FirstDateOfWeek', () {
+    test('returns first date of week', () {
+      // arrange
+      final startDate = DateTime.parse('2023-04-10'); // Monday
+      final dates = List.generate(7, (i) => startDate.add(Duration(days: i)));
+      // act
+      final result = dates.map((d) => d.firstDateOfWeek);
+
+      // assert
+      expect(result, List.generate(7, (_) => startDate));
+    });
+  });
+
   group('IsSameDay', () {
     test(
         'returns true '
