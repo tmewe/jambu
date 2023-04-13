@@ -34,9 +34,10 @@ class CalendarWeek extends Equatable {
     // ignore: avoid_returning_this
     if (dayInWeek == null) return this;
 
-    days.remove(dayInWeek);
+    final filteredDays = days.where((day) => day != dayInWeek);
 
-    final newDays = [...days, day]..sort((a, b) => a.date.compareTo(b.date));
+    final newDays = [...filteredDays, day]
+      ..sort((a, b) => a.date.compareTo(b.date));
 
     return copyWith(days: newDays);
   }
