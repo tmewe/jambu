@@ -54,6 +54,11 @@ class _CalendarViewState extends State<CalendarView> {
                     children: [
                       Row(
                         children: [
+                          Text(
+                            'jambu',
+                            style: Theme.of(context).textTheme.headlineMedium,
+                          ),
+                          const Spacer(),
                           IconButton(
                             onPressed: () {
                               context
@@ -62,7 +67,6 @@ class _CalendarViewState extends State<CalendarView> {
                             },
                             icon: const Icon(Icons.refresh),
                           ),
-                          const Spacer(),
                           MenuAnchor(
                             alignmentOffset: const Offset(-62, 0),
                             menuChildren: [
@@ -147,14 +151,14 @@ class _CalendarViewState extends State<CalendarView> {
                             onPressed: _selectedWeekIndex > 0
                                 ? () => setState(() => _selectedWeekIndex--)
                                 : null,
-                            icon: const Icon(Icons.arrow_back_ios),
+                            icon: const Icon(Icons.chevron_left),
                           ),
                           IconButton(
                             onPressed:
                                 _selectedWeekIndex < state.weeks.length - 1
                                     ? () => setState(() => _selectedWeekIndex++)
                                     : null,
-                            icon: const Icon(Icons.arrow_forward_ios),
+                            icon: const Icon(Icons.chevron_right),
                           ),
                         ],
                       ),
