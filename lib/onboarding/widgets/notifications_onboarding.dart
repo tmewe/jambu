@@ -15,26 +15,36 @@ class NotificationsOnboarding extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('Darf jambu dir Benachrichtigungen schicken?'),
+        const SelectableText('Schritt 3/3'),
+        const SizedBox(height: 50),
+        SelectableText(
+          'Benachrichtigungen',
+          style: Theme.of(context).textTheme.headlineLarge,
+        ),
+        const SizedBox(height: 30),
+        const Text(
+            'Darf jambu dir 1x pro Woche eine Benachrichtigung schicken, '
+            'um dich daran zu errinern, deine Anwesenheit zu aktualisieren?'),
         const Text(
           'Bitte überprüfe auch ob dein Browser '
           'dir Benachrichtigungen schicken darf.',
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: 60),
         Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            FilledButton.tonal(
+            TextButton(
               onPressed: onBackTap,
               child: const Text('Zurück'),
             ),
-            const Spacer(),
+            const SizedBox(width: 40),
             TextButton(
               onPressed: onDeclineTap,
               child: const Text('Später vielleicht'),
             ),
+            const SizedBox(width: 10),
             FilledButton.tonal(
               onPressed: onConfirmTap,
               child: const Text('Bestätigen'),
