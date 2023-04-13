@@ -2,7 +2,6 @@ import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:jambu/constants.dart';
-import 'package:jambu/extension/extension.dart';
 import 'package:jambu/ms_graph/ms_graph.dart';
 
 class MSGraphRepository {
@@ -56,11 +55,8 @@ class MSGraphRepository {
     }
   }
 
-  Future<List<MSEvent>> fetchEventsStartingToday({String? calendarId}) {
-    return _msGraphDataSource.fetchEventsStarting(
-      fromDate: DateTime.now().midnight,
-      calendarId: calendarId,
-    );
+  Future<List<MSEvent>> fetchEventsFromStartOfWeek({String? calendarId}) {
+    return _msGraphDataSource.fetchEventsStarting(calendarId: calendarId);
   }
 
   Future<List<MSEvent>> fetchEventsFromCalendar(String calendarId) async {

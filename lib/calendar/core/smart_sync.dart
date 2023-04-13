@@ -24,7 +24,7 @@ class SmartSync {
 
   Future<List<Attendance>> call() async {
     debugPrint('Start smart sync');
-    final msEvents = await _msGraphRepository.fetchEventsStartingToday(
+    final msEvents = await _msGraphRepository.fetchEventsFromStartOfWeek(
       // TODO(tim): Just for testing
       calendarId: kDebugMode ? Constants.testCalendarId : null,
     );

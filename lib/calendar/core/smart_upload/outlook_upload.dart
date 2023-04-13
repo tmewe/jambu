@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:jambu/calendar/core/smart_upload/outlook_updates.dart';
 import 'package:jambu/constants.dart';
 import 'package:jambu/extension/extension.dart';
 import 'package:jambu/model/model.dart';
@@ -11,60 +12,36 @@ class OutlookUpload {
     required List<MSEvent> msEvents,
     required List<Attendance> attendances,
     required MSGraphRepository msGraphRepository,
-    DateTime? today,
   })  : _currentUser = currentUser,
         _msEvents = msEvents,
         _attendances = attendances,
-        _msGraphRepository = msGraphRepository,
-        _today = today ?? DateTime.now().midnight;
+        _msGraphRepository = msGraphRepository;
 
   final User _currentUser;
   final List<MSEvent> _msEvents;
   final List<Attendance> _attendances;
   final MSGraphRepository _msGraphRepository;
-  final DateTime _today;
 
   Future<void> call() async {
-    final uploadDate = _today.subtract(const Duration(hours: 1));
     final userAttendances = _attendances.wherePresentUserId(_currentUser.id);
 
     final officeEvents = _msEvents
         .where((event) => event.subject == Constants.officeEventSubject)
         .toList();
 
-    // final updatedEvents =
-    //     userAttendances.map((e) => MSEvent.office(date: e.date));
-
-    // final eventsToAdd = updatedEvents
-    //     .toSet()
-    //     .difference(officeEvents.toSet())
-    //     .where((e) => e.start.date.isAfter(uploadDate))
-    //     .toList();
-
-    // final eventsToRemove = officeEvents
-    //     .toSet()
-    //     .difference(updatedEvents.toSet())
-    //     .where((e) => e.start.date.isAfter(uploadDate))
-    //     .toList();
-
-    final eventsToRemove = getEventsToRemove(
-      events: officeEvents,
+    final updates = OutlookUpdates(
+      officeEvents: officeEvents,
       userAttendances: userAttendances,
-    ).where((e) => e.start.date.isAfter(uploadDate)).toList();
-
-    final eventsToAdd = getEventsToAdd(
-      events: officeEvents,
-      userAttendances: userAttendances,
-    ).where((e) => e.start.date.isAfter(uploadDate)).toList();
+    )();
 
     final requests = mapEventsToRequests(
-      eventsToRemove: eventsToRemove,
-      eventsToAdd: eventsToAdd,
+      eventsToRemove: updates.eventsToRemove,
+      eventsToAdd: updates.eventsToAdd,
     );
 
     debugPrint(
-      'Deleting ${eventsToRemove.length} events '
-      'and adding ${eventsToAdd.length} events',
+      'Deleting ${updates.eventsToRemove.length} events '
+      'and adding ${updates.eventsToAdd.length} events',
     );
 
     return _msGraphRepository.uploadBatchRequest(requests);
@@ -95,46 +72,5 @@ class OutlookUpload {
     });
 
     return [...deleteRequests, ...addRequests].take(20).toList();
-  }
-
-  List<MSEvent> getEventsToRemove({
-    required List<MSEvent> events,
-    required List<Attendance> userAttendances,
-  }) {
-    final updatedEvents =
-        userAttendances.map((e) => MSEvent.office(date: e.date));
-
-    return events.toSet().difference(updatedEvents.toSet()).toList();
-    // final eventsToRemove = <MSEvent>[];
-    // for (final event in events) {
-    //   final attendance = userAttendances.firstWhereOrNull(
-    //     (a) => a.date.isSameDay(event.start.date),
-    //   );
-    //   if (attendance == null) {
-    //     eventsToRemove.add(event);
-    //   }
-    // }
-    // return eventsToRemove;
-  }
-
-  List<MSEvent> getEventsToAdd({
-    required List<MSEvent> events,
-    required List<Attendance> userAttendances,
-  }) {
-    final updatedEvents =
-        userAttendances.map((e) => MSEvent.office(date: e.date));
-
-    return updatedEvents.toSet().difference(events.toSet()).toList();
-    // final eventsToAdd = <MSEvent>[];
-    // for (final attendance in userAttendances) {
-    //   final msEvent = events.firstWhereOrNull(
-    //     (e) => e.start.date.isSameDay(attendance.date),
-    //   );
-
-    //   if (msEvent == null) {
-    //     eventsToAdd.add(MSEvent.office(date: attendance.date));
-    //   }
-    // }
-    // return eventsToAdd;
   }
 }

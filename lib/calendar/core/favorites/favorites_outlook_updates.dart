@@ -50,14 +50,12 @@ class FavoritesOutlookUpdates {
       if (duplicateEvents.contains(unique)) duplicateEvents.remove(unique);
     }
 
-    final eventsToAdd =
-        uniqueUpdatedEvents.difference(uniqueFavoriteEvents).toList();
+    final eventsToAdd = uniqueUpdatedEvents.difference(uniqueFavoriteEvents);
 
-    final eventsToRemove =
-        uniqueFavoriteEvents.difference(uniqueUpdatedEvents).toList();
+    final eventsToRemove = uniqueFavoriteEvents.difference(uniqueUpdatedEvents);
 
     return FavoriteEventsUpdates(
-      eventsToAdd: eventsToAdd,
+      eventsToAdd: eventsToAdd.toList(),
       eventsToRemove: [...eventsToRemove, ...duplicateEvents],
     );
   }

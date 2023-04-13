@@ -52,7 +52,7 @@ void main() {
       // arrange
       final fsAttendances = _attendances;
       when(
-        () => msGraphRepository.fetchEventsStartingToday(
+        () => msGraphRepository.fetchEventsFromStartOfWeek(
           calendarId: any(named: 'calendarId'),
         ),
       ).thenAnswer((_) async => <MSEvent>[]);
