@@ -39,6 +39,14 @@ class _OnboardingViewState extends State<OnboardingView> {
                       physics: const NeverScrollableScrollPhysics(),
                       children: [
                         OnboardingContainer(
+                          child: WelcomeOnboarding(
+                            onConfirmTap: () => _pageController.nextPage(
+                              duration: _transitionDuration,
+                              curve: _transitionCurve,
+                            ),
+                          ),
+                        ),
+                        OnboardingContainer(
                           child: RegularAttendancesOnboarding(
                             weekdays: state.regularWeekdays,
                             onDayTap: (weekdays) {
