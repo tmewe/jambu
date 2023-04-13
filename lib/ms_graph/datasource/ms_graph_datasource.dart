@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:jambu/extension/extension.dart';
 import 'package:jambu/ms_graph/api/api.dart';
 import 'package:jambu/ms_graph/model/model.dart';
+import 'package:quiver/iterables.dart';
 
 class MSGraphDataSource {
   MSGraphDataSource({
@@ -152,12 +153,17 @@ class MSGraphDataSource {
   Future<void> uploadBatchRequest(List<MSBatchRequest> requests) async {
     if (requests.isEmpty) return;
 
-    // TODO(tim): Enable as many batch requests as needed
     // MS Graph currently supports only 20 requests per batch
     // https://learn.microsoft.com/en-us/graph/json-batching
-    final requestMap = {
-      'requests': requests.take(20).map((e) => e.toMap()).toList(),
-    };
-    await _msGraphAPI.batch(jsonEncode(requestMap));
+    const batchLimit = 20;
+    final sublists = partition(requests, batchLimit);
+
+    final requestFutures = sublists.map((list) {
+      return {
+        'requests': requests.map((e) => e.toMap()).toList(),
+      };
+    }).map((map) => _msGraphAPI.batch(jsonEncode(map)));
+
+    await Future.wait(requestFutures);
   }
 }

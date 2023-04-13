@@ -71,6 +71,6 @@ class OutlookUpload {
       );
     });
 
-    return [...deleteRequests, ...addRequests].take(20).toList();
+    return [...deleteRequests, ...addRequests].toList();
   }
 }
