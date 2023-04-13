@@ -6,6 +6,7 @@ typedef UpdateCallback = void Function(List<int>);
 class RegularAttendancesOnboarding extends StatelessWidget {
   const RegularAttendancesOnboarding({
     required this.onDayTap,
+    required this.onBackTap,
     required this.onConfirmTap,
     this.weekdays = const [],
     super.key,
@@ -13,24 +14,44 @@ class RegularAttendancesOnboarding extends StatelessWidget {
 
   final List<int> weekdays;
   final UpdateCallback onDayTap;
+  final VoidCallback onBackTap;
   final VoidCallback onConfirmTap;
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('An welchen Tagen bist Du normalerweise jede Woche im Büro'),
-        const SizedBox(height: 10),
+        const SelectableText('Schritt 2/3'),
+        const SizedBox(height: 50),
+        SelectableText(
+          'Regeltermine',
+          style: Theme.of(context).textTheme.headlineLarge,
+        ),
+        const SizedBox(height: 30),
+        const SelectableText(
+          'An welchen Tagen bist Du normalerweise jede Woche im Büro?',
+        ),
+        const SizedBox(height: 30),
         RegularAttendancesSelector(
           selectedWeekdays: weekdays,
           onWeekdayTap: onDayTap,
           alignment: MainAxisAlignment.center,
         ),
-        const SizedBox(height: 10),
-        FilledButton.tonal(
-          onPressed: onConfirmTap,
-          child: const Text('Weiter'),
+        const SizedBox(height: 60),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            TextButton(
+              onPressed: onBackTap,
+              child: const Text('Zurück'),
+            ),
+            const SizedBox(width: 10),
+            FilledButton.tonal(
+              onPressed: onConfirmTap,
+              child: const Text('Weiter'),
+            ),
+          ],
         ),
       ],
     );
