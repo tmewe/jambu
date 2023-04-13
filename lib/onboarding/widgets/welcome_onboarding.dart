@@ -13,7 +13,7 @@ class WelcomeOnboarding extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SelectableText('Schritt 1/4'),
+        const SelectableText('Schritt 1/3'),
         const SizedBox(height: 50),
         SelectableText(
           'Servus 👋\nWilkommen bei jambu',

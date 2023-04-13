@@ -56,6 +56,12 @@ class _OnboardingViewState extends State<OnboardingView> {
                                     ),
                                   );
                             },
+                            onBackTap: () {
+                              _pageController.previousPage(
+                                duration: _transitionDuration,
+                                curve: _transitionCurve,
+                              );
+                            },
                             onConfirmTap: () => _pageController.nextPage(
                               duration: _transitionDuration,
                               curve: _transitionCurve,
