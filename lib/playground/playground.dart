@@ -54,7 +54,7 @@ class PlaygroundPage extends StatelessWidget {
             ),
             TextButton(
               onPressed: () {
-                context.read<MSGraphRepository>().fetchEventsStartingToday();
+                context.read<MSGraphRepository>().fetchEventsFromStartOfWeek();
               },
               child: const Text('Termine'),
             ),

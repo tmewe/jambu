@@ -22,91 +22,10 @@ void main() {
       msEvents: [],
       attendances: [],
       msGraphRepository: msGraphRepository,
-      today: date,
     );
   });
 
   group('OutlookUpload', () {
-    group('getEventsToRemove', () {
-      test(
-          'returns empty list '
-          'when office events are empty', () {
-        // act
-        final result = outlookUpload.getEventsToRemove(
-          events: [],
-          userAttendances: [],
-        );
-
-        // assert
-        expect(result, isEmpty);
-      });
-
-      test(
-          'returns office events '
-          'when attendances are empty', () {
-        // arrange
-        final events = [MSEvent.office(date: date)];
-
-        // act
-        final result = outlookUpload.getEventsToRemove(
-          events: events,
-          userAttendances: [],
-        );
-
-        // assert
-        expect(result, events);
-      });
-
-      test(
-          'returns empty list '
-          'when attendances and office events match', () {
-        // arrange
-        final events = [MSEvent.office(date: date)];
-        final attendances = [Attendance(date: date)];
-
-        // act
-        final result = outlookUpload.getEventsToRemove(
-          events: events,
-          userAttendances: attendances,
-        );
-
-        // assert
-        expect(result, isEmpty);
-      });
-    });
-
-    group('getEventsToAdd', () {
-      test(
-          'returns empty list '
-          'when attendances is empty', () {
-        // act
-        final result = outlookUpload.getEventsToAdd(
-          events: [],
-          userAttendances: [],
-        );
-
-        // assert
-        expect(result, isEmpty);
-      });
-
-      test(
-          'returns one element '
-          'when attendances contain one element '
-          'events are empty', () {
-        // arrange
-        final attendances = [Attendance(date: date)];
-
-        // act
-        final result = outlookUpload.getEventsToAdd(
-          events: [],
-          userAttendances: attendances,
-        );
-
-        // assert
-        expect(result, [MSEvent.office(date: date)]);
-      });
-    });
-
     group('mapEventsToRequests', () {
       test(
           'returns empty list '
