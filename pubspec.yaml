@@ -24,6 +24,7 @@ dependencies:
   intl: 0.17.0
   json_annotation: ^4.8.0
   meta: 1.8.0
+  quiver: ^3.2.1
   rxdart: ^0.27.7
   shared_preferences: ^2.0.18
 
