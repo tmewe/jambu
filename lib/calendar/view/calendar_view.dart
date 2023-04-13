@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:jambu/app_ui/app_ui.dart';
 import 'package:jambu/calendar/bloc/calendar_bloc.dart';
 import 'package:jambu/calendar/widgets/tag_filter.dart';
 import 'package:jambu/calendar/widgets/widgets.dart';
 import 'package:jambu/repository/repository.dart';
+
+final _dateFormat = DateFormat('dd.MM');
 
 class CalendarView extends StatefulWidget {
   const CalendarView({super.key});
@@ -16,7 +19,7 @@ class CalendarView extends StatefulWidget {
 
 class _CalendarViewState extends State<CalendarView> {
   final _searchTextController = TextEditingController();
-  int _selectedWeek = 0;
+  int _selectedWeekIndex = 0;
 
   @override
   void dispose() {
@@ -35,6 +38,10 @@ class _CalendarViewState extends State<CalendarView> {
             ),
           );
         }
+        final selectedWeek = state.filteredWeeks[_selectedWeekIndex];
+        final startDate = _dateFormat.format(selectedWeek.days.first.date);
+        final endDate = _dateFormat.format(selectedWeek.days.last.date);
+
         return Scaffold(
           body: SingleChildScrollView(
             child: Align(
@@ -128,39 +135,45 @@ class _CalendarViewState extends State<CalendarView> {
                                 .add(CalendarTagFilterUpdate(tags: tags));
                           },
                         ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 40),
+                      Row(
+                        children: [
+                          Text(
+                            '$startDate - $endDate',
+                            style: Theme.of(context).textTheme.displaySmall,
+                          ),
+                          const SizedBox(width: 20),
+                          IconButton(
+                            onPressed: _selectedWeekIndex > 0
+                                ? () => setState(() => _selectedWeekIndex--)
+                                : null,
+                            icon: const Icon(Icons.arrow_back_ios),
+                          ),
+                          IconButton(
+                            onPressed:
+                                _selectedWeekIndex < state.weeks.length - 1
+                                    ? () => setState(() => _selectedWeekIndex++)
+                                    : null,
+                            icon: const Icon(Icons.arrow_forward_ios),
+                          ),
+                        ],
+                      ),
                       LayoutBuilder(
                         builder: (context, constraints) {
-                          final week = state.filteredWeeks[_selectedWeek];
                           return Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              IconButton(
-                                onPressed: _selectedWeek > 0
-                                    ? () => setState(() => _selectedWeek--)
-                                    : null,
-                                icon: const Icon(Icons.arrow_back_ios),
-                              ),
-                              ...week.days.map(
-                                (day) {
-                                  return CalendarDayColumn(
-                                    day: day,
-                                    tags: state.sortedTags,
-                                    isBestChoice: week.bestChoices
-                                        .contains(day.date.weekday),
-                                    width: (constraints.maxWidth - 100) / 5,
-                                  );
-                                },
-                              ),
-                              IconButton(
-                                onPressed:
-                                    _selectedWeek < state.weeks.length - 1
-                                        ? () => setState(() => _selectedWeek++)
-                                        : null,
-                                icon: const Icon(Icons.arrow_forward_ios),
-                              ),
-                            ],
+                            children: selectedWeek.days.map(
+                              (day) {
+                                return CalendarDayColumn(
+                                  day: day,
+                                  tags: state.sortedTags,
+                                  isBestChoice: selectedWeek.bestChoices
+                                      .contains(day.date.weekday),
+                                  width: (constraints.maxWidth - 100) / 5,
+                                );
+                              },
+                            ).toList(),
                           );
                         },
                       ),
