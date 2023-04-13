@@ -56,7 +56,8 @@ void main() {
           calendarId: any(named: 'calendarId'),
         ),
       ).thenAnswer((_) async => <MSEvent>[]);
-      when(firestoreRepository.getAttendances).thenAnswer((_) async {
+      when(firestoreRepository.getAttendancesStartingThisWeek)
+          .thenAnswer((_) async {
         return fsAttendances;
       });
 

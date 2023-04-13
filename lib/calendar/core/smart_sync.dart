@@ -28,7 +28,8 @@ class SmartSync {
       // TODO(tim): Just for testing
       calendarId: kDebugMode ? Constants.testCalendarId : null,
     );
-    final firestoreAttendances = await _firestoreRepository.getAttendances();
+    final firestoreAttendances =
+        await _firestoreRepository.getAttendancesStartingThisWeek();
 
     final holidays =
         await _holidaysRepository.fetchNationwideHolidaysInNextFourWeeks();

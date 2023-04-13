@@ -18,7 +18,9 @@ class PlaygroundPage extends StatelessWidget {
           children: [
             TextButton(
               onPressed: () {
-                context.read<FirestoreRepository>().getAttendances();
+                context
+                    .read<FirestoreRepository>()
+                    .getAttendancesStartingThisWeek();
               },
               child: const Text('Bürozeiten'),
             ),

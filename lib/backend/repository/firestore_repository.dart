@@ -1,5 +1,6 @@
 import 'package:jambu/backend/datasource/datasource.dart';
 import 'package:jambu/backend/repository/user_repository.dart';
+import 'package:jambu/extension/extension.dart';
 import 'package:jambu/model/model.dart';
 
 class FirestoreRepository {
@@ -16,8 +17,9 @@ class FirestoreRepository {
     return _firestoreDatasource.getUsers();
   }
 
-  Future<List<Attendance>> getAttendances() async {
-    return _firestoreDatasource.getAttendances();
+  Future<List<Attendance>> getAttendancesStartingThisWeek() async {
+    final firstDateOfWeek = DateTime.now().midnight.firstDateOfWeek;
+    return _firestoreDatasource.getAttendancesStarting(firstDateOfWeek);
   }
 
   Future<void> updateAttendanceAt({

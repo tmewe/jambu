@@ -26,9 +26,14 @@ class FirestoreDatasource {
         .set(user.toFirestore());
   }
 
-  Future<List<Attendance>> getAttendances() async {
-    final querySnaphot =
-        await _firestore.collection(Constants.attendancesCollection).get();
+  Future<List<Attendance>> getAttendancesStarting(DateTime date) async {
+    final querySnaphot = await _firestore
+        .collection(Constants.attendancesCollection)
+        .where(
+          'date',
+          isGreaterThanOrEqualTo: Timestamp.fromDate(date),
+        )
+        .get();
     final attendances = querySnaphot.docs.map(Attendance.fromFirestore);
     return attendances.toList();
   }
