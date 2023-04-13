@@ -40,15 +40,23 @@ class TagOutlookUpdates {
         .expand((e) => e)
         .toList();
 
+    final uniqueTagEvents = _events.toSet();
+    final uniqueUpdatedEvents = updatedEvents.toSet();
+
+    final duplicateEvents = [..._events];
+    for (final unique in uniqueTagEvents) {
+      if (duplicateEvents.contains(unique)) duplicateEvents.remove(unique);
+    }
+
     final eventsToAdd =
-        updatedEvents.toSet().difference(_events.toSet()).toList();
+        uniqueUpdatedEvents.difference(uniqueTagEvents).toList();
 
     final eventsToRemove =
-        _events.toSet().difference(updatedEvents.toSet()).toList();
+        uniqueTagEvents.difference(uniqueUpdatedEvents).toList();
 
     return TagEventsUpdates(
       eventsToAdd: eventsToAdd,
-      eventsToRemove: eventsToRemove,
+      eventsToRemove: [...duplicateEvents, ...eventsToRemove],
     );
   }
 }

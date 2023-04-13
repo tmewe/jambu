@@ -4,7 +4,7 @@ import 'package:jambu/calendar/model/model.dart';
 import 'package:jambu/ms_graph/ms_graph.dart';
 
 void main() {
-  group('TagUpdates', () {
+  group('TagOutlookUpdates', () {
     late String tagName;
     late DateTime date;
     late CalendarUser user;
@@ -292,6 +292,36 @@ void main() {
 
         // assert
         expect(result.eventsToRemove, hasLength(1));
+      });
+
+      test('contains duplicate events', () {
+        // arrange
+        final week = CalendarWeek(
+          days: [
+            CalendarDay(
+              date: date,
+              isUserAttending: false,
+              users: [user],
+            ),
+          ],
+        );
+
+        final duplicateEvent = MSEvent.fromUser(
+          date: date,
+          userName: user.name,
+        );
+
+        final updates = TagOutlookUpdates(
+          tagName: tagName,
+          attendances: [week],
+          eventsForTag: [duplicateEvent, duplicateEvent],
+        );
+
+        // act
+        final result = updates();
+
+        // assert
+        expect(result.eventsToRemove, [duplicateEvent]);
       });
     });
   });
