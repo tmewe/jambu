@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:chopper/chopper.dart';
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import 'package:jambu/constants.dart';
@@ -177,15 +178,22 @@ class MSGraphDataSource {
 
     // MS Graph currently supports only 20 requests per batch
     // https://learn.microsoft.com/en-us/graph/json-batching
+
     const batchLimit = 20;
-    final sublists = partition(requests, batchLimit);
+    final sublists = partition(requests, batchLimit).toList();
 
-    final requestFutures = sublists.map((list) {
-      return {
-        'requests': requests.map((e) => e.toMap()).toList(),
-      };
-    }).map((map) => _msGraphAPI.batch(jsonEncode(map)));
+    debugPrint('Uploading ${sublists.length} batch requests');
 
-    await Future.wait(requestFutures);
+    final requestMaps = sublists.map((list) {
+      return {'requests': list.map((e) => e.toMap()).toList()};
+    });
+
+    for (final list in sublists) {
+      debugPrint('${list.length}');
+    }
+
+    for (final map in requestMaps) {
+      await _msGraphAPI.batch(jsonEncode(map));
+    }
   }
 }
