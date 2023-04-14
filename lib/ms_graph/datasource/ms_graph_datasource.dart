@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
+import 'package:jambu/constants.dart';
 import 'package:jambu/extension/extension.dart';
 import 'package:jambu/ms_graph/api/api.dart';
 import 'package:jambu/ms_graph/model/model.dart';
@@ -143,11 +144,26 @@ class MSGraphDataSource {
 
   Future<void> createEvent(MSEvent event) async {
     final jsonEvent = event.toJson();
-    await _msGraphAPI.createEvent(jsonEvent);
+
+    if (kDebugMode) {
+      await _msGraphAPI.createEventInCalender(
+        calendarId: Constants.testCalendarId,
+        data: jsonEvent,
+      );
+    } else {
+      await _msGraphAPI.createEvent(jsonEvent);
+    }
   }
 
   Future<void> deleteEvent(String eventId) async {
-    await _msGraphAPI.deleteEvent(id: eventId);
+    if (kDebugMode) {
+      await _msGraphAPI.deleteEventInCalendar(
+        calendarId: Constants.testCalendarId,
+        eventId: eventId,
+      );
+    } else {
+      await _msGraphAPI.deleteEvent(eventId: eventId);
+    }
   }
 
   Future<void> uploadBatchRequest(List<MSBatchRequest> requests) async {

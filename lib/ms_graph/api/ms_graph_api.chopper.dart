@@ -155,8 +155,7 @@ class _$MSGraphAPI extends MSGraphAPI {
 
   @override
   Future<Response<dynamic>> createEvent(String data) {
-    final Uri $url = Uri.parse(
-        '/v1.0/me/calendars/AAMkAGYwY2Y0MWM4LWE2MzItNDk5Ny05NzIzLWFjNjUwZjI3Y2UwYwBGAAAAAABd4EEhe61iSIEnLzkh3SdoBwDnm8A17Q_oQ41X7GXJE69AAAAAAAEGAADnm8A17Q_oQ41X7GXJE69AAACKlQf_AAA=/events');
+    final Uri $url = Uri.parse('/v1.0/me/calendar/events');
     final Map<String, String> $headers = {
       'content-type': 'application/json',
     };
@@ -172,9 +171,43 @@ class _$MSGraphAPI extends MSGraphAPI {
   }
 
   @override
-  Future<Response<dynamic>> deleteEvent({required String id}) {
-    final Uri $url = Uri.parse(
-        '/v1.0/me/calendars/AAMkAGYwY2Y0MWM4LWE2MzItNDk5Ny05NzIzLWFjNjUwZjI3Y2UwYwBGAAAAAABd4EEhe61iSIEnLzkh3SdoBwDnm8A17Q_oQ41X7GXJE69AAAAAAAEGAADnm8A17Q_oQ41X7GXJE69AAACKlQf_AAA=/events/${id}');
+  Future<Response<dynamic>> deleteEvent({required String eventId}) {
+    final Uri $url = Uri.parse('/v1.0/me/calendar/events/${eventId}');
+    final Request $request = Request(
+      'DELETE',
+      $url,
+      client.baseUrl,
+    );
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> createEventInCalender({
+    required String calendarId,
+    required String data,
+  }) {
+    final Uri $url = Uri.parse('/v1.0/me/calendars/${calendarId}/events');
+    final Map<String, String> $headers = {
+      'content-type': 'application/json',
+    };
+    final $body = data;
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      body: $body,
+      headers: $headers,
+    );
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> deleteEventInCalendar({
+    required String calendarId,
+    required String eventId,
+  }) {
+    final Uri $url =
+        Uri.parse('/v1.0/me/calendars/${calendarId}/events/${eventId}');
     final Request $request = Request(
       'DELETE',
       $url,
