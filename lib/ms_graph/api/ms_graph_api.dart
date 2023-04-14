@@ -62,16 +62,31 @@ abstract class MSGraphAPI extends ChopperService {
   });
 
   @Post(
-    // TODO(tim): Just for testing - REMOVE
-    path: 'me/calendars/${Constants.testCalendarId}/events',
+    path: 'me/calendar/events',
     headers: {'content-type': 'application/json'},
   )
   Future<Response<dynamic>> createEvent(@Body() String data);
 
-  // TODO(tim): Just for testing - REMOVE
-  @Delete(path: 'me/calendars/${Constants.testCalendarId}/events/{id}')
+  @Delete(path: 'me/calendar/events/{eventId}')
   Future<Response<dynamic>> deleteEvent({
-    @Path() required String id,
+    @Path('eventId') required String eventId,
+  });
+
+  // TODO(tim): Just for testing - REMOVE
+  @Post(
+    path: 'me/calendars/{id}/events',
+    headers: {'content-type': 'application/json'},
+  )
+  Future<Response<dynamic>> createEventInCalender({
+    @Path('id') required String calendarId,
+    @Body() required String data,
+  });
+
+  // TODO(tim): Just for testing - REMOVE
+  @Delete(path: 'me/calendars/{calendarId}/events/{eventId}')
+  Future<Response<dynamic>> deleteEventInCalendar({
+    @Path('calendarId') required String calendarId,
+    @Path('eventId') required String eventId,
   });
 
   @Post(
