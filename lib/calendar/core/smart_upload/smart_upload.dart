@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:jambu/backend/backend.dart';
 import 'package:jambu/calendar/core/smart_upload/firestore_upload.dart';
 import 'package:jambu/calendar/core/smart_upload/outlook_upload.dart';
@@ -25,12 +27,14 @@ class SmartUpload {
   final FirestoreRepository _firestoreRepository;
 
   Future<void> call() async {
-    await OutlookUpload(
-      currentUser: _currentUser,
-      msEvents: _msEvents,
-      attendances: _updatedAttendances,
-      msGraphRepository: _msGraphRepository,
-    )();
+    unawaited(
+      OutlookUpload(
+        currentUser: _currentUser,
+        msEvents: _msEvents,
+        attendances: _updatedAttendances,
+        msGraphRepository: _msGraphRepository,
+      )(),
+    );
 
     await FirestoreUpload(
       currentUser: _currentUser,
