@@ -118,17 +118,23 @@ class MSGraphDataSource {
     required DateTime endDate,
     String? calendarId,
   }) async {
-    final startDateString = DateFormat('yyyy-MM-ddTHH:mm').format(startDate);
-    final endDateString = DateFormat('yyyy-MM-ddTHH:mm').format(endDate);
-    final filter = "start/dateTime ge '$startDateString' "
-        "and end/dateTime le '$endDateString'";
+    final dateFormat = DateFormat('yyyy-MM-ddTHH:mm');
+    final startDateString = dateFormat.format(startDate);
+    final endDateString = dateFormat.format(endDate);
 
-    final response = calendarId != null
-        ? await _msGraphAPI.calendarEventsFromCalendar(
-            calendarId: calendarId,
-            filter: filter,
-          )
-        : await _msGraphAPI.calendarEventsFromMainCalendar(filter: filter);
+    final Response<dynamic> response;
+    if (calendarId != null) {
+      response = await _msGraphAPI.calendarEventsFromCalendar(
+        startDateTime: startDateString,
+        endDateTime: endDateString,
+        calendarId: calendarId,
+      );
+    } else {
+      response = await _msGraphAPI.calendarEventsFromMainCalendar(
+        startDateTime: startDateString,
+        endDateTime: endDateString,
+      );
+    }
 
     if (!response.isSuccessful) {
       return [];

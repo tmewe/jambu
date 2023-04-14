@@ -5,6 +5,10 @@ import 'package:jambu/constants.dart';
 
 part 'ms_graph_api.chopper.dart';
 
+const _eventsLimit = 300;
+const _eventsSelect = 'subject, showAs, isOnlineMeeting, start, '
+    'end, location, responseStatus, isAllDay, attendees';
+
 @ChopperApi(baseUrl: '/v1.0')
 abstract class MSGraphAPI extends ChopperService {
   @Get(path: '/me')
@@ -39,26 +43,26 @@ abstract class MSGraphAPI extends ChopperService {
   });
 
   @Get(
-    path: 'me/calendar/events',
+    path: 'me/calendar/calendarView',
     headers: {'Prefer': 'outlook.timezone = "${Constants.germanTimeZone}"'},
   )
   Future<Response<dynamic>> calendarEventsFromMainCalendar({
-    @Query() required String filter,
-    @Query() String select = 'subject, showAs, isOnlineMeeting, start, '
-        'end, location, responseStatus, isAllDay, attendees',
-    @Query() int top = 100,
+    @Query() required String startDateTime,
+    @Query() required String endDateTime,
+    @Query() String select = _eventsSelect,
+    @Query() int top = _eventsLimit,
   });
 
   @Get(
-    path: 'me/calendars/{id}/events',
+    path: 'me/calendars/{id}/calendarView',
     headers: {'Prefer': 'outlook.timezone = "${Constants.germanTimeZone}"'},
   )
   Future<Response<dynamic>> calendarEventsFromCalendar({
+    @Query() required String startDateTime,
+    @Query() required String endDateTime,
     @Path('id') required String calendarId,
-    @Query() required String filter,
-    @Query() String select = 'subject, showAs, isOnlineMeeting, start, '
-        'end, location, responseStatus, isAllDay, attendees',
-    @Query() int top = 100,
+    @Query() String select = _eventsSelect,
+    @Query() int top = _eventsLimit,
   });
 
   @Post(

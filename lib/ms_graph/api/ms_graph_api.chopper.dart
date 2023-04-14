@@ -102,14 +102,15 @@ class _$MSGraphAPI extends MSGraphAPI {
 
   @override
   Future<Response<dynamic>> calendarEventsFromMainCalendar({
-    required String filter,
-    String select = 'subject, showAs, isOnlineMeeting, start, '
-        'end, location, responseStatus, isAllDay, attendees',
-    int top = 100,
+    required String startDateTime,
+    required String endDateTime,
+    String select = _eventsSelect,
+    int top = _eventsLimit,
   }) {
-    final Uri $url = Uri.parse('/v1.0/me/calendar/events');
+    final Uri $url = Uri.parse('/v1.0/me/calendar/calendarView');
     final Map<String, dynamic> $params = <String, dynamic>{
-      'filter': filter,
+      'startDateTime': startDateTime,
+      'endDateTime': endDateTime,
       'select': select,
       'top': top,
     };
@@ -128,15 +129,16 @@ class _$MSGraphAPI extends MSGraphAPI {
 
   @override
   Future<Response<dynamic>> calendarEventsFromCalendar({
+    required String startDateTime,
+    required String endDateTime,
     required String calendarId,
-    required String filter,
-    String select = 'subject, showAs, isOnlineMeeting, start, '
-        'end, location, responseStatus, isAllDay, attendees',
-    int top = 100,
+    String select = _eventsSelect,
+    int top = _eventsLimit,
   }) {
-    final Uri $url = Uri.parse('/v1.0/me/calendars/${calendarId}/events');
+    final Uri $url = Uri.parse('/v1.0/me/calendars/${calendarId}/calendarView');
     final Map<String, dynamic> $params = <String, dynamic>{
-      'filter': filter,
+      'startDateTime': startDateTime,
+      'endDateTime': endDateTime,
       'select': select,
       'top': top,
     };
