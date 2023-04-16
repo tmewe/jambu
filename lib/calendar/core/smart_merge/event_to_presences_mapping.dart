@@ -22,7 +22,7 @@ class EventToPresencesMapping {
         presences.add(
           Presence(date: date, isPresent: false, reason: event.subject),
         );
-      } else if (event.isPresenceWithMultipleAttendees) {
+      } else if (event.isOfficeEvent) {
         presences.add(
           Presence(date: date, isPresent: true, reason: event.subject),
         );
