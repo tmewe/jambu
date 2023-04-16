@@ -50,6 +50,6 @@ class CalendarState extends Equatable {
 
   @override
   String toString() {
-    return 'CalendarState(status: $status)';
+    return '$status';
   }
 }

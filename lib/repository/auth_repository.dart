@@ -70,7 +70,6 @@ class AuthRepository {
   void _saveCredential(UserCredential userCredential) {
     final accessToken = userCredential.credential?.accessToken;
     if (accessToken != null) {
-      debugPrint('Access token: $accessToken', wrapWidth: 1024);
       _tokenStorage.saveAccessToken(accessToken);
     }
   }
