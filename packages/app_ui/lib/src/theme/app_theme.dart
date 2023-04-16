@@ -1,5 +1,5 @@
+import 'package:app_ui/src/colors/app_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:jambu/app_ui/colors/app_colors.dart';
 
 class AppTheme {
   const AppTheme();
