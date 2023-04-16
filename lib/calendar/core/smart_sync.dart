@@ -23,7 +23,6 @@ class SmartSync {
   final HolidaysRepository _holidaysRepository;
 
   Future<List<Attendance>> call() async {
-    debugPrint('Start smart sync');
     final msEvents = await _msGraphRepository.fetchEventsFromStartOfWeek(
       // TODO(tim): Just for testing - REMOVE
       calendarId: kDebugMode ? Constants.testCalendarId : null,

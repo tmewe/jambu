@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:jambu/calendar/core/smart_merge/event_to_presences_mapping.dart';
 import 'package:jambu/calendar/core/smart_merge/filter_presences.dart';
 import 'package:jambu/calendar/core/smart_merge/merge_holidays.dart';
@@ -51,11 +50,6 @@ class SmartMerge {
       attendances: _fsAttendances,
       currentUser: _currentUser,
     )();
-
-    debugPrint('There are ${attendances.length} attendance updates');
-    for (final a in attendances) {
-      debugPrint(a.toString());
-    }
 
     return attendances;
   }
