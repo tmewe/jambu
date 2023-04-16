@@ -22,8 +22,12 @@ class MSEventLocation {
   final String? locationType;
 
   bool get isURL {
-    if (displayName.isEmpty) return false;
-    return Uri.tryParse(displayName) != null;
+    final regExp = RegExp(
+      r'(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)',
+      caseSensitive: false,
+    );
+    final hasMatch = regExp.hasMatch(displayName);
+    return hasMatch;
   }
 
   MSEventLocation copyWith({

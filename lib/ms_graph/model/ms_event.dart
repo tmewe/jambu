@@ -100,11 +100,18 @@ class MSEvent extends Equatable {
   bool get isWholeDayOOF => isAllDay && showAs == EventStatus.oof;
 
   bool get isPresenceWithMultipleAttendees {
+    final locationIsURL = location?.isURL ?? false;
+    final acceptedOrOrganizer =
+        responseStatus?.response == ResponseStatus.accepted ||
+            responseStatus?.response == ResponseStatus.organizer;
+    final requiredAttendees = attendees.where((a) {
+      return a.type == 'required';
+    }).isNotEmpty;
+
     return !isOnlineMeeting &&
-        !(location?.isURL ?? false) &&
-        (responseStatus?.response == ResponseStatus.accepted ||
-            responseStatus?.response == ResponseStatus.organizer) &&
-        attendees.where((a) => a.type == 'required').isNotEmpty;
+        !locationIsURL &&
+        acceptedOrOrganizer &&
+        requiredAttendees;
   }
 
   MSEvent copyWith({
