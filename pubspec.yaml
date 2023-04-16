@@ -1,11 +1,14 @@
 name: jambu
 description: A new Flutter project.
-version: 1.0.0+1
+version: 0.1.0+1
+publish_to: none
 
 environment:
   sdk: '>=2.19.2 <3.0.0'
 
 dependencies:
+  app_ui:
+    path: packages/app_ui
   bloc: ^8.1.1
   chopper: ^6.1.1
   cloud_firestore: ^4.4.3
