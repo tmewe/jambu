@@ -24,9 +24,23 @@ class MSEvent extends Equatable {
     this.id,
     this.location,
     this.isReminderOn,
+    this.isCancelled,
     this.responseStatus,
     this.attendees = const [],
   });
+
+  final String subject;
+  final bool isAllDay;
+  final bool isOnlineMeeting;
+  final MSDate start;
+  final MSDate end;
+  final EventStatus showAs;
+  final String? id;
+  final MSEventLocation? location;
+  final bool? isReminderOn;
+  final bool? isCancelled;
+  final MSEventResponseStatus? responseStatus;
+  final List<MSEventAttendee> attendees;
 
   factory MSEvent.office({required DateTime date}) => MSEvent(
         subject: Constants.officeEventSubject,
@@ -66,6 +80,8 @@ class MSEvent extends Equatable {
           : null,
       isReminderOn:
           map['isReminderOn'] != null ? map['isReminderOn'] as bool : null,
+      isCancelled:
+          map['isCancelled'] != null ? map['isCancelled'] as bool : null,
       responseStatus: map['responseStatus'] != null
           ? MSEventResponseStatus.fromMap(
               map['responseStatus'] as Map<String, dynamic>,
@@ -85,21 +101,9 @@ class MSEvent extends Equatable {
         json.decode(source) as Map<String, dynamic>,
       );
 
-  final String subject;
-  final bool isAllDay;
-  final bool isOnlineMeeting;
-  final MSDate start;
-  final MSDate end;
-  final EventStatus showAs;
-  final String? id;
-  final MSEventLocation? location;
-  final bool? isReminderOn;
-  final MSEventResponseStatus? responseStatus;
-  final List<MSEventAttendee> attendees;
-
   bool get isWholeDayOOF => isAllDay && showAs == EventStatus.oof;
 
-  bool get isPresenceWithMultipleAttendees {
+  bool get isOfficeEvent {
     final locationIsURL = location?.isURL ?? false;
     final acceptedOrOrganizer =
         responseStatus?.response == ResponseStatus.accepted ||
@@ -111,6 +115,7 @@ class MSEvent extends Equatable {
     return !isOnlineMeeting &&
         !locationIsURL &&
         acceptedOrOrganizer &&
+        (isCancelled == null || isCancelled == false) &&
         requiredAttendees;
   }
 
@@ -124,7 +129,9 @@ class MSEvent extends Equatable {
     String? id,
     MSEventLocation? location,
     bool? isReminderOn,
+    bool? isCancelled,
     MSEventResponseStatus? responseStatus,
+    List<MSEventAttendee>? attendees,
   }) {
     return MSEvent(
       subject: subject ?? this.subject,
@@ -136,7 +143,9 @@ class MSEvent extends Equatable {
       id: id ?? this.id,
       location: location ?? this.location,
       isReminderOn: isReminderOn ?? this.isReminderOn,
+      isCancelled: isCancelled ?? this.isCancelled,
       responseStatus: responseStatus ?? this.responseStatus,
+      attendees: attendees ?? this.attendees,
     );
   }
 
@@ -151,6 +160,7 @@ class MSEvent extends Equatable {
       'id': id,
       'location': location?.toMap(),
       'isReminderOn': isReminderOn,
+      'isCancelled': isCancelled,
       'responseStatus': responseStatus?.toMap(),
       'attendees': attendees.map((x) => x.toMap()).toList(),
     };
@@ -162,7 +172,7 @@ class MSEvent extends Equatable {
   String toString() {
     return 'MSEvent(subject: $subject, isAllDay: $isAllDay, '
         'isOnlineMeeting: $isOnlineMeeting, start: $start, end: $end, '
-        'showAs: $showAs, location: $location, '
+        'showAs: $showAs, location: $location, isCancelled: $isCancelled '
         'isReminderOn: $isReminderOn, responseStatus: $responseStatus) '
         'attendees: $attendees';
   }
