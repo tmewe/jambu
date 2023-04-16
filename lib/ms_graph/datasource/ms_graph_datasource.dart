@@ -188,10 +188,6 @@ class MSGraphDataSource {
       return {'requests': list.map((e) => e.toMap()).toList()};
     });
 
-    for (final list in sublists) {
-      debugPrint('${list.length}');
-    }
-
     for (final map in requestMaps) {
       await _msGraphAPI.batch(jsonEncode(map));
     }
