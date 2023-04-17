@@ -70,6 +70,8 @@ class _OnboardingViewState extends State<OnboardingView> {
                         ),
                         OnboardingContainer(
                           child: NotificationsOnboarding(
+                            isLoading: state.status ==
+                                OnboardingStatus.notificationsRequested,
                             onConfirmTap: () => context
                                 .read<OnboardingBloc>()
                                 .add(OnboardingRequestNotifications()),
