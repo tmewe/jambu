@@ -33,12 +33,26 @@ class _CalendarViewState extends State<CalendarView> {
     return BlocBuilder<CalendarBloc, CalendarState>(
       builder: (context, state) {
         if (state.status != CalendarStatus.success) {
-          return const Scaffold(
-            body: Center(
-              child: CircularProgressIndicator(),
+          return Scaffold(
+            body: Align(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: maxElementWidth),
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    children: [
+                      _AppBar(user: state.user),
+                      const Spacer(),
+                      const CircularProgressIndicator(),
+                      const Spacer(),
+                    ],
+                  ),
+                ),
+              ),
             ),
           );
         }
+
         final selectedWeek = state.filteredWeeks[_selectedWeekIndex];
         final startDate = _dateFormat.format(selectedWeek.days.first.date);
         final endDate = _dateFormat.format(selectedWeek.days.last.date);
