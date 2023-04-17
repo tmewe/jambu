@@ -13,7 +13,7 @@ class AuthRepository {
   })  : _firebaseAuth = firebaseAuth,
         _tokenStorage = tokenStorage,
         _isWeb = isWeb {
-    _firebaseAuth.authStateChanges().listen((user) {
+    _firebaseAuth.authStateChanges().distinct().listen((user) {
       debugPrint('User changed: ${user?.displayName}');
       _userSubject.add(user);
     });
