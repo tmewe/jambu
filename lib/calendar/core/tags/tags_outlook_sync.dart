@@ -32,7 +32,9 @@ class TagsOutlookSync {
 
       // Fetch all events from calendar
       final existingEvents =
-          await _msGraphRepository.fetchEventsFromCalendar(calendarId);
+          await _msGraphRepository.fetchEventsFromStartOfWeek(
+        calendarId: calendarId,
+      );
 
       final updates = TagOutlookUpdates(
         tagName: tag,
