@@ -3,10 +3,12 @@ import 'package:jambu/calendar/core/favorites/favorites_outlook_updates.dart';
 import 'package:jambu/calendar/model/model.dart';
 import 'package:jambu/constants.dart';
 import 'package:jambu/ms_graph/api/api.dart';
+import 'package:jambu/ms_graph/model/model.dart';
 import 'package:jambu/repository/repository.dart';
 
 class FavoritesOutlookSync {
   const FavoritesOutlookSync({
+    required this.calendars,
     required MSGraphRepository msGraphRepository,
     required List<CalendarWeek> attendances,
     required Iterable<String> favoriteUserIds,
@@ -14,13 +16,12 @@ class FavoritesOutlookSync {
         _attendances = attendances,
         _favoriteUserIds = favoriteUserIds;
 
+  final List<MSCalendar> calendars;
   final MSGraphRepository _msGraphRepository;
   final List<CalendarWeek> _attendances;
   final Iterable<String> _favoriteUserIds;
 
   Future<void> call() async {
-    final calendars = await _msGraphRepository.fetchCalendars();
-
     // Check if calendar contains favorites calendar -> otherwise create it
     final calendarId = calendars
             .firstWhereOrNull((c) => c.name == Constants.favoritesCalendarName)

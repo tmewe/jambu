@@ -7,6 +7,7 @@ import 'package:jambu/repository/repository.dart';
 
 class TagsOutlookSync {
   const TagsOutlookSync({
+    required this.calendars,
     required MSGraphRepository msGraphRepository,
     required List<CalendarWeek> attendances,
     required Iterable<String> tagNames,
@@ -14,13 +15,12 @@ class TagsOutlookSync {
         _attendances = attendances,
         _tagNames = tagNames;
 
+  final List<MSCalendar> calendars;
   final MSGraphRepository _msGraphRepository;
   final List<CalendarWeek> _attendances;
   final Iterable<String> _tagNames;
 
   Future<void> call() async {
-    final calendars = await _msGraphRepository.fetchCalendars();
-
     for (final tag in _tagNames) {
       //  Check if calendar for tag already exists -> otherwise create one
       final calendarId = calendars
