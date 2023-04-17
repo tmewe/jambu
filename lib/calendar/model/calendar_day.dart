@@ -5,6 +5,7 @@ class CalendarDay extends Equatable {
   const CalendarDay({
     required this.date,
     required this.isUserAttending,
+    this.isHoliday = false,
     this.users = const [],
     this.reason,
   });
@@ -12,6 +13,7 @@ class CalendarDay extends Equatable {
   final DateTime date;
   final bool isUserAttending;
   final List<CalendarUser> users;
+  final bool isHoliday;
   final String? reason;
 
   CalendarDay copyWith({
@@ -19,12 +21,14 @@ class CalendarDay extends Equatable {
     bool? isUserAttending,
     List<CalendarUser>? users,
     String? reason,
+    bool? isHoliday,
     String? holidayName,
   }) {
     return CalendarDay(
       date: date ?? this.date,
       isUserAttending: isUserAttending ?? this.isUserAttending,
       users: users ?? this.users,
+      isHoliday: isHoliday ?? this.isHoliday,
       reason: reason ?? this.reason,
     );
   }
@@ -34,16 +38,18 @@ class CalendarDay extends Equatable {
     bool? isUserAttending,
     List<CalendarUser>? users,
     String? reason,
+    bool? isHoliday,
     String? holidayName,
   }) {
     return CalendarDay(
       date: date ?? this.date,
       isUserAttending: isUserAttending ?? this.isUserAttending,
       users: users ?? this.users,
+      isHoliday: isHoliday ?? this.isHoliday,
       reason: reason,
     );
   }
 
   @override
-  List<Object> get props => [date, isUserAttending, users];
+  List<Object> get props => [date, isUserAttending, users, isHoliday];
 }

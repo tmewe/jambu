@@ -12,36 +12,39 @@ class CalendarDayColumn extends StatelessWidget {
     required this.tags,
     required this.width,
     this.isBestChoice = false,
-    this.holidayName,
     super.key,
   });
 
   final CalendarDay day;
   final List<String> tags;
   final bool isBestChoice;
-  final String? holidayName;
   final double width;
 
   @override
   Widget build(BuildContext context) {
+    var reason = day.reason ?? '';
+    if (day.isHoliday) {
+      reason = '🏖️ $reason';
+    }
     return SizedBox(
       width: width,
       child: Column(
         children: [
-          Text(holidayName ?? ''),
           Text(isBestChoice ? 'Optimaler Tag' : ''),
-          Text(day.reason != null ? day.reason! : ''),
+          Text(reason),
           Switch(
             value: day.isUserAttending,
-            onChanged: (value) {
-              context.read<CalendarBloc>().add(
-                    CalendarAttendanceUpdate(
-                      date: day.date.midnight,
-                      isAttending: value,
-                      reason: day.reason,
-                    ),
-                  );
-            },
+            onChanged: !day.isHoliday
+                ? (value) {
+                    context.read<CalendarBloc>().add(
+                          CalendarAttendanceUpdate(
+                            date: day.date.midnight,
+                            isAttending: value,
+                            reason: day.reason,
+                          ),
+                        );
+                  }
+                : null,
           ),
           Text(day.date.weekdayString),
           Text(DateFormat('dd').format(day.date)),

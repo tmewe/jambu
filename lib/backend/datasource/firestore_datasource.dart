@@ -43,6 +43,7 @@ class FirestoreDatasource {
     required bool isAttending,
     required User user,
     String? reason,
+    bool? isHoliday,
   }) async {
     final formattedDate = DateFormat('yyyy-MM-dd').format(date.midnight);
 
@@ -61,11 +62,16 @@ class FirestoreDatasource {
           attendance: attendance,
           userId: user.id,
           reason: reason,
+          isHoliday: isHoliday,
         );
 
         transaction.update(attendanceRef, updatedAttendance.toFirestore());
       } else {
-        final entry = Entry(userId: user.id, reason: reason);
+        final entry = Entry(
+          userId: user.id,
+          reason: reason,
+          isHoliday: isHoliday,
+        );
         final attendance = Attendance(
           date: date.midnight,
           present: isAttending ? [entry] : [],
@@ -254,6 +260,7 @@ class FirestoreDatasource {
     required bool isAttending,
     required String userId,
     String? reason,
+    bool? isHoliday,
   }) {
     final present = _updatePresent(
       isAttending: isAttending,
@@ -267,6 +274,7 @@ class FirestoreDatasource {
       attendance: attendance,
       reason: reason,
       userId: userId,
+      isHoliday: isHoliday,
     );
 
     final updatedAttendance = attendance.copyWith(
@@ -298,11 +306,12 @@ class FirestoreDatasource {
     required Attendance attendance,
     required String userId,
     String? reason,
+    bool? isHoliday,
   }) {
     if (!isAttending) {
       return [
         ...attendance.absent.where((a) => a.userId != userId),
-        Entry(userId: userId, reason: reason),
+        Entry(userId: userId, reason: reason, isHoliday: isHoliday),
       ];
     } else {
       return attendance.absent.where((a) => a.userId != userId).toList();
