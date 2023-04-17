@@ -1,6 +1,6 @@
 part of 'onboarding_bloc.dart';
 
-enum OnboardingStatus { ongoing, completed }
+enum OnboardingStatus { ongoing, notificationsRequested, completed }
 
 class OnboardingState extends Equatable {
   const OnboardingState({

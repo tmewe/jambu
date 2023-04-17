@@ -34,6 +34,7 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
     OnboardingRequestNotifications event,
     Emitter<OnboardingState> emit,
   ) async {
+    emit(state.copyWith(status: OnboardingStatus.notificationsRequested));
     await _notificationsRespository.requestNotifications();
     add(OnboardingCompleted());
   }

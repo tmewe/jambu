@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 
 class NotificationsOnboarding extends StatelessWidget {
   const NotificationsOnboarding({
+    required this.isLoading,
     required this.onConfirmTap,
     required this.onDeclineTap,
     required this.onBackTap,
     super.key,
   });
 
+  final bool isLoading;
   final VoidCallback onConfirmTap;
   final VoidCallback onDeclineTap;
   final VoidCallback onBackTap;
@@ -47,7 +49,15 @@ class NotificationsOnboarding extends StatelessWidget {
             const SizedBox(width: 10),
             FilledButton.tonal(
               onPressed: onConfirmTap,
-              child: const Text('Bestätigen'),
+              child: !isLoading
+                  ? const Text('Bestätigen')
+                  : const SizedBox(
+                      width: 15,
+                      height: 15,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                      ),
+                    ),
             ),
           ],
         ),
