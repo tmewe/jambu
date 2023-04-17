@@ -47,8 +47,11 @@ class CalendarRepository {
       users: users,
     )();
 
+    final calendars = await _msGraphRepository.fetchCalendars();
+
     unawaited(
       TagsOutlookSync(
+        calendars: calendars,
         msGraphRepository: _msGraphRepository,
         attendances: weeks,
         tagNames: user.tags.map((t) => t.name),
@@ -57,6 +60,7 @@ class CalendarRepository {
 
     unawaited(
       FavoritesOutlookSync(
+        calendars: calendars,
         msGraphRepository: _msGraphRepository,
         attendances: weeks,
         favoriteUserIds: user.favorites,
@@ -91,8 +95,11 @@ class CalendarRepository {
       weeks: weeks,
     )();
 
+    final calendars = await _msGraphRepository.fetchCalendars();
+
     unawaited(
       TagsOutlookSync(
+        calendars: calendars,
         msGraphRepository: _msGraphRepository,
         attendances: updatedWeeks,
         tagNames: [tagName],
@@ -122,8 +129,11 @@ class CalendarRepository {
       weeks: weeks,
     )();
 
+    final calendars = await _msGraphRepository.fetchCalendars();
+
     unawaited(
       TagsOutlookSync(
+        calendars: calendars,
         msGraphRepository: _msGraphRepository,
         attendances: updatedWeeks,
         tagNames: [tag],
@@ -212,8 +222,11 @@ class CalendarRepository {
       weeks: weeks,
     )();
 
+    final calendars = await _msGraphRepository.fetchCalendars();
+
     unawaited(
       FavoritesOutlookSync(
+        calendars: calendars,
         msGraphRepository: _msGraphRepository,
         attendances: updatedWeeks,
         favoriteUserIds: updatedUser?.favorites ?? [],
