@@ -91,27 +91,19 @@ class _TagsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return Wrap(
+      alignment: WrapAlignment.end,
+      crossAxisAlignment: WrapCrossAlignment.center,
+      verticalDirection: VerticalDirection.up,
+      spacing: 8,
+      runSpacing: 5,
       children: [
-        Flexible(
-          child: Wrap(
-            alignment: WrapAlignment.end,
-            crossAxisAlignment: WrapCrossAlignment.center,
-            spacing: 8,
-            runSpacing: 5,
-            children: user.tags
-                .map(
-                  (tagName) => TagChip(
-                    tags: tags,
-                    name: tagName,
-                    onRemove: () => onRemoveTag(tagName, user.id),
-                    onUpdateName: (newName) =>
-                        onUpdateTagName(tagName, newName),
-                  ),
-                )
-                .toList(),
+        ...user.tags.map(
+          (tagName) => TagChip(
+            tags: tags,
+            name: tagName,
+            onRemove: () => onRemoveTag(tagName, user.id),
+            onUpdateName: (newName) => onUpdateTagName(tagName, newName),
           ),
         ),
         _TagButton(
