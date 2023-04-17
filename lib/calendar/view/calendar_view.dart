@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:jambu/calendar/bloc/calendar_bloc.dart';
 import 'package:jambu/calendar/widgets/tag_filter.dart';
 import 'package:jambu/calendar/widgets/widgets.dart';
+import 'package:jambu/model/model.dart';
 import 'package:jambu/repository/repository.dart';
 
 final _dateFormat = DateFormat('dd.MM');
@@ -52,64 +53,7 @@ class _CalendarViewState extends State<CalendarView> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        children: [
-                          Text(
-                            'jambu',
-                            style: Theme.of(context).textTheme.headlineMedium,
-                          ),
-                          const Spacer(),
-                          IconButton(
-                            onPressed: () {
-                              context
-                                  .read<CalendarBloc>()
-                                  .add(CalendarRequested());
-                            },
-                            icon: const Icon(Icons.refresh),
-                          ),
-                          MenuAnchor(
-                            alignmentOffset: const Offset(-62, 0),
-                            menuChildren: [
-                              MenuItemButton(
-                                child: const Text('Mein Profil'),
-                                onPressed: () {
-                                  final router = GoRouter.of(context);
-                                  router
-                                    ..goNamed('profile', extra: state.user)
-                                    ..addListener(
-                                      () => routerListener(
-                                        router: router,
-                                        context: context,
-                                      ),
-                                    );
-                                },
-                              ),
-                              MenuItemButton(
-                                trailingIcon: const Icon(
-                                  Icons.logout,
-                                  size: 18,
-                                ),
-                                child: const Text('Abmelden'),
-                                onPressed: () =>
-                                    context.read<AuthRepository>().logout(),
-                              ),
-                            ],
-                            builder: (context, controller, child) => IconButton(
-                              onPressed: () => controller.isOpen
-                                  ? controller.close()
-                                  : controller.open(),
-                              icon: CircleAvatar(
-                                foregroundImage: NetworkImage(
-                                  state.user?.imageUrl ?? '',
-                                ),
-                                child: Text(
-                                  state.user?.name.characters.first ?? '',
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                      _AppBar(user: state.user),
                       SearchBar(
                         padding: const EdgeInsets.symmetric(vertical: 5),
                         controller: _searchTextController,
@@ -191,8 +135,74 @@ class _CalendarViewState extends State<CalendarView> {
       },
     );
   }
+}
 
-  void routerListener({
+class _AppBar extends StatelessWidget {
+  const _AppBar({
+    required this.user,
+  });
+
+  final User? user;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Text(
+          'jambu',
+          style: Theme.of(context).textTheme.headlineMedium,
+        ),
+        const Spacer(),
+        IconButton(
+          onPressed: () {
+            context.read<CalendarBloc>().add(CalendarRequested());
+          },
+          icon: const Icon(Icons.refresh),
+        ),
+        MenuAnchor(
+          alignmentOffset: const Offset(-62, 0),
+          menuChildren: [
+            MenuItemButton(
+              child: const Text('Mein Profil'),
+              onPressed: () {
+                final router = GoRouter.of(context);
+                router
+                  ..goNamed('profile', extra: user)
+                  ..addListener(
+                    () => _routerListener(
+                      router: router,
+                      context: context,
+                    ),
+                  );
+              },
+            ),
+            MenuItemButton(
+              trailingIcon: const Icon(
+                Icons.logout,
+                size: 18,
+              ),
+              child: const Text('Abmelden'),
+              onPressed: () => context.read<AuthRepository>().logout(),
+            ),
+          ],
+          builder: (context, controller, child) => IconButton(
+            onPressed: () =>
+                controller.isOpen ? controller.close() : controller.open(),
+            icon: CircleAvatar(
+              foregroundImage: NetworkImage(
+                user?.imageUrl ?? '',
+              ),
+              child: Text(
+                user?.name.characters.first ?? '',
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  void _routerListener({
     required GoRouter router,
     required BuildContext context,
   }) {
@@ -200,7 +210,7 @@ class _CalendarViewState extends State<CalendarView> {
       context.read<CalendarBloc>().add(CalendarRefresh());
     }
     router.removeListener(
-      () => routerListener(router: router, context: context),
+      () => _routerListener(router: router, context: context),
     );
   }
 }
