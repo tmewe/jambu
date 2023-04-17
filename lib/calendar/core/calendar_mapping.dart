@@ -36,11 +36,13 @@ class CalendarMapping {
         );
         final isUserAttending = presentEntry != null && absentEntry == null;
         final reason = presentEntry?.reason ?? absentEntry?.reason;
+        final isHoliday = absentEntry?.isHoliday ?? false;
 
         final day = CalendarDay(
           date: date,
           isUserAttending: isUserAttending,
           users: _colleaguesAtDay(attendance),
+          isHoliday: isHoliday,
           reason: reason,
         );
 

@@ -26,6 +26,7 @@ class FirestoreRepository {
     required DateTime date,
     required bool isAttending,
     String? reason,
+    bool? isHoliday,
   }) async {
     final currentUser = _userRepository.currentUser;
     if (currentUser == null) return;
@@ -35,6 +36,7 @@ class FirestoreRepository {
       isAttending: isAttending,
       user: currentUser,
       reason: reason,
+      isHoliday: isHoliday,
     );
   }
 }

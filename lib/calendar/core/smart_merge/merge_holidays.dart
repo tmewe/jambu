@@ -18,25 +18,19 @@ class MergeHolidays {
       final presence = presences.firstWhereOrNull((e) {
         return e.date.isSameDay(holiday.date);
       });
+
       if (presence != null && presence.isPresent) {
-        result
-          ..remove(presence)
-          ..add(
-            Presence(
-              date: holiday.date,
-              isPresent: false,
-              reason: holiday.name,
-            ),
-          );
-      } else {
-        result.add(
-          Presence(
-            date: holiday.date,
-            isPresent: false,
-            reason: holiday.name,
-          ),
-        );
+        result.remove(presence);
       }
+
+      result.add(
+        Presence(
+          date: holiday.date,
+          isPresent: false,
+          reason: holiday.name,
+          isHoliday: true,
+        ),
+      );
     }
     return result;
   }

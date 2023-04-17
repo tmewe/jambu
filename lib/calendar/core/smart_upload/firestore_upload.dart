@@ -38,6 +38,7 @@ class FirestoreUpload {
           date: attendance.date,
           isAttending: false,
           reason: absentEntry.reason,
+          isHoliday: absentEntry.isHoliday,
         );
       }
     }
