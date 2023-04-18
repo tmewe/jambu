@@ -48,7 +48,7 @@ class CalendarDayColumn extends StatelessWidget {
           ),
           Text(day.date.weekdayString),
           Text(DateFormat('dd').format(day.date)),
-          ...day.users.map(
+          ...day.sortedUsers.map(
             (user) => CalendarItem(
               user: user,
               tags: tags,

@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:jambu/calendar/model/calendar_user.dart';
 
@@ -15,6 +16,20 @@ class CalendarDay extends Equatable {
   final List<CalendarUser> users;
   final bool isHoliday;
   final String? reason;
+
+  List<CalendarUser> get sortedUsers {
+    // Sort by isFavorite, then sort by name
+    return users.sorted((a, b) {
+      final bothAreFavorites = a.isFavorite && b.isFavorite;
+      final bothAreNotFavorites = !a.isFavorite && !b.isFavorite;
+      final favoriteComparision =
+          bothAreFavorites || bothAreNotFavorites ? 0 : (b.isFavorite ? 1 : -1);
+      if (favoriteComparision == 0) {
+        return a.name.compareTo(b.name);
+      }
+      return favoriteComparision;
+    });
+  }
 
   CalendarDay copyWith({
     DateTime? date,

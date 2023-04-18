@@ -8,6 +8,29 @@ void main() {
     date = DateTime.parse('2023-04-10');
   });
 
+  group('sortedUsers', () {
+    test('returns users sorted by name and isFavorite', () {
+      // arrange
+      const userA = CalendarUser(id: '0', name: 'A');
+      const userB = CalendarUser(id: '0', name: 'B', isFavorite: true);
+      const userC = CalendarUser(id: '0', name: 'C', isFavorite: true);
+      const userZ = CalendarUser(id: '0', name: 'Z');
+      const users = [userZ, userA, userC, userB];
+
+      final day = CalendarDay(
+        date: date,
+        isUserAttending: false,
+        users: users,
+      );
+
+      // act
+      final result = day.sortedUsers;
+
+      // assert
+      expect(result, [userB, userC, userA, userZ]);
+    });
+  });
+
   group('CalendarDay', () {
     group('copyWithoutReason', () {
       test(
