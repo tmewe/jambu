@@ -178,7 +178,7 @@ class _Tags extends StatelessWidget {
           ),
         if (tags.isEmpty)
           const Text(
-            'Hier erscheinen deine Tags sobald du welche hinzugefügt hast.',
+            'Hier erscheinen deine Tags, sobald du welche hinzugefügt hast.',
           ),
       ],
     );
