@@ -74,7 +74,7 @@ class _LoadingView extends StatelessWidget {
             const SizedBox(height: 30),
             SelectableText(
               'Falls du kein Popup sehen solltest, '
-              'überprüfe bite ob dein Browser das Popup blockiert. '
+              'überprüfe bitte ob dein Browser das Popup blockiert. '
               'Ggf. muss die Seite nochmal neu geladen werden.',
               style: Theme.of(context).textTheme.labelMedium,
               textAlign: TextAlign.center,
