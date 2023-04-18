@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jambu/calendar/model/model.dart';
 import 'package:jambu/calendar/widgets/tag_chip.dart';
@@ -53,10 +54,9 @@ class CalendarItem extends StatelessWidget {
                     maxLines: 3,
                   ),
                 ),
-                IconButton(
-                  onPressed: () => onUpdateFavorite(!user.isFavorite),
-                  icon: const Icon(Icons.favorite),
-                  color: user.isFavorite ? Colors.orange : Colors.white24,
+                _FavoriteButton(
+                  isFavorite: user.isFavorite,
+                  onTap: onUpdateFavorite,
                 ),
               ],
             ),
@@ -70,6 +70,65 @@ class CalendarItem extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+typedef FavoriteCallback = void Function(bool);
+
+class _FavoriteButton extends StatefulWidget {
+  const _FavoriteButton({
+    required this.isFavorite,
+    required this.onTap,
+  });
+
+  final bool isFavorite;
+  final FavoriteCallback onTap;
+
+  @override
+  // ignore: no_logic_in_create_state
+  State<_FavoriteButton> createState() => _FavoriteButtonState();
+}
+
+class _FavoriteButtonState extends State<_FavoriteButton> {
+  var _isFavorite = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _isFavorite = widget.isFavorite;
+  }
+
+  @override
+  void didUpdateWidget(covariant _FavoriteButton oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _isFavorite = widget.isFavorite;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    const animationDuration = Duration(milliseconds: 100);
+    return IconButton(
+      onPressed: () {
+        setState(() => _isFavorite = !_isFavorite);
+        widget.onTap(_isFavorite);
+      },
+      icon: const Icon(Icons.favorite)
+          .animate(target: _isFavorite ? 1 : 0)
+          .scaleXY(
+            begin: 1,
+            end: 1.1,
+            curve: Curves.easeOut,
+            duration: animationDuration,
+          )
+          .then()
+          .scaleXY(
+            begin: 1,
+            end: 0.9,
+            curve: Curves.easeOut,
+            duration: animationDuration,
+          ),
+      color: _isFavorite ? Colors.orange : Colors.white24,
     );
   }
 }
