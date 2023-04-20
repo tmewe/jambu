@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jambu/calendar/model/model.dart';
 import 'package:jambu/calendar/widgets/tag_chip.dart';
@@ -107,27 +106,12 @@ class _FavoriteButtonState extends State<_FavoriteButton> {
 
   @override
   Widget build(BuildContext context) {
-    const animationDuration = Duration(milliseconds: 100);
     return IconButton(
       onPressed: () {
         setState(() => _isFavorite = !_isFavorite);
         widget.onTap(_isFavorite);
       },
-      icon: const Icon(Icons.favorite)
-          .animate(target: _isFavorite ? 1 : 0)
-          .scaleXY(
-            begin: 1,
-            end: 1.1,
-            curve: Curves.easeOut,
-            duration: animationDuration,
-          )
-          .then()
-          .scaleXY(
-            begin: 1,
-            end: 0.9,
-            curve: Curves.easeOut,
-            duration: animationDuration,
-          ),
+      icon: const Icon(Icons.favorite),
       color: _isFavorite ? Colors.orange : Colors.white24,
     );
   }
