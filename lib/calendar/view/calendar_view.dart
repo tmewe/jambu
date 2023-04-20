@@ -271,7 +271,7 @@ class _ExplanationsAlertState extends State<_ExplanationsAlert> {
   Widget build(BuildContext context) {
     return AlertDialog(
       content: ConstrainedBox(
-        constraints: BoxConstraints.tight(const Size(550, 610)),
+        constraints: BoxConstraints.tight(const Size(550, 650)),
         child: PageView(
           controller: _pageController,
           physics: const NeverScrollableScrollPhysics(),
@@ -327,7 +327,7 @@ class _FavoritesExplanation extends StatelessWidget {
         const SizedBox(height: 5),
         const SelectableText(
           'Für einen noch schnelleren Überblick werden deine '
-          'Favoriten mit Outlook gesynct',
+          'Favoriten mit Outlook gesynct.',
         ),
         const Spacer(),
         Row(
@@ -369,15 +369,20 @@ class _TagsExplanation extends StatelessWidget {
         const SizedBox(height: 20),
         const SelectableText(
           'Mit dem Plus kannst du bestimmten Kolleg*innen Tags zuordnen '
-          'und auf diese Art und Weise gruppieren. Mit dem X wird der Tag '
+          "und auf diese Art und Weise gruppieren. Mit dem 'X' wird der Tag "
           'von der Nutzer*in entfernt. Wenn du einen Tag komplett '
-          'löschen möchtest, geht das über dein Profil. Tags umbennen geht '
-          'einfach per Klick auf den Tag.',
+          'löschen möchtest, geht das über dein Profil. Tags umbennen kannst '
+          'du einfach per Klick auf den Tag.',
+        ),
+        const SizedBox(height: 5),
+        const SelectableText(
+          'Sowohl deine Favoriten, als auch deine Tags sind personalisiert '
+          'und somit nur für dich einsehabar.',
         ),
         const SizedBox(height: 5),
         const SelectableText(
           'Für einen noch schnelleren Überblick werden deine '
-          'Tags mit Outlook gesynct',
+          'Tags mit Outlook gesynct.',
         ),
         const Spacer(),
         Row(
