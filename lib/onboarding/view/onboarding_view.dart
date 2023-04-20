@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:jambu/onboarding/bloc/onboarding_bloc.dart';
 import 'package:jambu/onboarding/widgets/widgets.dart';
 
+// TODO(tim): Move to constants
 const _transitionDuration = Duration(milliseconds: 300);
 const _transitionCurve = Curves.fastOutSlowIn;
 

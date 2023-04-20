@@ -9,6 +9,10 @@ import 'package:jambu/calendar/widgets/widgets.dart';
 import 'package:jambu/model/model.dart';
 import 'package:jambu/repository/repository.dart';
 
+// TODO(tim): Move to constants
+const _transitionDuration = Duration(milliseconds: 300);
+const _transitionCurve = Curves.fastOutSlowIn;
+
 final _dateFormat = DateFormat('dd.MM');
 
 class CalendarView extends StatefulWidget {
@@ -30,7 +34,15 @@ class _CalendarViewState extends State<CalendarView> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CalendarBloc, CalendarState>(
+    return BlocConsumer<CalendarBloc, CalendarState>(
+      listener: (context, state) {
+        if (state.user != null && state.user!.explanationsCompleted == false) {
+          showDialog<void>(
+            context: context,
+            builder: (context) => const _ExplanationsAlert(),
+          );
+        }
+      },
       builder: (context, state) {
         if (state.status != CalendarStatus.success) {
           return Scaffold(
@@ -225,6 +237,148 @@ class _AppBar extends StatelessWidget {
     }
     router.removeListener(
       () => _routerListener(router: router, context: context),
+    );
+  }
+}
+
+class _ExplanationsAlert extends StatefulWidget {
+  const _ExplanationsAlert();
+
+  @override
+  State<_ExplanationsAlert> createState() => _ExplanationsAlertState();
+}
+
+class _ExplanationsAlertState extends State<_ExplanationsAlert> {
+  final _pageController = PageController();
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      content: ConstrainedBox(
+        constraints: BoxConstraints.tight(const Size(550, 610)),
+        child: PageView(
+          controller: _pageController,
+          physics: const NeverScrollableScrollPhysics(),
+          children: [
+            _FavoritesExplanation(
+              onCompleteTap: () => _pageController.nextPage(
+                duration: _transitionDuration,
+                curve: _transitionCurve,
+              ),
+            ),
+            _TagsExplanation(
+              onBackTap: () => _pageController.previousPage(
+                duration: _transitionDuration,
+                curve: _transitionCurve,
+              ),
+              onCompleteTap: () {},
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _FavoritesExplanation extends StatelessWidget {
+  const _FavoritesExplanation({
+    required this.onCompleteTap,
+  });
+
+  final VoidCallback onCompleteTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        const SizedBox(height: 10),
+        SelectableText(
+          'Favoriten',
+          style: Theme.of(context).textTheme.headlineMedium,
+        ),
+        const SizedBox(height: 20),
+        Image.asset('images/favorites.png'),
+        const SizedBox(height: 20),
+        const SelectableText(
+          'Mit dem Herz kannst du bestimmte Kolleg*innen '
+          'favorisieren. Diese erscheinen dann immer oben '
+          'in deiner Übersicht. Außerdem zeigt dir jambu auf '
+          'Basis deiner Favoriten an, welche Tage die optimalen '
+          'Bürotage für dich wären.',
+        ),
+        const SizedBox(height: 5),
+        const SelectableText(
+          'Für einen noch schnelleren Überblick werden deine '
+          'Favoriten mit Outlook gesynct',
+        ),
+        const Spacer(),
+        Row(
+          children: [
+            const Spacer(),
+            FilledButton(
+              onPressed: onCompleteTap,
+              child: const Text('Nice'),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class _TagsExplanation extends StatelessWidget {
+  const _TagsExplanation({
+    required this.onBackTap,
+    required this.onCompleteTap,
+  });
+
+  final VoidCallback onBackTap;
+  final VoidCallback onCompleteTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        const SizedBox(height: 10),
+        SelectableText(
+          'Tags',
+          style: Theme.of(context).textTheme.headlineMedium,
+        ),
+        const SizedBox(height: 20),
+        Image.asset('images/tags.png'),
+        const SizedBox(height: 20),
+        const SelectableText(
+          'Mit dem Plus kannst du bestimmten Kolleg*innen Tags zuordnen '
+          'und auf diese Art und Weise gruppieren. Mit dem X wird der Tag '
+          'von der Nutzer*in entfernt. Wenn du einen Tag komplett '
+          'löschen möchtest, geht das über dein Profil. Tags umbennen geht '
+          'einfach per Klick auf den Tag.',
+        ),
+        const SizedBox(height: 5),
+        const SelectableText(
+          'Für einen noch schnelleren Überblick werden deine '
+          'Tags mit Outlook gesynct',
+        ),
+        const Spacer(),
+        Row(
+          children: [
+            const Spacer(),
+            TextButton(
+              onPressed: onBackTap,
+              child: const Text('Zurück'),
+            ),
+            const SizedBox(width: 10),
+            FilledButton(
+              onPressed: onCompleteTap,
+              child: const Text('Fertig'),
+            ),
+          ],
+        )
+      ],
     );
   }
 }
