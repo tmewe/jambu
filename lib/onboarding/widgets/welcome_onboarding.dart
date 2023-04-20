@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class WelcomeOnboarding extends StatelessWidget {
   const WelcomeOnboarding({
@@ -15,8 +16,24 @@ class WelcomeOnboarding extends StatelessWidget {
       children: [
         const SelectableText('Schritt 1/3'),
         const SizedBox(height: 50),
+        Text.rich(
+          TextSpan(
+            children: [
+              TextSpan(
+                text: 'Servus',
+                style: Theme.of(context).textTheme.displayMedium,
+              ),
+              WidgetSpan(
+                child: SvgPicture.asset(
+                  'assets/images/waving_hand.svg',
+                  width: 50,
+                ),
+              ),
+            ],
+          ),
+        ),
         SelectableText(
-          'Servus 👋\nWilkommen bei jambu',
+          'Wilkommen bei jambu',
           style: Theme.of(context).textTheme.displayMedium,
           textAlign: TextAlign.start,
         ),
