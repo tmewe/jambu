@@ -25,6 +25,7 @@ class CalendarView extends StatefulWidget {
 class _CalendarViewState extends State<CalendarView> {
   final _searchTextController = TextEditingController();
   int _selectedWeekIndex = 0;
+  var _explanationsShowing = false;
 
   @override
   void dispose() {
@@ -36,8 +37,11 @@ class _CalendarViewState extends State<CalendarView> {
   Widget build(BuildContext context) {
     return BlocConsumer<CalendarBloc, CalendarState>(
       listener: (BuildContext context, CalendarState state) {
-        if (state.user != null && state.user!.explanationsCompleted == false) {
+        if (state.user != null &&
+            !state.user!.explanationsCompleted &&
+            !_explanationsShowing) {
           final bloc = context.read<CalendarBloc>();
+          _explanationsShowing = true;
           showDialog<void>(
             barrierDismissible: false,
             context: context,
@@ -45,6 +49,7 @@ class _CalendarViewState extends State<CalendarView> {
               onCompleteTap: () {
                 bloc.add(CalenderExplanationsCompleted());
                 context.pop();
+                _explanationsShowing = false;
               },
             ),
           );
@@ -310,7 +315,7 @@ class _FavoritesExplanation extends StatelessWidget {
           style: Theme.of(context).textTheme.headlineMedium,
         ),
         const SizedBox(height: 20),
-        Image.asset('images/favorites.png'),
+        Image.asset('assets/images/favorites.png'),
         const SizedBox(height: 20),
         const SelectableText(
           'Mit dem Herz kannst du bestimmte Kolleg*innen '
@@ -360,7 +365,7 @@ class _TagsExplanation extends StatelessWidget {
           style: Theme.of(context).textTheme.headlineMedium,
         ),
         const SizedBox(height: 20),
-        Image.asset('images/tags.png'),
+        Image.asset('assets/images/tags.png'),
         const SizedBox(height: 20),
         const SelectableText(
           'Mit dem Plus kannst du bestimmten Kolleg*innen Tags zuordnen '

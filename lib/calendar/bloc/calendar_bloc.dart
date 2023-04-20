@@ -60,6 +60,8 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
       return;
     }
 
+    emit(state.copyWith(user: user));
+
     final weeks = await _calendarRepository.fetchCalendar(user: user);
     final tags = await _calendarRepository.fetchTags();
 
