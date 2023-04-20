@@ -35,11 +35,18 @@ class _CalendarViewState extends State<CalendarView> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<CalendarBloc, CalendarState>(
-      listener: (context, state) {
+      listener: (BuildContext context, CalendarState state) {
         if (state.user != null && state.user!.explanationsCompleted == false) {
+          final bloc = context.read<CalendarBloc>();
           showDialog<void>(
+            barrierDismissible: false,
             context: context,
-            builder: (context) => const _ExplanationsAlert(),
+            builder: (context) => _ExplanationsAlert(
+              onCompleteTap: () {
+                bloc.add(CalenderExplanationsCompleted());
+                context.pop();
+              },
+            ),
           );
         }
       },
@@ -242,7 +249,11 @@ class _AppBar extends StatelessWidget {
 }
 
 class _ExplanationsAlert extends StatefulWidget {
-  const _ExplanationsAlert();
+  const _ExplanationsAlert({
+    required this.onCompleteTap,
+  });
+
+  final VoidCallback onCompleteTap;
 
   @override
   State<_ExplanationsAlert> createState() => _ExplanationsAlertState();
@@ -271,7 +282,7 @@ class _ExplanationsAlertState extends State<_ExplanationsAlert> {
                 duration: _transitionDuration,
                 curve: _transitionCurve,
               ),
-              onCompleteTap: () {},
+              onCompleteTap: widget.onCompleteTap,
             ),
           ],
         ),

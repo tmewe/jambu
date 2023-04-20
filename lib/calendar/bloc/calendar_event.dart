@@ -77,3 +77,5 @@ class CalenderUpdateFavorite extends CalendarEvent {
   final String userId;
   final bool isFavorite;
 }
+
+class CalenderExplanationsCompleted extends CalendarEvent {}
