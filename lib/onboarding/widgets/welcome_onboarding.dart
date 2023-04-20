@@ -20,12 +20,18 @@ class WelcomeOnboarding extends StatelessWidget {
           style: Theme.of(context).textTheme.displayMedium,
           textAlign: TextAlign.start,
         ),
-        const SizedBox(height: 30),
-        const SelectableText(
+        const SizedBox(height: 20),
+        SelectableText(
           'jambu unterstützt dich dabei den Überblick zu behalten, '
-          'wann deine Kolleg*innen im Büro sein werden.\n'
+          'wann deine Kolleg*innen im Büro sein werden.',
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
+        const SizedBox(height: 20),
+        const SelectableText(
           'Auf Basis deines Outlook Kalenders kann jambu dir vorschlagen, an '
-          'welchen Tagen du wahrscheinlich im Büro bist und an welchen nicht.',
+          'welchen Tagen du wahrscheinlich im Büro bist und an welchen nicht. '
+          'Für einen noch schnelleren Überblick synchronisiert jambu deine '
+          'Anwesenheiten, Favoriten und Tags mit Outlook.',
           textAlign: TextAlign.start,
         ),
         const SizedBox(height: 60),

@@ -21,14 +21,21 @@ class NotificationsOnboarding extends StatelessWidget {
       children: [
         const SelectableText('Schritt 3/3'),
         const SizedBox(height: 50),
-        SelectableText(
-          'Benachrichtigungen',
-          style: Theme.of(context).textTheme.headlineLarge,
+        Row(
+          children: [
+            const Icon(Icons.notifications_active, size: 40),
+            const SizedBox(width: 10),
+            SelectableText(
+              'Benachrichtigungen',
+              style: Theme.of(context).textTheme.headlineLarge,
+            ),
+          ],
         ),
         const SizedBox(height: 30),
         const Text(
             'Darf jambu dir 1x pro Woche eine Benachrichtigung schicken, '
             'um dich daran zu errinern, deine Anwesenheit zu aktualisieren?'),
+        const SizedBox(height: 10),
         const Text(
           'Bitte überprüfe auch ob dein Browser '
           'dir Benachrichtigungen schicken darf.',

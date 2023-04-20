@@ -24,9 +24,15 @@ class RegularAttendancesOnboarding extends StatelessWidget {
       children: [
         const SelectableText('Schritt 2/3'),
         const SizedBox(height: 50),
-        SelectableText(
-          'Regeltermine',
-          style: Theme.of(context).textTheme.headlineLarge,
+        Row(
+          children: [
+            const Icon(Icons.calendar_month, size: 40),
+            const SizedBox(width: 10),
+            SelectableText(
+              'Regeltermine',
+              style: Theme.of(context).textTheme.headlineLarge,
+            ),
+          ],
         ),
         const SizedBox(height: 30),
         const SelectableText(
