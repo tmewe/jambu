@@ -48,7 +48,7 @@ class WelcomeOnboarding extends StatelessWidget {
           'Auf Basis deines Outlook Kalenders kann jambu dir vorschlagen, an '
           'welchen Tagen du wahrscheinlich im Büro bist und an welchen nicht. '
           'Für einen noch schnelleren Überblick synchronisiert jambu deine '
-          'Anwesenheiten, Favoriten und Tags mit Outlook.',
+          'Anwesenheiten mit Outlook.',
           textAlign: TextAlign.start,
         ),
         const SizedBox(height: 60),
