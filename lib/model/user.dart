@@ -18,6 +18,7 @@ class User extends Equatable {
     this.regularAttendances = const [],
     this.manualAbsences = const [],
     this.onboardingCompleted = false,
+    this.explanationsCompleted = false,
   });
 
   final String id;
@@ -30,6 +31,7 @@ class User extends Equatable {
   final List<int> regularAttendances; // In weekdays 1 - 7
   final List<DateTime> manualAbsences;
   final bool onboardingCompleted;
+  final bool explanationsCompleted;
 
   factory User.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
@@ -51,6 +53,7 @@ class User extends Equatable {
             .map((e) => (e as Timestamp).toDate()),
       ),
       onboardingCompleted: data?['onboardingCompleted'] as bool? ?? false,
+      explanationsCompleted: data?['explanationsCompleted'] as bool? ?? false,
     );
   }
 
@@ -65,7 +68,8 @@ class User extends Equatable {
       'tags': tags.map((t) => t.toMap()),
       'regularAttendances': regularAttendances,
       'manualAbsences': manualAbsences.map(Timestamp.fromDate),
-      'onboardingCompleted': onboardingCompleted
+      'onboardingCompleted': onboardingCompleted,
+      'explanationsCompleted': explanationsCompleted,
     };
   }
 
@@ -75,7 +79,8 @@ class User extends Equatable {
         ' jobTitle: $jobTitle, favorites: $favorites, tags: $tags) '
         'regularAttendances: $regularAttendances, '
         'manualAbsences: $manualAbsences, '
-        'onboardingCompleted: $onboardingCompleted';
+        'onboardingCompleted: $onboardingCompleted, '
+        'explanationsCompleted: $explanationsCompleted';
   }
 
   User copyWith({
@@ -89,6 +94,7 @@ class User extends Equatable {
     List<int>? regularAttendances,
     List<DateTime>? manualAbsences,
     bool? onboardingCompleted,
+    bool? explanationsCompleted,
   }) {
     return User(
       id: id ?? this.id,
@@ -101,6 +107,8 @@ class User extends Equatable {
       regularAttendances: regularAttendances ?? this.regularAttendances,
       manualAbsences: manualAbsences ?? this.manualAbsences,
       onboardingCompleted: onboardingCompleted ?? this.onboardingCompleted,
+      explanationsCompleted:
+          explanationsCompleted ?? this.explanationsCompleted,
     );
   }
 
@@ -114,5 +122,6 @@ class User extends Equatable {
         regularAttendances,
         manualAbsences,
         onboardingCompleted,
+        explanationsCompleted,
       ];
 }
