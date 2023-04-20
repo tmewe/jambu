@@ -26,6 +26,8 @@ class CalendarDayColumn extends StatelessWidget {
     if (day.isHoliday) {
       reason = '🏖️ $reason';
     }
+
+    final sortedUsers = day.sortedUsers;
     return SizedBox(
       width: width,
       child: Column(
@@ -48,43 +50,50 @@ class CalendarDayColumn extends StatelessWidget {
           ),
           Text(day.date.weekdayString),
           Text(DateFormat('dd').format(day.date)),
-          ...day.sortedUsers.map(
-            (user) => CalendarItem(
-              user: user,
-              tags: tags,
-              onAddTag: (tag, userId) {
-                context.read<CalendarBloc>().add(
-                      CalendarAddTag(
-                        tagName: tag,
-                        userId: user.id,
-                      ),
-                    );
-              },
-              onRemoveTag: (tag, userId) {
-                context.read<CalendarBloc>().add(
-                      CalendarRemoveTag(
-                        tagName: tag,
-                        userId: user.id,
-                      ),
-                    );
-              },
-              onUpdateTagName: (oldName, newName) {
-                context.read<CalendarBloc>().add(
-                      CalendarUpdateTagName(
-                        tagName: oldName,
-                        newTagName: newName,
-                      ),
-                    );
-              },
-              onUpdateFavorite: (isFavorite) {
-                context.read<CalendarBloc>().add(
-                      CalenderUpdateFavorite(
-                        userId: user.id,
-                        isFavorite: isFavorite,
-                      ),
-                    );
-              },
-            ),
+          ListView.separated(
+            itemBuilder: (context, index) {
+              final user = sortedUsers[index];
+              return CalendarItem(
+                user: user,
+                tags: tags,
+                onAddTag: (tag, userId) {
+                  context.read<CalendarBloc>().add(
+                        CalendarAddTag(
+                          tagName: tag,
+                          userId: user.id,
+                        ),
+                      );
+                },
+                onRemoveTag: (tag, userId) {
+                  context.read<CalendarBloc>().add(
+                        CalendarRemoveTag(
+                          tagName: tag,
+                          userId: user.id,
+                        ),
+                      );
+                },
+                onUpdateTagName: (oldName, newName) {
+                  context.read<CalendarBloc>().add(
+                        CalendarUpdateTagName(
+                          tagName: oldName,
+                          newTagName: newName,
+                        ),
+                      );
+                },
+                onUpdateFavorite: (isFavorite) {
+                  context.read<CalendarBloc>().add(
+                        CalenderUpdateFavorite(
+                          userId: user.id,
+                          isFavorite: isFavorite,
+                        ),
+                      );
+                },
+              );
+            },
+            separatorBuilder: (context, index) => const SizedBox(height: 10),
+            itemCount: sortedUsers.length,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
           ),
         ],
       ),
