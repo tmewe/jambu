@@ -235,4 +235,8 @@ class CalendarRepository {
 
     return CalendarUpdate(weeks: updatedWeeks, user: updatedUser);
   }
+
+  Future<User?> completeExplanations() {
+    return _userRepository.completeExplanations();
+  }
 }

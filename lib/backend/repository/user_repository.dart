@@ -214,6 +214,16 @@ class UserRepository {
     );
   }
 
+  Future<User?> completeExplanations() async {
+    final user = currentUser;
+    if (user == null) return null;
+
+    await _firestoreDatasource.completeExplanations(userId: user.id);
+    final updatedUser = currentUser?.copyWith(explanationsCompleted: true);
+    _currentUserSubject.add(updatedUser);
+    return updatedUser;
+  }
+
   Future<User?> updateRegularAttendances(List<int> weekdays) async {
     final user = currentUser;
     if (user == null) return null;

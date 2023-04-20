@@ -238,6 +238,12 @@ class FirestoreDatasource {
     await userRef.update({Constants.onboardingCompletedField: true});
   }
 
+  Future<void> completeExplanations({required String userId}) async {
+    final userRef =
+        _firestore.collection(Constants.usersCollection).doc(userId);
+    await userRef.update({Constants.explanationsCompleted: true});
+  }
+
   Future<User?> updateRegularAttendances({
     required String userId,
     required List<int> weekdays,

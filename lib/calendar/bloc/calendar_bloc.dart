@@ -31,6 +31,7 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     on<CalendarRemoveTag>(_onCalendarRemoveTag);
     on<CalendarUpdateTagName>(_onCalendarUpdateTagName);
     on<CalenderUpdateFavorite>(_onCalendarUpdateFavorite);
+    on<CalenderExplanationsCompleted>(_onCalendarExplanationsCompleted);
   }
 
   final CalendarRepository _calendarRepository;
@@ -183,5 +184,13 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     );
 
     emit(state.copyWith(weeks: update.weeks, user: update.user));
+  }
+
+  Future<void> _onCalendarExplanationsCompleted(
+    CalenderExplanationsCompleted event,
+    Emitter<CalendarState> emit,
+  ) async {
+    final updatedUser = await _calendarRepository.completeExplanations();
+    emit(state.copyWith(user: updatedUser));
   }
 }

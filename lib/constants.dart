@@ -14,6 +14,7 @@ abstract class Constants {
   static const String tagsField = 'tags';
   static const String favoritesField = 'favorites';
   static const String onboardingCompletedField = 'onboardingCompleted';
+  static const String explanationsCompleted = 'explanationsCompleted';
   static const String regularAttendancesField = 'regularAttendances';
 
   // FCM
