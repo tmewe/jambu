@@ -5,6 +5,8 @@ import 'package:jambu/constants.dart';
 import 'package:jambu/extension/extension.dart';
 import 'package:jambu/model/model.dart';
 
+final _kDateFormat = DateFormat('yyyy-MM-dd');
+
 class FirestoreDatasource {
   FirestoreDatasource({
     required FirebaseFirestore firestore,
@@ -45,7 +47,7 @@ class FirestoreDatasource {
     String? reason,
     bool? isHoliday,
   }) async {
-    final formattedDate = DateFormat('yyyy-MM-dd').format(date.midnight);
+    final formattedDate = _kDateFormat.format(date.midnight);
 
     final attendanceRef = _firestore
         .collection(Constants.attendancesCollection)
@@ -259,6 +261,36 @@ class FirestoreDatasource {
       transaction.set(userRef, updatedUser?.toFirestore());
     });
     return updatedUser;
+  }
+
+  // Should only be used to remove attendances when `regularAttendances`
+  // gets updated
+  Future<void> removeAttendances({
+    required List<DateTime> dates,
+    required User user,
+  }) async {
+    await _firestore.runTransaction((transaction) async {
+      final updates = <DocumentReference, Attendance>{};
+
+      for (final date in dates) {
+        final documentId = _kDateFormat.format(date.midnight);
+        final attendanceRef = _firestore
+            .collection(Constants.attendancesCollection)
+            .doc(documentId);
+        final snapshot = await transaction.get(attendanceRef);
+        final attendance = Attendance.fromFirestore(snapshot);
+        final update = attendance.copyWith(
+          present: attendance.present
+              .where((entry) => entry.userId != user.id)
+              .toList(),
+        );
+        updates[attendanceRef] = update;
+      }
+
+      updates.forEach((ref, update) {
+        transaction.set(ref, update.toFirestore());
+      });
+    });
   }
 
   Attendance _updateExistingAttendance({
