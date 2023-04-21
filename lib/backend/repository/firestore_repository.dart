@@ -1,7 +1,7 @@
 import 'package:jambu/backend/datasource/datasource.dart';
-import 'package:jambu/backend/repository/user_repository.dart';
 import 'package:jambu/extension/extension.dart';
 import 'package:jambu/model/model.dart';
+import 'package:jambu/repository/repository.dart';
 
 class FirestoreRepository {
   FirestoreRepository({

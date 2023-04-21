@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jambu/backend/backend.dart';
 import 'package:jambu/model/model.dart';
 import 'package:jambu/profile/profile.dart';
+import 'package:jambu/repository/repository.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({

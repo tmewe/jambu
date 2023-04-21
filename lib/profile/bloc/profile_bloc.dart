@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:jambu/backend/backend.dart';
 import 'package:jambu/model/model.dart';
+import 'package:jambu/repository/repository.dart';
 
 part 'profile_event.dart';
 part 'profile_state.dart';

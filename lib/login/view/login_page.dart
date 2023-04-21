@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jambu/backend/backend.dart';
 import 'package:jambu/login/bloc/login_bloc.dart';
 import 'package:jambu/repository/repository.dart';
 

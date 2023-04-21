@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jambu/app/router/gorouter_refresh_stream.dart';
-import 'package:jambu/backend/backend.dart';
 import 'package:jambu/calendar/calendar.dart';
 import 'package:jambu/login/login.dart';
 import 'package:jambu/logout/logout.dart';
@@ -12,6 +11,7 @@ import 'package:jambu/model/model.dart';
 import 'package:jambu/onboarding/onboarding.dart';
 import 'package:jambu/playground/playground.dart';
 import 'package:jambu/profile/profile.dart';
+import 'package:jambu/repository/repository.dart';
 
 GoRouter getRouter({
   required Stream<User?> userStream,
