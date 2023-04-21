@@ -26,7 +26,7 @@ class UserRepository {
         _photoStorageRepository = photoStorageRepository {
     _authRepository.userStream.skip(1).listen((fb_auth.User? firebaseUser) {
       if (firebaseUser == null) {
-        _currentUserSubject.add(null);
+        updateUser(null);
         _authStateSubject.add(AuthenticationState.loggedOut);
         return;
       }
@@ -54,7 +54,7 @@ class UserRepository {
     if (currentUser == null) return null;
     final users = await _firestoreDatasource.getUsers();
     final fetchedUser = users.firstWhereOrNull((u) => u.id == currentUser!.id);
-    _currentUserSubject.add(fetchedUser);
+    updateUser(fetchedUser);
     _authStateSubject.add(AuthenticationState.loggedIn);
     return fetchedUser;
   }
@@ -67,7 +67,7 @@ class UserRepository {
     );
 
     if (currentUser != null) {
-      _currentUserSubject.add(currentUser);
+      updateUser(currentUser);
       _authStateSubject.add(AuthenticationState.loggedIn);
       return;
     }
@@ -92,7 +92,7 @@ class UserRepository {
     );
 
     await _firestoreDatasource.updateUser(newUser);
-    _currentUserSubject.add(newUser);
+    updateUser(newUser);
     _authStateSubject.add(AuthenticationState.loggedIn);
   }
 
@@ -106,7 +106,7 @@ class UserRepository {
       add: true,
     );
 
-    _currentUserSubject.add(updatedUser);
+    updateUser(updatedUser);
     return updatedUser;
   }
 
@@ -120,7 +120,7 @@ class UserRepository {
       add: false,
     );
 
-    _currentUserSubject.add(updatedUser);
+    updateUser(updatedUser);
     return updatedUser;
   }
 
@@ -135,7 +135,7 @@ class UserRepository {
       tagUserId: tagUserId,
     );
 
-    _currentUserSubject.add(updatedUser);
+    updateUser(updatedUser);
     return updatedUser;
   }
 
@@ -165,7 +165,7 @@ class UserRepository {
 
     unawaited(_msGraphRepository.deleteCalendar(name: tagName.calendarName));
 
-    _currentUserSubject.add(updatedUser);
+    updateUser(updatedUser);
     return updatedUser;
   }
 
@@ -182,7 +182,7 @@ class UserRepository {
       userId: user.id,
     );
 
-    _currentUserSubject.add(updatedUser);
+    updateUser(updatedUser);
     return updatedUser;
   }
 
@@ -209,7 +209,7 @@ class UserRepository {
     await updateRegularAttendances(regularAttendances);
     await _firestoreDatasource.completeOnboarding(userId: user.id);
 
-    _currentUserSubject.add(
+    updateUser(
       currentUser?.copyWith(onboardingCompleted: true),
     );
   }
@@ -220,7 +220,7 @@ class UserRepository {
 
     await _firestoreDatasource.completeExplanations(userId: user.id);
     final updatedUser = currentUser?.copyWith(explanationsCompleted: true);
-    _currentUserSubject.add(updatedUser);
+    updateUser(updatedUser);
     return updatedUser;
   }
 
@@ -233,7 +233,11 @@ class UserRepository {
       weekdays: weekdays,
     );
 
-    _currentUserSubject.add(updatedUser);
+    updateUser(updatedUser);
     return updatedUser;
+  }
+
+  void updateUser(User? user) {
+    _currentUserSubject.add(user);
   }
 }
