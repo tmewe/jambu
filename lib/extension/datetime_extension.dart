@@ -42,6 +42,12 @@ extension Midnight on DateTime {
   }
 }
 
+extension Noon on DateTime {
+  DateTime get noon {
+    return DateTime(year, month, day, 12);
+  }
+}
+
 extension FirstDateOfWeek on DateTime {
   DateTime get firstDateOfWeek {
     return subtract(Duration(days: weekday - 1));

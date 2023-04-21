@@ -91,7 +91,7 @@ class MSGraphRepository {
     required DateTime date,
     required bool isAttending,
   }) async {
-    final eventsAtDate = await _msGraphDataSource.fetchEventsAt(
+    final eventsAtDate = await _msGraphDataSource.fetchAllDayEventsAt(
       date,
       // TODO(tim): Just for testing - REMOVE
       calendarId: kDebugMode ? Constants.testCalendarId : null,
