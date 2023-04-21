@@ -100,16 +100,13 @@ class MSGraphDataSource {
     );
   }
 
-  Future<List<MSEvent>> fetchEventsAt(
+  Future<List<MSEvent>> fetchAllDayEventsAt(
     DateTime date, {
     String? calendarId,
   }) async {
-    final startDate = date.midnight.subtract(const Duration(hours: 1));
-    final endDate = date.add(const Duration(days: 1, hours: 1));
-
     return _fetchEvents(
-      startDate: startDate,
-      endDate: endDate,
+      startDate: date.noon,
+      endDate: date.noon,
       calendarId: calendarId,
     );
   }

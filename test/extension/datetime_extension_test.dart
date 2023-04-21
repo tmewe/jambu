@@ -57,6 +57,50 @@ void main() {
       // assert
       expect(result, expectedDate);
     });
+
+    test(
+        'returns date at midnight '
+        'when date contains only date', () {
+      // arrange
+      final date = DateTime.parse('2023-04-10');
+      final expectedDate = DateTime.parse('2023-04-10');
+
+      // act
+      final result = date.midnight;
+
+      // assert
+      expect(result, expectedDate);
+    });
+  });
+
+  group('Noon', () {
+    test(
+        'returns date at noon '
+        'when date contains date and time', () {
+      // arrange
+      final date = DateTime.parse('2023-04-10 13:27:00');
+      final expectedDate = DateTime.parse('2023-04-10 12:00');
+
+      // act
+      final result = date.noon;
+
+      // assert
+      expect(result, expectedDate);
+    });
+
+    test(
+        'returns date at noon '
+        'when date contains only date', () {
+      // arrange
+      final date = DateTime.parse('2023-04-10');
+      final expectedDate = DateTime.parse('2023-04-10 12:00');
+
+      // act
+      final result = date.noon;
+
+      // assert
+      expect(result, expectedDate);
+    });
   });
 
   group('FirstDateOfWeek', () {
