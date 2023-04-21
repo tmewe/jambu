@@ -233,8 +233,42 @@ class UserRepository {
       weekdays: weekdays,
     );
 
+    final daysToRemove = user.regularAttendances.toSet().difference(
+          weekdays.toSet(),
+        );
+
+    if (daysToRemove.isNotEmpty) {
+      final datesToRemove = datesFromWeekdays(
+        weekdays: daysToRemove.toList(),
+        today: DateTime.now(),
+      );
+      await _firestoreDatasource.removeAttendances(
+        dates: datesToRemove,
+        user: user,
+      );
+    }
+
     updateUser(updatedUser);
     return updatedUser;
+  }
+
+  List<DateTime> datesFromWeekdays({
+    required List<int> weekdays,
+    required DateTime today,
+  }) {
+    return weekdays
+        .map((day) {
+          final firstDate =
+              today.firstDateOfWeek.add(Duration(days: day - 1)).midnight;
+          return [
+            firstDate,
+            firstDate.add(const Duration(days: 7)),
+            firstDate.add(const Duration(days: 14)),
+            firstDate.add(const Duration(days: 21)),
+          ];
+        })
+        .expand((date) => date)
+        .toList();
   }
 
   void updateUser(User? user) {
