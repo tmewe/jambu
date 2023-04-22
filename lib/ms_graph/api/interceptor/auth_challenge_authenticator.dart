@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:chopper/chopper.dart';
-import 'package:jambu/repository/repository.dart';
 import 'package:jambu/storage/storage.dart';
+import 'package:jambu/user/user.dart';
 
 /// Refreshes the access token if it gets invalidated.
 class AuthChallengeAuthenticator extends Authenticator {

@@ -7,7 +7,7 @@ import 'package:jambu/calendar/bloc/calendar_bloc.dart';
 import 'package:jambu/calendar/widgets/tag_filter.dart';
 import 'package:jambu/calendar/widgets/widgets.dart';
 import 'package:jambu/model/model.dart';
-import 'package:jambu/repository/repository.dart';
+import 'package:jambu/user/user.dart';
 
 final _dateFormat = DateFormat('dd.MM');
 

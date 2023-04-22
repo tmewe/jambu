@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:jambu/repository/repository.dart';
+import 'package:jambu/user/user.dart';
 import 'package:meta/meta.dart';
 
 part 'login_event.dart';
