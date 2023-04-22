@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jambu/notifications/notifications.dart';
 import 'package:jambu/onboarding/bloc/onboarding_bloc.dart';
 import 'package:jambu/onboarding/view/onboarding_view.dart';
 import 'package:jambu/repository/repository.dart';
