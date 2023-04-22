@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:collection/collection.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fb_auth;
-import 'package:jambu/backend/datasource/datasource.dart';
+import 'package:jambu/backend/backend.dart';
 import 'package:jambu/extension/extension.dart';
 import 'package:jambu/model/model.dart';
 import 'package:jambu/ms_graph/ms_graph.dart';
