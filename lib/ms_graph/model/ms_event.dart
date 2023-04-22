@@ -110,13 +110,14 @@ class MSEvent extends Equatable {
             responseStatus?.response == ResponseStatus.organizer;
     final requiredAttendees = attendees.where((a) {
       return a.type == 'required';
-    }).isNotEmpty;
+    });
+    final eventIsCancelled = isCancelled ?? false;
 
     return !isOnlineMeeting &&
         !locationIsURL &&
         acceptedOrOrganizer &&
-        (isCancelled == null || isCancelled == false) &&
-        requiredAttendees;
+        !eventIsCancelled &&
+        requiredAttendees.isNotEmpty;
   }
 
   MSEvent copyWith({
