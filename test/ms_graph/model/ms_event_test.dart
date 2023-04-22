@@ -91,23 +91,19 @@ void main() {
         expect(result, isFalse);
       });
 
-      test('returns true when all conditions are met', () {
+      test(
+          'returns false '
+          'when location is not empty and not a meeting room', () {
         // arrange
         final testEvent = event.copyWith(
-          isOnlineMeeting: false,
-          isCancelled: false,
-          attendees: [MSEventAttendee(type: 'required')],
-          location: MSEventLocation(displayName: 'Raum Bandung'),
-          responseStatus: const MSEventResponseStatus(
-            response: ResponseStatus.organizer,
-          ),
+          location: MSEventLocation(displayName: 'Hotel zum Test'),
         );
 
         // act
         final result = testEvent.isOfficeEvent;
 
         // assert
-        expect(result, isTrue);
+        expect(result, isFalse);
       });
     });
 

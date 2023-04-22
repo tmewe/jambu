@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:jambu/constants.dart';
+
 class MSEventLocation {
   MSEventLocation({
     required this.displayName,
@@ -28,6 +30,15 @@ class MSEventLocation {
     );
     final hasMatch = regExp.hasMatch(displayName);
     return hasMatch;
+  }
+
+  bool get isInMeetingRoom {
+    if (displayName.isEmpty) return false;
+
+    for (final room in Constants.allMeetingRooms) {
+      if (displayName.toLowerCase().contains(room.toLowerCase())) return true;
+    }
+    return false;
   }
 
   MSEventLocation copyWith({

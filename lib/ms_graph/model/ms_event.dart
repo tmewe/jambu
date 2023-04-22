@@ -104,7 +104,8 @@ class MSEvent extends Equatable {
   bool get isAllDayOOF => isAllDay && showAs == EventStatus.oof;
 
   bool get isOfficeEvent {
-    final locationIsURL = location?.isURL ?? false;
+    final isMeetingRoomOrEmpty = (location?.isInMeetingRoom ?? false) ||
+        (location?.displayName.isEmpty ?? true);
     final acceptedOrOrganizer =
         responseStatus?.response == ResponseStatus.accepted ||
             responseStatus?.response == ResponseStatus.organizer;
@@ -114,7 +115,7 @@ class MSEvent extends Equatable {
     final eventIsCancelled = isCancelled ?? false;
 
     return !isOnlineMeeting &&
-        !locationIsURL &&
+        isMeetingRoomOrEmpty &&
         acceptedOrOrganizer &&
         !eventIsCancelled &&
         requiredAttendees.isNotEmpty;

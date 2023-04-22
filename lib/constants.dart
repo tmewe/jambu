@@ -17,6 +17,47 @@ abstract class Constants {
   static const explanationsCompleted = 'explanationsCompleted';
   static const regularAttendancesField = 'regularAttendances';
 
+  // Meeting rooms
+  static final allMeetingRooms = meetingRoomsMunich +
+      meetingRoomsLeipzig +
+      meetingRoomsStuttgart +
+      meetingRoomsErfurt;
+  static const meetingRoomsMunich = [
+    // 4. OG
+    'Arabica',
+    'Djampit',
+    'Kona',
+    'Liberica',
+    'Robusta',
+    'Tupi',
+    // 5. OG
+    'Americano',
+    'Cappuccino',
+    'Espresso',
+    'Frappé',
+    'Latte',
+    'Lungo',
+    'Ristretto',
+    // 6. OG
+    'Bali',
+    'Biang',
+    'Lombok',
+    'Sumatra',
+    'Toko',
+    // 13. OG
+    'Dempo',
+    'Gama-Lama',
+    'Kerinchi',
+    'Lokon',
+    'Merbabu',
+    'Mutis',
+    'Sundoro',
+    'Tambora',
+  ];
+  static const meetingRoomsLeipzig = ['Medan', 'Jakarta', 'Bandung', 'Nobo'];
+  static const meetingRoomsStuttgart = ['Kelimutu', 'Alapolo'];
+  static const meetingRoomsErfurt = ['Gado-gado'];
+
   // FCM
   static const vapidKey =
       // ignore: lines_longer_than_80_chars
