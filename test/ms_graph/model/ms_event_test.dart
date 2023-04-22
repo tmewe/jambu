@@ -97,7 +97,7 @@ void main() {
         final testEvent = event.copyWith(isAllDay: false);
 
         // act
-        final result = testEvent.isWholeDayOOF;
+        final result = testEvent.isAllDayOOF;
 
         // assert
         expect(result, isFalse);
@@ -108,7 +108,7 @@ void main() {
         final testEvent = event.copyWith(showAs: EventStatus.free);
 
         // act
-        final result = testEvent.isWholeDayOOF;
+        final result = testEvent.isAllDayOOF;
 
         // assert
         expect(result, isFalse);
@@ -122,7 +122,7 @@ void main() {
         );
 
         // act
-        final result = testEvent.isWholeDayOOF;
+        final result = testEvent.isAllDayOOF;
 
         // assert
         expect(result, isTrue);

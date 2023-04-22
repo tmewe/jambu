@@ -101,7 +101,7 @@ class MSEvent extends Equatable {
         json.decode(source) as Map<String, dynamic>,
       );
 
-  bool get isWholeDayOOF => isAllDay && showAs == EventStatus.oof;
+  bool get isAllDayOOF => isAllDay && showAs == EventStatus.oof;
 
   bool get isOfficeEvent {
     final locationIsURL = location?.isURL ?? false;
