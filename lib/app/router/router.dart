@@ -10,7 +10,7 @@ import 'package:jambu/model/model.dart';
 import 'package:jambu/onboarding/onboarding.dart';
 import 'package:jambu/playground/playground.dart';
 import 'package:jambu/profile/profile.dart';
-import 'package:jambu/repository/repository.dart';
+import 'package:jambu/user/user.dart';
 
 GoRouter getRouter({
   required Stream<User?> userStream,
