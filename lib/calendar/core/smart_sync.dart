@@ -24,7 +24,6 @@ class SmartSync {
 
   Future<List<Attendance>> call() async {
     final msEvents = await _msGraphRepository.fetchEventsFromStartOfWeek(
-      // TODO(tim): Just for testing - REMOVE
       calendarId: kDebugMode ? Constants.testCalendarId : null,
     );
     final firestoreAttendances =

@@ -93,7 +93,6 @@ class MSGraphRepository {
   }) async {
     final eventsAtDate = await _msGraphDataSource.fetchAllDayEventsAt(
       date,
-      // TODO(tim): Just for testing - REMOVE
       calendarId: kDebugMode ? Constants.testCalendarId : null,
     );
     final officeEventAtDate = eventsAtDate.firstWhereOrNull(
