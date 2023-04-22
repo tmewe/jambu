@@ -8,7 +8,7 @@ import 'package:jambu/extension/extension.dart';
 import 'package:jambu/holidays/repository/repository.dart';
 import 'package:jambu/model/model.dart';
 import 'package:jambu/ms_graph/ms_graph.dart';
-import 'package:jambu/repository/repository.dart';
+import 'package:jambu/user/user.dart';
 
 class CalendarRepository {
   CalendarRepository({

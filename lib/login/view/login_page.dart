@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jambu/login/bloc/login_bloc.dart';
-import 'package:jambu/repository/repository.dart';
 import 'package:jambu/user/user.dart';
 
 class LoginPage extends StatelessWidget {
