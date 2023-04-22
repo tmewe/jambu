@@ -6,7 +6,7 @@ import 'package:jambu/holidays/holidays.dart';
 import 'package:jambu/main/bootstrap/bootstrap.dart';
 import 'package:jambu/ms_graph/ms_graph.dart';
 import 'package:jambu/notifications/notifications.dart';
-import 'package:jambu/repository/repository.dart';
+import 'package:jambu/photo_storage/photo_storage.dart';
 import 'package:jambu/storage/storage.dart';
 import 'package:jambu/user/user.dart';
 
