@@ -2,9 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:jambu/calendar/core/favorites/favorites_outlook_updates.dart';
 import 'package:jambu/calendar/model/model.dart';
 import 'package:jambu/constants.dart';
-import 'package:jambu/ms_graph/api/api.dart';
-import 'package:jambu/ms_graph/model/model.dart';
-import 'package:jambu/repository/repository.dart';
+import 'package:jambu/ms_graph/ms_graph.dart';
 
 class FavoritesOutlookSync {
   const FavoritesOutlookSync({
