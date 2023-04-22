@@ -23,15 +23,6 @@ class MSEventLocation {
   final String displayName;
   final String? locationType;
 
-  bool get isURL {
-    final regExp = RegExp(
-      r'(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)',
-      caseSensitive: false,
-    );
-    final hasMatch = regExp.hasMatch(displayName);
-    return hasMatch;
-  }
-
   bool get isInMeetingRoom {
     if (displayName.isEmpty) return false;
 
