@@ -18,7 +18,7 @@ class EventToPresencesMapping {
     final presences = <Presence>[];
     for (var i = 0; i < eventLength; i++) {
       final date = event.start.date.add(Duration(days: i));
-      if (event.isWholeDayOOF) {
+      if (event.isAllDayOOF) {
         presences.add(
           Presence(date: date, isPresent: false, reason: event.subject),
         );
