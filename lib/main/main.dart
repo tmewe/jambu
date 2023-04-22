@@ -8,6 +8,7 @@ import 'package:jambu/ms_graph/ms_graph.dart';
 import 'package:jambu/notifications/notifications.dart';
 import 'package:jambu/repository/repository.dart';
 import 'package:jambu/storage/storage.dart';
+import 'package:jambu/user/user.dart';
 
 void main() {
   bootstrap((
