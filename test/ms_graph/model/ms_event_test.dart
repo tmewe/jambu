@@ -10,6 +10,26 @@ void main() {
       event = MSEvent.office(date: date);
     });
     group('isOfficeEvent', () {
+      setUp(() {
+        event = event.copyWith(
+          isOnlineMeeting: false,
+          isCancelled: false,
+          attendees: [MSEventAttendee(type: 'required')],
+          location: MSEventLocation(displayName: 'Raum Bandung'),
+          responseStatus: const MSEventResponseStatus(
+            response: ResponseStatus.organizer,
+          ),
+        );
+      });
+
+      test('returns true when all conditions are met', () {
+        // act
+        final result = event.isOfficeEvent;
+
+        // assert
+        expect(result, isTrue);
+      });
+
       test('returns false when cancelled is true', () {
         // arrange
         final testEvent = event.copyWith(isCancelled: true);
