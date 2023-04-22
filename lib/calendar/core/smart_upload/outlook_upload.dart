@@ -57,7 +57,6 @@ class OutlookUpload {
       return MSBatchRequest.deleteEvent(
         id: requestIndex++,
         eventId: event.id ?? '0',
-        // TODO(tim): Just for testing - REMOVE
         calendarId: kDebugMode ? Constants.testCalendarId : null,
       );
     });
@@ -66,7 +65,6 @@ class OutlookUpload {
       return MSBatchRequest.createEvent(
         id: requestIndex++,
         event: event,
-        // TODO(tim): Just for testing - REMOVE
         calendarId: kDebugMode ? Constants.testCalendarId : null,
       );
     });
