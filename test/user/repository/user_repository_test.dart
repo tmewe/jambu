@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:jambu/backend/backend.dart';
 import 'package:jambu/model/model.dart';
 import 'package:jambu/ms_graph/ms_graph.dart';
-import 'package:jambu/repository/repository.dart';
+import 'package:jambu/photo_storage/photo_storage.dart';
 import 'package:jambu/user/user.dart';
 import 'package:mocktail/mocktail.dart';
 
