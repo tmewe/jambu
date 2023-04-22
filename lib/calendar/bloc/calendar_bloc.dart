@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:jambu/calendar/model/model.dart';
+import 'package:jambu/calendar/repository/repository.dart';
 import 'package:jambu/model/model.dart';
-import 'package:jambu/repository/repository.dart';
 import 'package:rxdart/rxdart.dart';
 
 part 'calendar_event.dart';
