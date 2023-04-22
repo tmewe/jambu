@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:jambu/notifications/notifications.dart';
 import 'package:jambu/repository/repository.dart';
 
 part 'onboarding_event.dart';

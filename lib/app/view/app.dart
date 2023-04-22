@@ -5,6 +5,7 @@ import 'package:jambu/app/app.dart';
 import 'package:jambu/backend/backend.dart';
 import 'package:jambu/calendar/calendar.dart';
 import 'package:jambu/ms_graph/ms_graph.dart';
+import 'package:jambu/notifications/notifications.dart';
 import 'package:jambu/repository/repository.dart';
 
 class App extends StatelessWidget {
