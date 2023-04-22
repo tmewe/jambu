@@ -9,10 +9,6 @@ import 'package:jambu/calendar/widgets/widgets.dart';
 import 'package:jambu/model/model.dart';
 import 'package:jambu/repository/repository.dart';
 
-// TODO(tim): Move to constants
-const _transitionDuration = Duration(milliseconds: 300);
-const _transitionCurve = Curves.fastOutSlowIn;
-
 final _dateFormat = DateFormat('dd.MM');
 
 class CalendarView extends StatefulWidget {
@@ -278,14 +274,14 @@ class _ExplanationsAlertState extends State<_ExplanationsAlert> {
           children: [
             _FavoritesExplanation(
               onCompleteTap: () => _pageController.nextPage(
-                duration: _transitionDuration,
-                curve: _transitionCurve,
+                duration: PageTransition.duration,
+                curve: PageTransition.curve,
               ),
             ),
             _TagsExplanation(
               onBackTap: () => _pageController.previousPage(
-                duration: _transitionDuration,
-                curve: _transitionCurve,
+                duration: PageTransition.duration,
+                curve: PageTransition.curve,
               ),
               onCompleteTap: widget.onCompleteTap,
             ),
