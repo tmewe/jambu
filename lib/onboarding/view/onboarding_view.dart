@@ -1,12 +1,9 @@
+import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jambu/onboarding/bloc/onboarding_bloc.dart';
 import 'package:jambu/onboarding/widgets/widgets.dart';
-
-// TODO(tim): Move to constants
-const _transitionDuration = Duration(milliseconds: 300);
-const _transitionCurve = Curves.fastOutSlowIn;
 
 class OnboardingView extends StatefulWidget {
   const OnboardingView({super.key});
@@ -42,8 +39,8 @@ class _OnboardingViewState extends State<OnboardingView> {
                         OnboardingContainer(
                           child: WelcomeOnboarding(
                             onConfirmTap: () => _pageController.nextPage(
-                              duration: _transitionDuration,
-                              curve: _transitionCurve,
+                              duration: PageTransition.duration,
+                              curve: PageTransition.curve,
                             ),
                           ),
                         ),
@@ -59,13 +56,13 @@ class _OnboardingViewState extends State<OnboardingView> {
                             },
                             onBackTap: () {
                               _pageController.previousPage(
-                                duration: _transitionDuration,
-                                curve: _transitionCurve,
+                                duration: PageTransition.duration,
+                                curve: PageTransition.curve,
                               );
                             },
                             onConfirmTap: () => _pageController.nextPage(
-                              duration: _transitionDuration,
-                              curve: _transitionCurve,
+                              duration: PageTransition.duration,
+                              curve: PageTransition.curve,
                             ),
                           ),
                         ),
@@ -81,8 +78,8 @@ class _OnboardingViewState extends State<OnboardingView> {
                                 .add(OnboardingCompleted()),
                             onBackTap: () {
                               _pageController.previousPage(
-                                duration: _transitionDuration,
-                                curve: _transitionCurve,
+                                duration: PageTransition.duration,
+                                curve: PageTransition.curve,
                               );
                             },
                           ),
