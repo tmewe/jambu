@@ -1,8 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:jambu/calendar/core/smart_upload/outlook_upload.dart';
 import 'package:jambu/model/model.dart';
-import 'package:jambu/ms_graph/model/model.dart';
-import 'package:jambu/repository/repository.dart';
+import 'package:jambu/ms_graph/ms_graph.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockMSGraphRepository extends Mock implements MSGraphRepository {}

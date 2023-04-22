@@ -4,7 +4,7 @@ import 'package:jambu/calendar/core/core.dart';
 import 'package:jambu/constants.dart';
 import 'package:jambu/holidays/repository/repository.dart';
 import 'package:jambu/model/model.dart';
-import 'package:jambu/repository/repository.dart';
+import 'package:jambu/ms_graph/ms_graph.dart';
 
 class SmartSync {
   SmartSync({

@@ -5,7 +5,6 @@ import 'package:jambu/holidays/datasource/holiday_raw.dart';
 import 'package:jambu/holidays/holidays.dart';
 import 'package:jambu/model/model.dart';
 import 'package:jambu/ms_graph/ms_graph.dart';
-import 'package:jambu/repository/repository.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockMSGraphRepository extends Mock implements MSGraphRepository {}

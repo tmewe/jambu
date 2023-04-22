@@ -1,7 +1,7 @@
 import 'package:chopper/chopper.dart';
 import 'package:jambu/app/app.dart';
 import 'package:jambu/backend/backend.dart';
-import 'package:jambu/calendar/repository/repository.dart';
+import 'package:jambu/calendar/calendar.dart';
 import 'package:jambu/holidays/holidays.dart';
 import 'package:jambu/main/bootstrap/bootstrap.dart';
 import 'package:jambu/ms_graph/ms_graph.dart';

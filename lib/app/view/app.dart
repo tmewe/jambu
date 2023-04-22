@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jambu/app/app.dart';
 import 'package:jambu/backend/backend.dart';
-import 'package:jambu/calendar/repository/repository.dart';
+import 'package:jambu/calendar/calendar.dart';
+import 'package:jambu/ms_graph/ms_graph.dart';
 import 'package:jambu/repository/repository.dart';
 
 class App extends StatelessWidget {

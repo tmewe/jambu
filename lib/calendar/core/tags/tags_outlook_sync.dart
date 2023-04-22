@@ -3,7 +3,6 @@ import 'package:jambu/calendar/core/tags/tag_outlook_updates.dart';
 import 'package:jambu/calendar/model/model.dart';
 import 'package:jambu/extension/extension.dart';
 import 'package:jambu/ms_graph/ms_graph.dart';
-import 'package:jambu/repository/repository.dart';
 
 class TagsOutlookSync {
   const TagsOutlookSync({
