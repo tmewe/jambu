@@ -6,7 +6,6 @@ import 'package:go_router/go_router.dart';
 import 'package:jambu/app/router/gorouter_refresh_stream.dart';
 import 'package:jambu/calendar/calendar.dart';
 import 'package:jambu/login/login.dart';
-import 'package:jambu/logout/logout.dart';
 import 'package:jambu/model/model.dart';
 import 'package:jambu/onboarding/onboarding.dart';
 import 'package:jambu/playground/playground.dart';
@@ -56,12 +55,6 @@ GoRouter getRouter({
         path: '/login',
         pageBuilder: (context, state) => const NoTransitionPage(
           child: LoginPage(),
-        ),
-      ),
-      GoRoute(
-        path: '/logout',
-        pageBuilder: (context, state) => const NoTransitionPage(
-          child: LogoutPage(),
         ),
       ),
     ],
