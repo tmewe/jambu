@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jambu/calendar/model/model.dart';
@@ -7,6 +8,9 @@ typedef AddTagCallback = void Function(String, String);
 typedef RemoveTagCallback = void Function(String, String);
 typedef UpdateTagNameCallback = void Function(String, String);
 typedef UpdateFavoriteCallback = void Function(bool);
+
+const _kPadding = 16.0;
+const _kMinTagSectionHeight = 80.0;
 
 class CalendarItem extends StatelessWidget {
   const CalendarItem({
@@ -28,43 +32,77 @@ class CalendarItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Colors.grey,
-      elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                CircleAvatar(
-                  backgroundColor: Colors.black.withOpacity(0.2),
-                  foregroundImage:
-                      user.image != null ? NetworkImage(user.image!) : null,
-                  radius: 30,
-                ),
-                const SizedBox(width: 10),
-                Flexible(
-                  child: Text(
-                    user.name,
-                    maxLines: 3,
+    return Card(
+      clipBehavior: Clip.hardEdge,
+      color: Colors.grey.shade100,
+      elevation: 0,
+      child: Column(
+        children: [
+          _Header(user: user, onUpdateFavorite: onUpdateFavorite),
+          Padding(
+            padding: const EdgeInsets.all(_kPadding),
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(
+                minHeight: _kMinTagSectionHeight,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  _TagsSection(
+                    user: user,
+                    tags: tags,
+                    onAddTag: onAddTag,
+                    onRemoveTag: onRemoveTag,
+                    onUpdateTagName: onUpdateTagName,
                   ),
-                ),
-                _FavoriteButton(
-                  isFavorite: user.isFavorite,
-                  onTap: onUpdateFavorite,
-                ),
-              ],
+                ],
+              ),
             ),
-            _TagsSection(
-              user: user,
-              tags: tags,
-              onAddTag: onAddTag,
-              onRemoveTag: onRemoveTag,
-              onUpdateTagName: onUpdateTagName,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _Header extends StatelessWidget {
+  const _Header({
+    required this.user,
+    required this.onUpdateFavorite,
+  });
+
+  final CalendarUser user;
+  final UpdateFavoriteCallback onUpdateFavorite;
+
+  @override
+  Widget build(BuildContext context) {
+    return ColoredBox(
+      color: Colors.grey.shade300,
+      child: Padding(
+        padding: const EdgeInsets.all(_kPadding),
+        child: Row(
+          children: [
+            CircleAvatar(
+              backgroundColor: Colors.black.withOpacity(0.2),
+              foregroundImage:
+                  user.image != null ? NetworkImage(user.image!) : null,
+              radius: 25,
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Text(
+                user.name,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context)
+                    .textTheme
+                    .titleMedium!
+                    .copyWith(fontWeight: FontWeight.bold),
+              ),
+            ),
+            _FavoriteButton(
+              isFavorite: user.isFavorite,
+              onTap: onUpdateFavorite,
             ),
           ],
         ),
@@ -112,7 +150,7 @@ class _FavoriteButtonState extends State<_FavoriteButton> {
         widget.onTap(_isFavorite);
       },
       icon: const Icon(Icons.favorite),
-      color: _isFavorite ? Colors.orange : Colors.white24,
+      color: _isFavorite ? Colors.orange : Colors.grey,
     );
   }
 }
@@ -134,27 +172,47 @@ class _TagsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Wrap(
-      alignment: WrapAlignment.end,
-      crossAxisAlignment: WrapCrossAlignment.center,
-      verticalDirection: VerticalDirection.up,
-      spacing: 8,
-      runSpacing: 5,
+    final sortedTags = user.tags.sorted((a, b) => b.length.compareTo(a.length));
+    return Stack(
+      alignment: Alignment.topRight,
       children: [
-        ...user.tags.map(
-          (tagName) => TagChip(
-            tags: tags,
-            name: tagName,
-            onRemove: () => onRemoveTag(tagName, user.id),
-            onUpdateName: (newName) => onUpdateTagName(tagName, newName),
+        Wrap(
+          alignment: WrapAlignment.end,
+          crossAxisAlignment: WrapCrossAlignment.center,
+          verticalDirection: VerticalDirection.up,
+          spacing: 8,
+          runSpacing: 5,
+          children: [
+            ...sortedTags.map(
+              (tagName) => TagChip(
+                tags: tags,
+                name: tagName,
+                onRemove: () => onRemoveTag(tagName, user.id),
+                onUpdateName: (newName) => onUpdateTagName(tagName, newName),
+              ),
+            ),
+            _TagButton(
+              user: user,
+              tags: tags,
+              onAddTag: onAddTag,
+              onRemoveTag: onRemoveTag,
+            ),
+          ],
+        ),
+        if (sortedTags.isEmpty)
+          Align(
+            alignment: Alignment.topLeft,
+            child: Padding(
+              padding: const EdgeInsets.only(right: 55),
+              child: Text(
+                'Hier könnten deine Tags stehen.',
+                style: Theme.of(context)
+                    .textTheme
+                    .labelMedium!
+                    .copyWith(fontStyle: FontStyle.italic),
+              ),
+            ),
           ),
-        ),
-        _TagButton(
-          user: user,
-          tags: tags,
-          onAddTag: onAddTag,
-          onRemoveTag: onRemoveTag,
-        ),
       ],
     );
   }
