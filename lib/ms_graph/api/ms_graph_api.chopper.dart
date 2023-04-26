@@ -39,10 +39,15 @@ class _$MSGraphAPI extends MSGraphAPI {
   }
 
   @override
-  Future<Response<dynamic>> calendars(
-      {String select = '''id, name, hexColor'''}) {
+  Future<Response<dynamic>> calendars({
+    String select = '''id, name, hexColor''',
+    int top = 50,
+  }) {
     final Uri $url = Uri.parse('/v1.0/me/calendars');
-    final Map<String, dynamic> $params = <String, dynamic>{'select': select};
+    final Map<String, dynamic> $params = <String, dynamic>{
+      'select': select,
+      'top': top,
+    };
     final Request $request = Request(
       'GET',
       $url,
