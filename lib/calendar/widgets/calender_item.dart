@@ -1,3 +1,4 @@
+import 'package:app_ui/app_ui.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -33,7 +34,6 @@ class CalendarItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       clipBehavior: Clip.hardEdge,
-      color: Colors.grey.shade100,
       elevation: 0,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -99,7 +99,7 @@ class _Header extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ColoredBox(
-      color: Colors.grey.shade300,
+      color: AppColors.platinumGrey,
       child: Padding(
         padding: const EdgeInsets.fromLTRB(
           _kPadding,
@@ -110,7 +110,7 @@ class _Header extends StatelessWidget {
         child: Row(
           children: [
             CircleAvatar(
-              backgroundColor: Colors.black.withOpacity(0.2),
+              backgroundColor: AppColors.slateGrey,
               foregroundImage:
                   user.image != null ? NetworkImage(user.image!) : null,
               radius: 22,
@@ -176,7 +176,7 @@ class _FavoriteButtonState extends State<_FavoriteButton> {
         widget.onTap(_isFavorite);
       },
       icon: const Icon(Icons.favorite),
-      color: _isFavorite ? Colors.orange : Colors.grey,
+      color: _isFavorite ? Theme.of(context).primaryColor : AppColors.slateGrey,
     );
   }
 }
@@ -232,7 +232,6 @@ class _TagButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton(
-      position: PopupMenuPosition.under,
       icon: const Icon(Icons.add),
       tooltip: 'Tag hinzufügen',
       onSelected: (String? value) {
@@ -244,7 +243,10 @@ class _TagButton extends StatelessWidget {
           PopupMenuItem<String?>(
             child: TextField(
               autofocus: true,
-              decoration: const InputDecoration(hintText: 'Neuer Tag'),
+              decoration: const InputDecoration(
+                hintText: 'Neuer Tag',
+                border: InputBorder.none,
+              ),
               onSubmitted: (String text) {
                 if (text.isEmpty) return;
                 onAddTag(text, user.id);
