@@ -376,7 +376,7 @@ class _TagsExplanation extends StatelessWidget {
         const SizedBox(height: 5),
         const SelectableText(
           'Sowohl deine Favoriten, als auch deine Tags sind personalisiert '
-          'und somit nur für dich einsehabar.',
+          'und somit nur für dich einsehbar.',
         ),
         const SizedBox(height: 5),
         const SelectableText(
