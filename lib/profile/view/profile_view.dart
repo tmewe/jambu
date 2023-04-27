@@ -89,6 +89,7 @@ class _GeneralInfo extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         CircleAvatar(
+          backgroundColor: AppColors.platinumGrey,
           foregroundImage: NetworkImage(user.imageUrl ?? ''),
           radius: 60,
           child: Text(user.name.characters.first),

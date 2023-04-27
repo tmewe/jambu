@@ -1,3 +1,4 @@
+import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -28,7 +29,6 @@ class _TagChipState extends State<TagChip> {
   Widget build(BuildContext context) {
     return PopupMenuButton(
       tooltip: 'Bearbeiten',
-      position: PopupMenuPosition.under,
       onOpened: () => _textController.text = widget.name,
       itemBuilder: (context) => [
         PopupMenuItem<String?>(
@@ -37,8 +37,13 @@ class _TagChipState extends State<TagChip> {
             builder: (context, _, __) {
               return TextField(
                 decoration: InputDecoration(
-                  prefixIcon: const Icon(Icons.edit, size: 18),
                   errorText: _errorText,
+                  focusedBorder: const UnderlineInputBorder(
+                    borderSide: BorderSide(
+                      color: AppColors.outerSpaceGrey,
+                      width: 2,
+                    ),
+                  ),
                 ),
                 controller: _textController,
                 autofocus: true,

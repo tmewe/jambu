@@ -1,3 +1,4 @@
+import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 
 class NotificationsOnboarding extends StatelessWidget {
@@ -63,6 +64,7 @@ class NotificationsOnboarding extends StatelessWidget {
                       height: 15,
                       child: CircularProgressIndicator(
                         strokeWidth: 2,
+                        color: AppColors.white,
                       ),
                     ),
             ),

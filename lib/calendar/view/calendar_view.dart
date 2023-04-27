@@ -187,7 +187,9 @@ class _AppBar extends StatelessWidget {
       children: [
         Text(
           'jambu',
-          style: Theme.of(context).textTheme.headlineMedium,
+          style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+                color: AppColors.outerSpaceGrey,
+              ),
         ),
         const Spacer(),
         IconButton(
@@ -226,12 +228,9 @@ class _AppBar extends StatelessWidget {
             onPressed: () =>
                 controller.isOpen ? controller.close() : controller.open(),
             icon: CircleAvatar(
-              foregroundImage: NetworkImage(
-                user?.imageUrl ?? '',
-              ),
-              child: Text(
-                user?.name.characters.first ?? '',
-              ),
+              backgroundColor: AppColors.platinumGrey,
+              foregroundImage: NetworkImage(user?.imageUrl ?? ''),
+              child: Text(user?.name.characters.first ?? ''),
             ),
           ),
         ),
