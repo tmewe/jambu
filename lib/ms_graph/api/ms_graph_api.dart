@@ -20,6 +20,7 @@ abstract class MSGraphAPI extends ChopperService {
   @Get(path: 'me/calendars')
   Future<Response<dynamic>> calendars({
     @Query() String select = '''id, name, hexColor''',
+    @Query() int top = 50,
   });
 
   @Post(

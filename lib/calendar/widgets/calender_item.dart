@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jambu/calendar/model/model.dart';
@@ -7,6 +8,8 @@ typedef AddTagCallback = void Function(String, String);
 typedef RemoveTagCallback = void Function(String, String);
 typedef UpdateTagNameCallback = void Function(String, String);
 typedef UpdateFavoriteCallback = void Function(bool);
+
+const _kPadding = 16.0;
 
 class CalendarItem extends StatelessWidget {
   const CalendarItem({
@@ -28,43 +31,105 @@ class CalendarItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Colors.grey,
-      elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                CircleAvatar(
-                  backgroundColor: Colors.black.withOpacity(0.2),
-                  foregroundImage:
-                      user.image != null ? NetworkImage(user.image!) : null,
-                  radius: 30,
-                ),
-                const SizedBox(width: 10),
-                Flexible(
-                  child: Text(
-                    user.name,
-                    maxLines: 3,
-                  ),
-                ),
-                _FavoriteButton(
-                  isFavorite: user.isFavorite,
-                  onTap: onUpdateFavorite,
-                ),
-              ],
+    return Card(
+      clipBehavior: Clip.hardEdge,
+      color: Colors.grey.shade100,
+      elevation: 0,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _Header(user: user, onUpdateFavorite: onUpdateFavorite),
+          Padding(
+            padding: EdgeInsets.only(
+              left: _kPadding,
+              top: user.tags.isNotEmpty ? _kPadding : _kPadding / 2,
+              right: _kPadding,
             ),
-            _TagsSection(
+            child: _TagsSection(
               user: user,
               tags: tags,
               onAddTag: onAddTag,
               onRemoveTag: onRemoveTag,
               onUpdateTagName: onUpdateTagName,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(
+              left: _kPadding,
+              right: _kPadding / 2,
+              bottom: _kPadding / 2,
+            ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    user.tags.isEmpty
+                        ? 'Klicke auf das Plus, um Tags hinzuzufügen.'
+                        : '',
+                    style: Theme.of(context).textTheme.labelMedium!.copyWith(
+                          fontStyle: FontStyle.italic,
+                          color: Colors.black38,
+                        ),
+                  ),
+                ),
+                _TagButton(
+                  user: user,
+                  tags: tags,
+                  onAddTag: onAddTag,
+                  onRemoveTag: onRemoveTag,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _Header extends StatelessWidget {
+  const _Header({
+    required this.user,
+    required this.onUpdateFavorite,
+  });
+
+  final CalendarUser user;
+  final UpdateFavoriteCallback onUpdateFavorite;
+
+  @override
+  Widget build(BuildContext context) {
+    return ColoredBox(
+      color: Colors.grey.shade300,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(
+          _kPadding,
+          _kPadding,
+          _kPadding / 2,
+          _kPadding,
+        ),
+        child: Row(
+          children: [
+            CircleAvatar(
+              backgroundColor: Colors.black.withOpacity(0.2),
+              foregroundImage:
+                  user.image != null ? NetworkImage(user.image!) : null,
+              radius: 22,
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                user.name.split(' ').join('\n'),
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context)
+                    .textTheme
+                    .titleMedium!
+                    .copyWith(fontWeight: FontWeight.w500, height: 1.2),
+              ),
+            ),
+            _FavoriteButton(
+              isFavorite: user.isFavorite,
+              onTap: onUpdateFavorite,
             ),
           ],
         ),
@@ -112,7 +177,7 @@ class _FavoriteButtonState extends State<_FavoriteButton> {
         widget.onTap(_isFavorite);
       },
       icon: const Icon(Icons.favorite),
-      color: _isFavorite ? Colors.orange : Colors.white24,
+      color: _isFavorite ? Colors.orange : Colors.grey,
     );
   }
 }
@@ -134,28 +199,20 @@ class _TagsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final sortedTags = user.tags.sorted((a, b) => a.length.compareTo(b.length));
     return Wrap(
-      alignment: WrapAlignment.end,
-      crossAxisAlignment: WrapCrossAlignment.center,
-      verticalDirection: VerticalDirection.up,
       spacing: 8,
       runSpacing: 5,
-      children: [
-        ...user.tags.map(
-          (tagName) => TagChip(
+      children: sortedTags.map(
+        (tagName) {
+          return TagChip(
             tags: tags,
             name: tagName,
             onRemove: () => onRemoveTag(tagName, user.id),
             onUpdateName: (newName) => onUpdateTagName(tagName, newName),
-          ),
-        ),
-        _TagButton(
-          user: user,
-          tags: tags,
-          onAddTag: onAddTag,
-          onRemoveTag: onRemoveTag,
-        ),
-      ],
+          );
+        },
+      ).toList(),
     );
   }
 }
@@ -177,7 +234,7 @@ class _TagButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return PopupMenuButton(
       position: PopupMenuPosition.under,
-      icon: const Icon(Icons.add_circle),
+      icon: const Icon(Icons.add),
       tooltip: 'Tag hinzufügen',
       onSelected: (String? value) {
         if (value == null || value.isEmpty) return;

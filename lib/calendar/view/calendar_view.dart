@@ -142,17 +142,20 @@ class _CalendarViewState extends State<CalendarView> {
                       ),
                       LayoutBuilder(
                         builder: (context, constraints) {
+                          final columnWidth = (constraints.maxWidth - 100) / 5;
                           return Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: selectedWeek.days.map(
                               (day) {
-                                return CalendarDayColumn(
-                                  day: day,
-                                  tags: state.sortedTags,
-                                  isBestChoice: selectedWeek.bestChoices
-                                      .contains(day.date.weekday),
-                                  width: (constraints.maxWidth - 100) / 5,
+                                return SizedBox(
+                                  width: columnWidth,
+                                  child: CalendarDayColumn(
+                                    day: day,
+                                    tags: state.sortedTags,
+                                    isBestChoice: selectedWeek.bestChoices
+                                        .contains(day.date.weekday),
+                                  ),
                                 );
                               },
                             ).toList(),

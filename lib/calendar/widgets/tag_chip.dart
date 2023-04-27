@@ -52,11 +52,16 @@ class _TagChipState extends State<TagChip> {
           ),
         ),
       ],
-      child: Chip(
-        label: Text(widget.name),
-        deleteIcon: const Icon(Icons.clear, size: 18),
-        deleteButtonTooltipMessage: 'Entfernen',
-        onDeleted: widget.onRemove,
+      child: Ink(
+        child: Chip(
+          label: Text(
+            widget.name,
+            style: Theme.of(context).textTheme.labelMedium,
+          ),
+          deleteIcon: const Icon(Icons.clear, size: 15),
+          deleteButtonTooltipMessage: 'Entfernen',
+          onDeleted: widget.onRemove,
+        ),
       ),
     );
   }
