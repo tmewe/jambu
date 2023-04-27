@@ -150,7 +150,6 @@ class _FavoriteButton extends StatefulWidget {
   final FavoriteCallback onTap;
 
   @override
-  // ignore: no_logic_in_create_state
   State<_FavoriteButton> createState() => _FavoriteButtonState();
 }
 
