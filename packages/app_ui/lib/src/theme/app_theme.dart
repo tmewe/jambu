@@ -1,4 +1,3 @@
-import 'package:app_ui/src/colors/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class AppTheme {
@@ -12,10 +11,10 @@ class AppTheme {
   }
 
   ChipThemeData get _chipTheme {
-    return const ChipThemeData(
-      backgroundColor: AppColors.lightGrey,
+    return ChipThemeData(
+      backgroundColor: Colors.grey.shade300,
       side: BorderSide.none,
-      shape: StadiumBorder(),
+      shape: const StadiumBorder(),
     );
   }
 }
