@@ -74,7 +74,6 @@ class AppTheme {
   TextSelectionThemeData get _textSelectionThemeData {
     return const TextSelectionThemeData(
       cursorColor: AppColors.outerSpaceGrey,
-      selectionColor: AppColors.seasaltGrey,
     );
   }
 
