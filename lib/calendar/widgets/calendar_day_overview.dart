@@ -31,9 +31,7 @@ class CalendarDayOverview extends StatelessWidget {
             ? AppColors.brightPink
             : Colors.transparent;
 
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 200),
-      curve: Curves.easeInOut,
+    return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.only(
