@@ -28,12 +28,14 @@ class CalendarDayOverview extends StatelessWidget {
         : isBestChoice
             ? AppColors.pink.withOpacity(0.2)
             : Colors.transparent;
-    var reason = day.reason ?? '';
+    var reason = day.reason;
     if (day.isHoliday) {
       reason = '🏖️ $reason';
     }
 
-    return Container(
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 200),
+      curve: Curves.easeInOut,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.only(
@@ -44,12 +46,25 @@ class CalendarDayOverview extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Text(
-            '$weekday $formattedDate',
-            style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.outerSpaceGrey,
-                ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                '$weekday $formattedDate',
+                style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.outerSpaceGrey,
+                    ),
+              ),
+              if (reason != null)
+                Padding(
+                  padding: const EdgeInsets.only(left: 5),
+                  child: Tooltip(
+                    message: reason,
+                    child: const Icon(Icons.info, size: 17),
+                  ),
+                )
+            ],
           ),
           Text(
             isBestChoice ? 'Optimaler Tag' : '',
@@ -57,8 +72,7 @@ class CalendarDayOverview extends StatelessWidget {
                   color: AppColors.outerSpaceGrey,
                 ),
           ),
-          Text(reason),
-          // if (!day.isHoliday)
+          const SizedBox(height: 25),
           _CheckmarkButton(
             isSelected: isUserAttending,
             onTap: (bool value) {

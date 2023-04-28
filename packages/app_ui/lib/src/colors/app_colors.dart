@@ -10,7 +10,8 @@ abstract class AppColors {
   static const Color seasaltGrey = Color(0xFFF8F9FA);
   static const Color platinumGrey = Color(0xFFDEE2E6);
   static const Color slateGrey = Color(0xFFADB5BD);
-  static const Color outerSpaceGrey = Color(0xFF3c3c3b);
+  static const Color outerSpaceGrey = Color(0xFF495057);
+  static const Color jambitGrey = Color(0xFF3c3c3b);
 
   static const Color onBackground = Color(0xFF1A1A1A);
 }
