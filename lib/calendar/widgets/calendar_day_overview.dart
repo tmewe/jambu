@@ -35,8 +35,8 @@ class CalendarDayOverview extends StatelessWidget {
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(16),
-          topRight: Radius.circular(16),
+          topLeft: CornerRadius.m,
+          topRight: CornerRadius.m,
         ),
         color: bgColor,
       ),
