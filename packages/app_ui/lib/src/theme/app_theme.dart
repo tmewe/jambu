@@ -44,11 +44,11 @@ class AppTheme {
   }
 
   ChipThemeData get _chipTheme {
-    return ChipThemeData(
+    return const ChipThemeData(
       backgroundColor: AppColors.platinumGrey,
       side: BorderSide.none,
-      shape: const StadiumBorder(),
-      selectedColor: AppColors.orange.withOpacity(0.6),
+      shape: StadiumBorder(),
+      selectedColor: AppColors.brightPink,
     );
   }
 

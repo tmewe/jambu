@@ -148,7 +148,19 @@ class _CalendarViewState extends State<CalendarView> {
                           final columnWidth = (constraints.maxWidth - 100) /
                               selectedWeek.days.length;
                           return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              SelectableText(
+                                'Meine Anwesenheit',
+                                textAlign: TextAlign.start,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelLarge!
+                                    .copyWith(
+                                      color: AppColors.frenchGrey,
+                                    ),
+                              ),
+                              const SizedBox(height: 15),
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -166,7 +178,18 @@ class _CalendarViewState extends State<CalendarView> {
                                   );
                                 }).toList(),
                               ),
-                              const SizedBox(height: 50),
+                              const SizedBox(height: 30),
+                              SelectableText(
+                                'Vorraussichtliche Anwesenheit Kolleg*innen',
+                                textAlign: TextAlign.start,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelLarge!
+                                    .copyWith(
+                                      color: AppColors.frenchGrey,
+                                    ),
+                              ),
+                              const SizedBox(height: 15),
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
