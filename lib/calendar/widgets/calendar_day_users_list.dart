@@ -1,3 +1,4 @@
+import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jambu/calendar/bloc/calendar_bloc.dart';
@@ -30,8 +31,8 @@ class CalendarDayUsersList extends StatelessWidget {
           tags: tags,
           borderRadius: index == sortedUsers.length - 1
               ? const BorderRadius.only(
-                  bottomLeft: Radius.circular(16),
-                  bottomRight: Radius.circular(16),
+                  bottomLeft: CornerRadius.m,
+                  bottomRight: CornerRadius.m,
                 )
               : BorderRadius.zero,
           onAddTag: (tag, userId) {

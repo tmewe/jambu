@@ -16,17 +16,17 @@ abstract class AppSpacing {
   static const double sm = 0.5 * spaceUnit;
 
   /// md spacing value (12pt)
-  static const double md = 0.75 * spaceUnit;
+  static const double m = 0.75 * spaceUnit;
 
   /// lg spacing value (16pt)
-  static const double lg = spaceUnit;
+  static const double l = spaceUnit;
 
   /// xlg spacing value (24pt)
-  static const double xlg = 1.5 * spaceUnit;
+  static const double xl = 1.5 * spaceUnit;
 
   /// xxlg spacing value (40pt)
-  static const double xxlg = 2.5 * spaceUnit;
+  static const double xxl = 2.5 * spaceUnit;
 
   /// xxxlg pacing value (64pt)
-  static const double xxxlg = 4 * spaceUnit;
+  static const double xxxl = 4 * spaceUnit;
 }
