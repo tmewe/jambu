@@ -41,31 +41,30 @@ class CalendarDayOverview extends StatelessWidget {
         color: bgColor,
       ),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          _DateAndReason(
-            weekday: weekday,
-            formattedDate: formattedDate,
-            reason: reason,
+          Column(
+            children: [
+              _DateAndReason(
+                weekday: weekday,
+                formattedDate: formattedDate,
+                reason: reason,
+              ),
+              _BestChoiceText(isBestChoice: isBestChoice),
+            ],
           ),
           if (!day.isHoliday)
-            Column(
-              children: [
-                _BestChoiceText(isBestChoice: isBestChoice),
-                const SizedBox(height: 25),
-                // if (!day.isHoliday)
-                _CheckmarkButton(
-                  isSelected: isUserAttending,
-                  onTap: (bool value) {
-                    context.read<CalendarBloc>().add(
-                          CalendarAttendanceUpdate(
-                            date: day.date.midnight,
-                            isAttending: value,
-                            reason: day.reason,
-                          ),
-                        );
-                  },
-                ),
-              ],
+            _CheckmarkButton(
+              isSelected: isUserAttending,
+              onTap: (bool value) {
+                context.read<CalendarBloc>().add(
+                      CalendarAttendanceUpdate(
+                        date: day.date.midnight,
+                        isAttending: value,
+                        reason: day.reason,
+                      ),
+                    );
+              },
             ),
           if (day.isHoliday) _HolidayText(reason: reason)
         ],
@@ -83,28 +82,25 @@ class _HolidayText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 20),
-      child: Text.rich(
-        TextSpan(
-          children: [
-            WidgetSpan(
-              child: SvgPicture.asset(
-                'assets/images/beach.svg',
-                width: 25,
-              ),
+    return Text.rich(
+      TextSpan(
+        children: [
+          WidgetSpan(
+            child: SvgPicture.asset(
+              'assets/images/beach.svg',
+              width: 25,
             ),
-            TextSpan(
-              text: ' $reason',
-              style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                    // fontWeight: FontWeight.bold,
-                    color: AppColors.slateGrey,
-                  ),
-            ),
-          ],
-        ),
-        textAlign: TextAlign.center,
+          ),
+          TextSpan(
+            text: ' $reason',
+            style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                  // fontWeight: FontWeight.bold,
+                  color: AppColors.slateGrey,
+                ),
+          ),
+        ],
       ),
+      textAlign: TextAlign.center,
     );
   }
 }
