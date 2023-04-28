@@ -26,9 +26,9 @@ class CalendarDayOverview extends StatelessWidget {
     final formattedDate = DateFormat('dd').format(day.date);
     final isUserAttending = day.isUserAttending;
     final bgColor = isUserAttending
-        ? AppColors.green.withOpacity(0.2)
+        ? AppColors.brightGreen
         : isBestChoice
-            ? AppColors.pink.withOpacity(0.2)
+            ? AppColors.brightPink
             : Colors.transparent;
 
     return AnimatedContainer(

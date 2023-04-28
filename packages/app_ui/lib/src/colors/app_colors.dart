@@ -4,7 +4,9 @@ abstract class AppColors {
   static const Color orange = Color(0xffef7d00);
   static const Color white = Color(0xFFFFFFFF);
   static const Color black = Color(0xFF000000);
+  static const Color brightGreen = Color(0xFFE0F2CE);
   static const Color green = Color(0xFF8FD14F);
+  static const Color brightPink = Color(0xFFF9DCE5);
   static const Color pink = Color(0xFFE05780);
 
   static const Color seasaltGrey = Color(0xFFF8F9FA);
