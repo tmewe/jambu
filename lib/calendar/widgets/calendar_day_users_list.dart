@@ -28,6 +28,12 @@ class CalendarDayUsersList extends StatelessWidget {
         return CalendarItem(
           user: user,
           tags: tags,
+          borderRadius: index == sortedUsers.length - 1
+              ? const BorderRadius.only(
+                  bottomLeft: Radius.circular(16),
+                  bottomRight: Radius.circular(16),
+                )
+              : BorderRadius.zero,
           onAddTag: (tag, userId) {
             context.read<CalendarBloc>().add(
                   CalendarAddTag(
@@ -62,7 +68,7 @@ class CalendarDayUsersList extends StatelessWidget {
           },
         );
       },
-      separatorBuilder: (context, index) => const SizedBox(height: 10),
+      separatorBuilder: (context, index) => const SizedBox(height: 15),
       itemCount: sortedUsers.length,
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),

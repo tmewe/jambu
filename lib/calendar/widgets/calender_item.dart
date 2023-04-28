@@ -20,6 +20,7 @@ class CalendarItem extends StatelessWidget {
     required this.onRemoveTag,
     required this.onUpdateTagName,
     required this.onUpdateFavorite,
+    required this.borderRadius,
     super.key,
   });
 
@@ -29,12 +30,16 @@ class CalendarItem extends StatelessWidget {
   final RemoveTagCallback onRemoveTag;
   final UpdateTagNameCallback onUpdateTagName;
   final UpdateFavoriteCallback onUpdateFavorite;
+  final BorderRadius borderRadius;
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return Container(
       clipBehavior: Clip.hardEdge,
-      elevation: 0,
+      decoration: BoxDecoration(
+        borderRadius: borderRadius,
+        color: AppColors.seasaltGrey,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -176,7 +181,7 @@ class _FavoriteButtonState extends State<_FavoriteButton> {
         widget.onTap(_isFavorite);
       },
       icon: const Icon(Icons.favorite),
-      color: _isFavorite ? Theme.of(context).primaryColor : AppColors.slateGrey,
+      color: _isFavorite ? AppColors.pink : AppColors.slateGrey,
     );
   }
 }
