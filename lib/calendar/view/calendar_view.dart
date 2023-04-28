@@ -1,4 +1,5 @@
 import 'package:app_ui/app_ui.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -80,8 +81,8 @@ class _CalendarViewState extends State<CalendarView> {
 
         return Scaffold(
           body: SingleChildScrollView(
-            child: Align(
-              child: Container(
+            child: Center(
+              child: ConstrainedBox(
                 constraints: const BoxConstraints(maxWidth: maxElementWidth),
                 child: Padding(
                   padding: const EdgeInsets.all(16),
@@ -141,14 +142,19 @@ class _CalendarViewState extends State<CalendarView> {
                           ),
                         ],
                       ),
+                      const SizedBox(height: 30),
                       LayoutBuilder(
                         builder: (context, constraints) {
-                          final columnWidth = (constraints.maxWidth - 100) / 5;
+                          final columnWidth = (constraints.maxWidth - 100) /
+                              selectedWeek.days.length;
                           return Column(
                             children: [
                               Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: selectedWeek.days.map((day) {
+                                children:
+                                    selectedWeek.days.mapIndexed((index, day) {
                                   return SizedBox(
                                     width: columnWidth,
                                     child: CalendarDayOverview(
@@ -160,7 +166,10 @@ class _CalendarViewState extends State<CalendarView> {
                                   );
                                 }).toList(),
                               ),
+                              const SizedBox(height: 50),
                               Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: selectedWeek.days.map((day) {
                                   return SizedBox(

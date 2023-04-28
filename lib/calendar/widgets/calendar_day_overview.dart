@@ -20,30 +20,59 @@ class CalendarDayOverview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final weekday = day.date.weekdayString.characters.take(2).string;
+    final formattedDate = DateFormat('dd').format(day.date);
+    final isUserAttending = day.isUserAttending;
+    final bgColor = isUserAttending
+        ? AppColors.green.withOpacity(0.2)
+        : isBestChoice
+            ? AppColors.pink.withOpacity(0.2)
+            : Colors.transparent;
     var reason = day.reason ?? '';
     if (day.isHoliday) {
       reason = '🏖️ $reason';
     }
 
-    return Column(
-      children: [
-        Text(isBestChoice ? 'Optimaler Tag' : ''),
-        Text(reason),
-        _CheckmarkButton(
-          isSelected: day.isUserAttending,
-          onTap: (bool value) {
-            context.read<CalendarBloc>().add(
-                  CalendarAttendanceUpdate(
-                    date: day.date.midnight,
-                    isAttending: value,
-                    reason: day.reason,
-                  ),
-                );
-          },
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(16),
+          topRight: Radius.circular(16),
         ),
-        Text(day.date.weekdayString),
-        Text(DateFormat('dd').format(day.date)),
-      ],
+        color: bgColor,
+      ),
+      child: Column(
+        children: [
+          Text(
+            '$weekday $formattedDate',
+            style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.outerSpaceGrey,
+                ),
+          ),
+          Text(
+            isBestChoice ? 'Optimaler Tag' : '',
+            style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                  color: AppColors.outerSpaceGrey,
+                ),
+          ),
+          Text(reason),
+          // if (!day.isHoliday)
+          _CheckmarkButton(
+            isSelected: isUserAttending,
+            onTap: (bool value) {
+              context.read<CalendarBloc>().add(
+                    CalendarAttendanceUpdate(
+                      date: day.date.midnight,
+                      isAttending: value,
+                      reason: day.reason,
+                    ),
+                  );
+            },
+          ),
+        ],
+      ),
     );
   }
 }
