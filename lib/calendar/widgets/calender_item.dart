@@ -115,7 +115,7 @@ class _Header extends StatelessWidget {
         child: Row(
           children: [
             CircleAvatar(
-              backgroundColor: AppColors.slateGrey,
+              backgroundColor: AppColors.frenchGrey,
               foregroundImage:
                   user.image != null ? NetworkImage(user.image!) : null,
               radius: 22,
@@ -181,7 +181,7 @@ class _FavoriteButtonState extends State<_FavoriteButton> {
         widget.onTap(_isFavorite);
       },
       icon: const Icon(Icons.favorite),
-      color: _isFavorite ? AppColors.pink : AppColors.slateGrey,
+      color: _isFavorite ? AppColors.pink : AppColors.frenchGrey,
     );
   }
 }
