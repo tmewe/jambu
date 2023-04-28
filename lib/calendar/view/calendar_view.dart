@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:jambu/calendar/bloc/calendar_bloc.dart';
+import 'package:jambu/calendar/widgets/calendar_day_overview.dart';
 import 'package:jambu/calendar/widgets/tag_filter.dart';
 import 'package:jambu/calendar/widgets/widgets.dart';
 import 'package:jambu/model/model.dart';
@@ -143,22 +144,35 @@ class _CalendarViewState extends State<CalendarView> {
                       LayoutBuilder(
                         builder: (context, constraints) {
                           final columnWidth = (constraints.maxWidth - 100) / 5;
-                          return Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: selectedWeek.days.map(
-                              (day) {
-                                return SizedBox(
-                                  width: columnWidth,
-                                  child: CalendarDayColumn(
-                                    day: day,
-                                    tags: state.sortedTags,
-                                    isBestChoice: selectedWeek.bestChoices
-                                        .contains(day.date.weekday),
-                                  ),
-                                );
-                              },
-                            ).toList(),
+                          return Column(
+                            children: [
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: selectedWeek.days.map((day) {
+                                  return SizedBox(
+                                    width: columnWidth,
+                                    child: CalendarDayOverview(
+                                      day: day,
+                                      tags: state.sortedTags,
+                                      isBestChoice: selectedWeek.bestChoices
+                                          .contains(day.date.weekday),
+                                    ),
+                                  );
+                                }).toList(),
+                              ),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: selectedWeek.days.map((day) {
+                                  return SizedBox(
+                                    width: columnWidth,
+                                    child: CalendarDayUsersList(
+                                      day: day,
+                                      tags: state.sortedTags,
+                                    ),
+                                  );
+                                }).toList(),
+                              ),
+                            ],
                           );
                         },
                       ),
