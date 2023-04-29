@@ -29,7 +29,7 @@ class CalendarDayOverview extends StatelessWidget {
         ? AppColors.brightGreen
         : isBestChoice
             ? AppColors.brightPink
-            : Colors.transparent;
+            : AppColors.seasaltGrey;
 
     return Container(
       padding: const EdgeInsets.all(20),
@@ -49,6 +49,7 @@ class CalendarDayOverview extends StatelessWidget {
                 weekday: weekday,
                 formattedDate: formattedDate,
                 reason: reason,
+                isHoliday: day.isHoliday,
               ),
               _BestChoiceText(isBestChoice: isBestChoice),
             ],
@@ -66,7 +67,12 @@ class CalendarDayOverview extends StatelessWidget {
                     );
               },
             ),
-          if (day.isHoliday) _HolidayText(reason: reason)
+          if (day.isHoliday)
+            Expanded(
+              child: Center(
+                child: _HolidayText(reason: reason),
+              ),
+            )
         ],
       ),
     );
@@ -128,11 +134,13 @@ class _DateAndReason extends StatelessWidget {
     required this.weekday,
     required this.formattedDate,
     required this.reason,
+    required this.isHoliday,
   });
 
   final String weekday;
   final String formattedDate;
   final String? reason;
+  final bool isHoliday;
 
   @override
   Widget build(BuildContext context) {
@@ -146,7 +154,7 @@ class _DateAndReason extends StatelessWidget {
                 color: AppColors.slateGrey,
               ),
         ),
-        if (reason != null)
+        if (reason != null && !isHoliday)
           Padding(
             padding: const EdgeInsets.only(left: 8),
             child: Tooltip(
@@ -174,9 +182,9 @@ class _CheckmarkButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final iconColor = isSelected ? AppColors.white : AppColors.platinumGrey;
-    final bgColor = isSelected ? AppColors.green : AppColors.seasaltGrey;
-    final borderColor = isSelected ? AppColors.green : AppColors.platinumGrey;
+    final iconColor = isSelected ? AppColors.white : AppColors.frenchGrey;
+    final bgColor = isSelected ? AppColors.green : AppColors.platinumGrey;
+    final borderColor = isSelected ? AppColors.green : AppColors.frenchGrey;
 
     return Material(
       color: bgColor,
