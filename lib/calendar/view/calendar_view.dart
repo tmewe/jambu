@@ -178,6 +178,7 @@ class _CalendarDays extends StatelessWidget {
               children: selectedWeek.days.mapIndexed((index, day) {
                 return SizedBox(
                   width: columnWidth,
+                  height: 170,
                   child: CalendarDayOverview(
                     day: day,
                     tags: sortedTags,
