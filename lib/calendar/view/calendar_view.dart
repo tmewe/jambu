@@ -188,7 +188,7 @@ class _CalendarDays extends StatelessWidget {
                 );
               }).toList(),
             ),
-            const SizedBox(height: 30),
+            const SizedBox(height: 20),
             SelectableText(
               'Vorraussichtliche Anwesenheit Kolleg*innen',
               textAlign: TextAlign.start,
