@@ -8,7 +8,6 @@ import 'package:jambu/calendar/calendar.dart';
 import 'package:jambu/login/login.dart';
 import 'package:jambu/model/model.dart';
 import 'package:jambu/onboarding/onboarding.dart';
-import 'package:jambu/playground/playground.dart';
 import 'package:jambu/profile/profile.dart';
 import 'package:jambu/user/user.dart';
 
@@ -27,11 +26,6 @@ GoRouter getRouter({
           child: CalendarPage(),
         ),
         routes: [
-          GoRoute(
-            path: 'playground',
-            name: 'playground',
-            builder: (context, state) => const PlaygroundPage(),
-          ),
           GoRoute(
             path: 'profile',
             name: 'profile',
