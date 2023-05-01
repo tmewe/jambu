@@ -108,7 +108,7 @@ class _CalendarViewState extends State<CalendarView> {
                     ? () => setState(() => _selectedWeekIndex++)
                     : null,
               ),
-              const SizedBox(height: 30),
+              const SizedBox(height: 20),
               _CalendarDays(
                 selectedWeek: selectedWeek,
                 sortedTags: state.sortedTags,
@@ -235,12 +235,14 @@ class _WeekSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisSize: MainAxisSize.min,
       children: [
         Text(
           '$startDate - $endDate',
-          style: Theme.of(context).textTheme.displaySmall,
+          style: Theme.of(context).textTheme.headlineSmall,
         ),
         const SizedBox(width: 20),
+        const Divider(thickness: 3, color: Colors.black),
         IconButton(
           onPressed: onPreviousTap,
           icon: const Icon(Icons.chevron_left),
