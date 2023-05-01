@@ -182,7 +182,6 @@ class _CheckmarkButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final iconColor = isSelected ? AppColors.white : AppColors.frenchGrey;
     final bgColor = isSelected ? AppColors.green : AppColors.platinumGrey;
     final borderColor = isSelected ? AppColors.green : AppColors.frenchGrey;
 
@@ -201,11 +200,8 @@ class _CheckmarkButton extends StatelessWidget {
           width: 55,
           height: 55,
           decoration: const BoxDecoration(shape: BoxShape.circle),
-          child: Center(
-            child: Icon(
-              Icons.check,
-              color: iconColor,
-            ),
+          child: const Center(
+            child: Icon(Icons.check, color: AppColors.white),
           ),
         ),
       ),
