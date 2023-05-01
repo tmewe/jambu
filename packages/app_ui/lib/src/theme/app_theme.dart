@@ -67,7 +67,7 @@ class AppTheme {
   InputDecorationTheme get _inputDecorationTheme {
     return const InputDecorationTheme(
       iconColor: AppColors.outerSpaceGrey,
-      fillColor: AppColors.platinumGrey,
+      fillColor: AppColors.seasaltGrey,
       prefixIconColor: AppColors.slateGrey,
     );
   }
