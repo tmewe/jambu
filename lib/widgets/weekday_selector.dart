@@ -1,3 +1,4 @@
+import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 
 class WeekdaySelector extends StatelessWidget {
@@ -19,11 +20,11 @@ class WeekdaySelector extends StatelessWidget {
         shape: BoxShape.circle,
       ),
       child: Material(
-        color: isSelected ? Colors.green : Colors.transparent,
+        color: isSelected ? AppColors.green : Colors.transparent,
         shape: CircleBorder(
           side: BorderSide(
             width: 3,
-            color: isSelected ? Colors.green : Colors.grey,
+            color: isSelected ? AppColors.green : AppColors.frenchGrey,
           ),
         ),
         child: InkWell(
