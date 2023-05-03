@@ -19,7 +19,7 @@ class MergeHolidays {
         return e.date.isSameDay(holiday.date);
       });
 
-      if (presence != null && presence.isPresent) {
+      if (presence != null) {
         result.remove(presence);
       }
 
