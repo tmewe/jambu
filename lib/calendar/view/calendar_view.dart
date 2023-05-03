@@ -274,12 +274,6 @@ class _AppBar extends StatelessWidget {
               ),
         ),
         const Spacer(),
-        IconButton(
-          onPressed: () {
-            context.read<CalendarBloc>().add(CalendarRequested());
-          },
-          icon: const Icon(Icons.refresh),
-        ),
         MenuAnchor(
           alignmentOffset: const Offset(-62, 0),
           menuChildren: [
