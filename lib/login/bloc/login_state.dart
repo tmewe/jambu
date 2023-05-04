@@ -1,7 +1,7 @@
 part of 'login_bloc.dart';
 
 enum LoginStatus {
-  initial,
+  unknown,
   loading,
   loggedIn,
   loggedOut,
@@ -11,7 +11,11 @@ enum LoginStatus {
 class LoginState extends Equatable {
   const LoginState({required this.status});
 
-  const LoginState.initial() : this(status: LoginStatus.initial);
+  const LoginState.unknown() : this(status: LoginStatus.unknown);
+  const LoginState.loading() : this(status: LoginStatus.loading);
+  const LoginState.loggedIn() : this(status: LoginStatus.loggedIn);
+  const LoginState.loggedOut() : this(status: LoginStatus.loggedOut);
+  const LoginState.failure() : this(status: LoginStatus.failure);
 
   final LoginStatus status;
 

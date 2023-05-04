@@ -14,41 +14,53 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     required UserRepository userRepository,
   })  : _authRepository = authRepository,
         _userRepository = userRepository,
-        super(const LoginState.initial()) {
-    on<LoginInitialCheck>(_onLoginInitialCheck);
+        super(const LoginState.unknown()) {
     on<LoginRequested>(_onLoginRequested);
+    on<_LoginStatusChanged>(_onLoginStatusChanged);
+
+    _authStateSubscription = _userRepository.authStateStream.listen(
+      (authState) => add(_LoginStatusChanged(authState)),
+    );
   }
 
   final AuthRepository _authRepository;
   final UserRepository _userRepository;
 
-  FutureOr<void> _onLoginInitialCheck(
-    LoginInitialCheck event,
+  late StreamSubscription<AuthenticationState> _authStateSubscription;
+
+  void _onLoginStatusChanged(
+    _LoginStatusChanged event,
     Emitter<LoginState> emit,
-  ) async {
-    await emit.forEach(
-      _userRepository.authStateStream,
-      onData: (authState) {
-        if (authState == AuthenticationState.loggedOut) {
-          return const LoginState(status: LoginStatus.loggedOut);
-        } else if (authState == AuthenticationState.loggedIn) {
-          return const LoginState(status: LoginStatus.loggedIn);
-        }
-        return const LoginState(status: LoginStatus.loading);
-      },
-    );
+  ) {
+    switch (event.authState) {
+      case AuthenticationState.undefiend:
+        emit(const LoginState.unknown());
+        break;
+      case AuthenticationState.loggedIn:
+        emit(const LoginState.loggedIn());
+        break;
+      case AuthenticationState.loggedOut:
+        emit(const LoginState.loggedOut());
+        break;
+    }
   }
 
   FutureOr<void> _onLoginRequested(
     LoginRequested event,
     Emitter<LoginState> emit,
   ) async {
-    emit(const LoginState(status: LoginStatus.loading));
+    emit(const LoginState.loading());
     try {
       await _authRepository.login();
-      emit(const LoginState(status: LoginStatus.loggedIn));
+      emit(const LoginState.loggedIn());
     } catch (e) {
-      emit(const LoginState(status: LoginStatus.failure));
+      emit(const LoginState.failure());
     }
+  }
+
+  @override
+  Future<void> close() {
+    _authStateSubscription.cancel();
+    return super.close();
   }
 }
