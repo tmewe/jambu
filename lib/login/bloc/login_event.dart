@@ -6,6 +6,10 @@ abstract class LoginEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class LoginInitialCheck extends LoginEvent {}
+class _LoginStatusChanged extends LoginEvent {
+  _LoginStatusChanged(this.authState);
+
+  final AuthenticationState authState;
+}
 
 class LoginRequested extends LoginEvent {}
