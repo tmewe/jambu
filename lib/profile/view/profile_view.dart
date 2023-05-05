@@ -13,65 +13,78 @@ class ProfileView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ProfileBloc, ProfileState>(
       builder: (context, state) {
-        return Scaffold(
-          appBar: AppBar(
-            title: const Text('Profil'),
-          ),
-          body: SingleChildScrollView(
-            child: Align(
-              child: Container(
-                constraints: const BoxConstraints(maxWidth: maxElementWidth),
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _GeneralInfo(user: state.user),
-                      const SizedBox(height: 40),
-                      _RegularAttendances(
-                        selectedWeekdays: state.user.regularAttendances,
-                        onDayTap: (weekdays) => context
-                            .read<ProfileBloc>()
-                            .add(ProfileUpdateAttendances(weekdays: weekdays)),
-                      ),
-                      const SizedBox(height: 40),
-                      _Tags(
-                        tags: state.tagNames,
-                        onDeleteTap: (tag) {
-                          showDialog<void>(
-                            context: context,
-                            builder: (_) => AlertDialog(
-                              title: const Text('Tag löschen?'),
-                              content: Text(
-                                "Möchtest du den Tag '$tag' wirklich löschen?",
-                              ),
-                              actions: [
-                                TextButton(
-                                  onPressed: () => context.pop(),
-                                  child: const Text('Abbrechen'),
-                                ),
-                                FilledButton(
-                                  onPressed: () {
-                                    context
-                                        .read<ProfileBloc>()
-                                        .add(ProfileDeleteTag(tag: tag));
-                                    context.pop();
-                                  },
-                                  child: const Text('Löschen'),
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                ),
+        return _ProfileContainer(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _GeneralInfo(user: state.user),
+              const SizedBox(height: AppSpacing.xxl),
+              _RegularAttendances(
+                selectedWeekdays: state.user.regularAttendances,
+                onDayTap: (weekdays) => context
+                    .read<ProfileBloc>()
+                    .add(ProfileUpdateAttendances(weekdays: weekdays)),
               ),
-            ),
+              const SizedBox(height: AppSpacing.xxl),
+              _Tags(
+                tags: state.tagNames,
+                onDeleteTap: (tag) {
+                  showDialog<void>(
+                    context: context,
+                    builder: (_) => AlertDialog(
+                      title: const SelectableText('Tag löschen?'),
+                      content: SelectableText(
+                        "Möchtest du den Tag '$tag' wirklich löschen?",
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () => context.pop(),
+                          child: const Text('Abbrechen'),
+                        ),
+                        FilledButton(
+                          onPressed: () {
+                            context
+                                .read<ProfileBloc>()
+                                .add(ProfileDeleteTag(tag: tag));
+                            context.pop();
+                          },
+                          child: const Text('Löschen'),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ],
           ),
         );
       },
+    );
+  }
+}
+
+class _ProfileContainer extends StatelessWidget {
+  const _ProfileContainer({required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const SelectableText('Profil'),
+      ),
+      body: SingleChildScrollView(
+        child: Align(
+          child: Container(
+            constraints: const BoxConstraints(maxWidth: maxElementWidth),
+            child: Padding(
+              padding: const EdgeInsets.all(AppSpacing.l),
+              child: child,
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
@@ -91,19 +104,19 @@ class _GeneralInfo extends StatelessWidget {
         CircleAvatar(
           backgroundColor: AppColors.platinumGrey,
           foregroundImage: NetworkImage(user.imageUrl ?? ''),
-          radius: 60,
+          radius: 50,
           child: Text(user.name.characters.first),
         ),
-        const SizedBox(width: 20),
+        const SizedBox(width: AppSpacing.xl),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            SelectableText(
               user.name,
               style: Theme.of(context).textTheme.titleLarge,
             ),
-            const SizedBox(height: 5),
-            Text(
+            const SizedBox(height: AppSpacing.xs),
+            SelectableText(
               user.jobTitle ?? '',
               style: Theme.of(context).textTheme.titleMedium,
             ),
@@ -131,7 +144,7 @@ class _RegularAttendances extends StatelessWidget {
         const _ProfileSectionHeader(
           text: 'An welchen Tagen bist Du normalerweise jede Woche im Büro?',
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: AppSpacing.l),
         RegularAttendancesSelector(
           selectedWeekdays: selectedWeekdays,
           onWeekdayTap: onDayTap,
@@ -160,7 +173,7 @@ class _Tags extends StatelessWidget {
         const _ProfileSectionHeader(
           text: 'Deine Tags:',
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: AppSpacing.m),
         if (tags.isNotEmpty)
           Wrap(
             spacing: 5,
@@ -178,8 +191,12 @@ class _Tags extends StatelessWidget {
             ],
           ),
         if (tags.isEmpty)
-          const Text(
+          SelectableText(
             'Hier erscheinen deine Tags, sobald du welche hinzugefügt hast.',
+            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                  fontStyle: FontStyle.italic,
+                  color: AppColors.frenchGrey,
+                ),
           ),
       ],
     );
@@ -195,6 +212,9 @@ class _ProfileSectionHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(text, style: Theme.of(context).textTheme.titleLarge);
+    return SelectableText(
+      text,
+      style: Theme.of(context).textTheme.titleMedium,
+    );
   }
 }
