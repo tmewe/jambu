@@ -27,7 +27,7 @@ class MergeRegularAttendances {
           final presenceAtDate = presences.firstWhereOrNull((e) {
             return e.date.isSameDay(date);
           });
-          // Only add a presence if non exists
+          // Only add a presence if none exists
           // If there already is a presence where isPresent == false
           // we don't want to change it because of an oof ms event
           if (presenceAtDate == null) {
@@ -35,7 +35,6 @@ class MergeRegularAttendances {
               Presence(
                 date: date.midnight,
                 isPresent: true,
-                reason: 'Regeltermin',
               ),
             );
           }
