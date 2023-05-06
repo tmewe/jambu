@@ -48,7 +48,7 @@ class AppTheme {
       backgroundColor: AppColors.platinumGrey,
       side: BorderSide.none,
       shape: StadiumBorder(),
-      selectedColor: AppColors.brightPink,
+      selectedColor: AppColors.brightOrange,
     );
   }
 

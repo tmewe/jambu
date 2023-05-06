@@ -67,7 +67,7 @@ class CalendarItem extends StatelessWidget {
             child: Row(
               children: [
                 Expanded(
-                  child: Text(
+                  child: SelectableText(
                     user.tags.isEmpty
                         ? 'Klicke auf das Plus, um Tags hinzuzufügen.'
                         : '',
@@ -181,7 +181,7 @@ class _FavoriteButtonState extends State<_FavoriteButton> {
         widget.onTap(_isFavorite);
       },
       icon: const Icon(Icons.favorite),
-      color: _isFavorite ? AppColors.pink : AppColors.frenchGrey,
+      color: _isFavorite ? AppColors.orange : AppColors.frenchGrey,
     );
   }
 }
