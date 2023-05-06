@@ -26,9 +26,9 @@ class CalendarDayOverview extends StatelessWidget {
     final formattedDate = DateFormat('dd').format(day.date);
     final isUserAttending = day.isUserAttending;
     final bgColor = isUserAttending
-        ? AppColors.brightGreen
+        ? AppColors.mediumGreen
         : isBestChoice
-            ? AppColors.brightPink
+            ? AppColors.brightGreen
             : AppColors.seasaltGrey;
 
     return Container(
@@ -50,6 +50,7 @@ class CalendarDayOverview extends StatelessWidget {
                 formattedDate: formattedDate,
                 reason: reason,
                 isHoliday: day.isHoliday,
+                isSelected: isUserAttending,
               ),
               _BestChoiceText(isBestChoice: isBestChoice),
             ],
@@ -120,7 +121,7 @@ class _BestChoiceText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(
+    return SelectableText(
       isBestChoice ? 'Optimaler Tag' : '',
       style: Theme.of(context).textTheme.titleSmall!.copyWith(
             color: AppColors.slateGrey,
@@ -135,23 +136,27 @@ class _DateAndReason extends StatelessWidget {
     required this.formattedDate,
     required this.reason,
     required this.isHoliday,
+    required this.isSelected,
   });
 
   final String weekday;
   final String formattedDate;
   final String? reason;
   final bool isHoliday;
+  final bool isSelected;
 
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(
+        SelectableText(
           '$weekday $formattedDate',
           style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                 fontWeight: FontWeight.bold,
-                color: AppColors.slateGrey,
+                color: isSelected
+                    ? AppColors.outerSpaceGrey
+                    : AppColors.frenchGrey,
               ),
         ),
         if (reason != null && !isHoliday)
@@ -159,10 +164,12 @@ class _DateAndReason extends StatelessWidget {
             padding: const EdgeInsets.only(left: 8),
             child: Tooltip(
               message: reason,
-              child: const Icon(
+              child: Icon(
                 Icons.info,
                 size: 17,
-                color: AppColors.slateGrey,
+                color: isSelected
+                    ? AppColors.outerSpaceGrey
+                    : AppColors.frenchGrey,
               ),
             ),
           )
@@ -188,6 +195,7 @@ class _CheckmarkButton extends StatelessWidget {
     return Material(
       color: bgColor,
       shape: const CircleBorder(),
+      elevation: isSelected ? 2 : 0,
       child: InkWell(
         customBorder: CircleBorder(
           side: BorderSide(
