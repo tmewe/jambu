@@ -69,7 +69,7 @@ class CalendarItem extends StatelessWidget {
                 Expanded(
                   child: SelectableText(
                     user.tags.isEmpty
-                        ? 'Klicke auf das Plus, um Tags hinzuzufügen.'
+                        ? 'Klicke auf das Plus, um Tägs hinzuzufügen.'
                         : '',
                     style: Theme.of(context).textTheme.labelMedium!.copyWith(
                           fontStyle: FontStyle.italic,
@@ -238,7 +238,7 @@ class _TagButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return PopupMenuButton(
       icon: const Icon(Icons.add),
-      tooltip: 'Tag hinzufügen',
+      tooltip: 'Täg hinzufügen',
       onSelected: (String? value) {
         if (value == null || value.isEmpty) return;
         onAddTag(value, user.id);
@@ -249,7 +249,7 @@ class _TagButton extends StatelessWidget {
             child: TextField(
               autofocus: true,
               decoration: const InputDecoration(
-                hintText: 'Neuer Tag',
+                hintText: 'Neuer Täg',
                 border: InputBorder.none,
               ),
               onSubmitted: (String text) {

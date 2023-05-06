@@ -76,7 +76,7 @@ class _TagChipState extends State<TagChip> {
     if (text.isEmpty) {
       return 'Leerer Text';
     } else if (widget.tags.contains(text)) {
-      return 'Tag existiert';
+      return 'Täg existiert';
     }
     return null;
   }

@@ -32,9 +32,9 @@ class ProfileView extends StatelessWidget {
                   showDialog<void>(
                     context: context,
                     builder: (_) => AlertDialog(
-                      title: const SelectableText('Tag löschen?'),
+                      title: const SelectableText('Täg löschen?'),
                       content: SelectableText(
-                        "Möchtest du den Tag '$tag' wirklich löschen?",
+                        "Möchtest du den Täg '$tag' wirklich löschen?",
                       ),
                       actions: [
                         TextButton(
@@ -171,7 +171,7 @@ class _Tags extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const _ProfileSectionHeader(
-          text: 'Deine Tags:',
+          text: 'Deine Tägs:',
         ),
         const SizedBox(height: AppSpacing.m),
         if (tags.isNotEmpty)
@@ -192,7 +192,7 @@ class _Tags extends StatelessWidget {
           ),
         if (tags.isEmpty)
           SelectableText(
-            'Hier erscheinen deine Tags, sobald du welche hinzugefügt hast.',
+            'Hier erscheinen deine Tägs, sobald du welche hinzugefügt hast.',
             style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                   fontStyle: FontStyle.italic,
                   color: AppColors.frenchGrey,

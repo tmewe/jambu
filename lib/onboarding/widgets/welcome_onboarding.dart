@@ -57,7 +57,7 @@ class WelcomeOnboarding extends StatelessWidget {
           children: [
             FilledButton.tonal(
               onPressed: onConfirmTap,
-              child: const Text('Los gehts'),
+              child: const Text('Ok cool'),
             ),
           ],
         ),

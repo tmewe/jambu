@@ -58,7 +58,7 @@ class NotificationsOnboarding extends StatelessWidget {
             FilledButton.tonal(
               onPressed: onConfirmTap,
               child: !isLoading
-                  ? const Text('Bestätigen')
+                  ? const Text('Auf jeden Fall')
                   : const SizedBox(
                       width: 15,
                       height: 15,
