@@ -13,7 +13,6 @@ class LoginPage extends StatelessWidget {
       body: BlocProvider(
         create: (_) => LoginBloc(
           authRepository: context.read<AuthRepository>(),
-          userRepository: context.read<UserRepository>(),
         ),
         child: const LoginView(),
       ),
