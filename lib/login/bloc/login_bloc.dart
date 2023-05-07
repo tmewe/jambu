@@ -11,20 +11,17 @@ part 'login_state.dart';
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginBloc({
     required AuthRepository authRepository,
-    required UserRepository userRepository,
   })  : _authRepository = authRepository,
-        _userRepository = userRepository,
         super(const LoginState.unknown()) {
     on<LoginRequested>(_onLoginRequested);
     on<_LoginStatusChanged>(_onLoginStatusChanged);
 
-    _authStateSubscription = _userRepository.authStateStream.listen(
+    _authStateSubscription = _authRepository.authStateStream.listen(
       (authState) => add(_LoginStatusChanged(authState)),
     );
   }
 
   final AuthRepository _authRepository;
-  final UserRepository _userRepository;
 
   late StreamSubscription<AuthenticationState> _authStateSubscription;
 
@@ -45,7 +42,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
   }
 
-  FutureOr<void> _onLoginRequested(
+  Future<void> _onLoginRequested(
     LoginRequested event,
     Emitter<LoginState> emit,
   ) async {

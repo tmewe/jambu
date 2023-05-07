@@ -29,7 +29,6 @@ class UserRepository {
     _authRepository.userStream.skip(1).listen((fb_auth.User? firebaseUser) {
       if (firebaseUser == null) {
         updateUser(null);
-        _authStateSubject.add(AuthenticationState.loggedOut);
         return;
       }
       updateUserFromFirebase(firebaseUser);
@@ -43,12 +42,8 @@ class UserRepository {
 
   final BehaviorSubject<User?> _currentUserSubject =
       BehaviorSubject.seeded(null);
-  final BehaviorSubject<AuthenticationState> _authStateSubject =
-      BehaviorSubject.seeded(AuthenticationState.undefiend);
 
   Stream<User?> get currentUserStream => _currentUserSubject.stream;
-
-  Stream<AuthenticationState> get authStateStream => _authStateSubject.stream;
 
   User? get currentUser => _currentUserSubject.value;
 
@@ -57,7 +52,6 @@ class UserRepository {
     final users = await _firestoreDatasource.getUsers();
     final fetchedUser = users.firstWhereOrNull((u) => u.id == currentUser!.id);
     updateUser(fetchedUser);
-    _authStateSubject.add(AuthenticationState.loggedIn);
     return fetchedUser;
   }
 
@@ -70,7 +64,6 @@ class UserRepository {
 
     if (currentUser != null) {
       updateUser(currentUser);
-      _authStateSubject.add(AuthenticationState.loggedIn);
       return;
     }
 
@@ -95,7 +88,6 @@ class UserRepository {
 
     await _firestoreDatasource.updateUser(newUser);
     updateUser(newUser);
-    _authStateSubject.add(AuthenticationState.loggedIn);
   }
 
   Future<User?> addManualAbsence(DateTime date) async {
