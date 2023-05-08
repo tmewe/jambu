@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:jambu/calendar/model/model.dart';
 import 'package:jambu/calendar/repository/repository.dart';
 import 'package:jambu/model/model.dart';
@@ -40,11 +41,21 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     CalendarRefresh event,
     Emitter<CalendarState> emit,
   ) async {
-    final user = await _calendarRepository.fetchCurrentUser();
-    if (user != state.user) {
-      emit(state.copyWith(user: user));
-      add(const CalendarTagFilterUpdate());
-      add(CalendarRequested());
+    final currentUser = state.user;
+    final updatedUser = await _calendarRepository.fetchCurrentUser();
+    if (currentUser != null &&
+        updatedUser != null &&
+        updatedUser != currentUser) {
+      emit(state.copyWith(user: updatedUser));
+      final regularAttendancesWasUpdated = !listEquals(
+        updatedUser.regularAttendances,
+        currentUser.regularAttendances,
+      );
+      final tagsWasUpdated = !listEquals(updatedUser.tags, currentUser.tags);
+      if (regularAttendancesWasUpdated || tagsWasUpdated) {
+        add(const CalendarTagFilterUpdate());
+        add(CalendarRequested());
+      }
     }
   }
 

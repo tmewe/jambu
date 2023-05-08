@@ -11,13 +11,15 @@ class CalendarDayOverview extends StatelessWidget {
   const CalendarDayOverview({
     required this.day,
     required this.tags,
-    this.isBestChoice = false,
+    required this.isBestChoice,
+    required this.isColorBlind,
     super.key,
   });
 
   final CalendarDay day;
   final List<String> tags;
   final bool isBestChoice;
+  final bool isColorBlind;
 
   @override
   Widget build(BuildContext context) {
@@ -26,9 +28,9 @@ class CalendarDayOverview extends StatelessWidget {
     final formattedDate = DateFormat('dd').format(day.date);
     final isUserAttending = day.isUserAttending;
     final bgColor = isUserAttending
-        ? AppColors.mediumGreen
+        ? AppColors.attendingColor(isColorBlind: isColorBlind)
         : isBestChoice
-            ? AppColors.brightGreen
+            ? AppColors.bestDayColor(isColorBlind: isColorBlind)
             : AppColors.seasaltGrey;
 
     return Container(
@@ -58,6 +60,7 @@ class CalendarDayOverview extends StatelessWidget {
           if (!day.isHoliday)
             _CheckmarkButton(
               isSelected: isUserAttending,
+              isColorBlind: isColorBlind,
               onTap: (bool value) {
                 context.read<CalendarBloc>().add(
                       CalendarAttendanceUpdate(
@@ -181,16 +184,22 @@ class _DateAndReason extends StatelessWidget {
 class _CheckmarkButton extends StatelessWidget {
   const _CheckmarkButton({
     required this.isSelected,
+    required this.isColorBlind,
     required this.onTap,
   });
 
   final bool isSelected;
+  final bool isColorBlind;
   final void Function(bool) onTap;
 
   @override
   Widget build(BuildContext context) {
-    final bgColor = isSelected ? AppColors.green : AppColors.platinumGrey;
-    final borderColor = isSelected ? AppColors.green : AppColors.frenchGrey;
+    final bgColor = isSelected
+        ? AppColors.checkmarkColor(isColorBlind: isColorBlind)
+        : AppColors.platinumGrey;
+    final borderColor = isSelected
+        ? AppColors.checkmarkColor(isColorBlind: isColorBlind)
+        : AppColors.frenchGrey;
 
     return Material(
       color: bgColor,
