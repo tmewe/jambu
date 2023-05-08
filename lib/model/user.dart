@@ -19,6 +19,7 @@ class User extends Equatable {
     this.manualAbsences = const [],
     this.onboardingCompleted = false,
     this.explanationsCompleted = false,
+    this.isColorBlind = false,
   });
 
   final String id;
@@ -32,6 +33,7 @@ class User extends Equatable {
   final List<DateTime> manualAbsences;
   final bool onboardingCompleted;
   final bool explanationsCompleted;
+  final bool isColorBlind;
 
   factory User.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
@@ -54,6 +56,7 @@ class User extends Equatable {
       ),
       onboardingCompleted: data?['onboardingCompleted'] as bool? ?? false,
       explanationsCompleted: data?['explanationsCompleted'] as bool? ?? false,
+      isColorBlind: data?['isColorBlind'] as bool? ?? false,
     );
   }
 
@@ -70,6 +73,7 @@ class User extends Equatable {
       'manualAbsences': manualAbsences.map(Timestamp.fromDate),
       'onboardingCompleted': onboardingCompleted,
       'explanationsCompleted': explanationsCompleted,
+      'isColorBlind': isColorBlind,
     };
   }
 
@@ -80,7 +84,8 @@ class User extends Equatable {
         'regularAttendances: $regularAttendances, '
         'manualAbsences: $manualAbsences, '
         'onboardingCompleted: $onboardingCompleted, '
-        'explanationsCompleted: $explanationsCompleted';
+        'explanationsCompleted: $explanationsCompleted '
+        'isColorBlind: $isColorBlind';
   }
 
   User copyWith({
@@ -95,6 +100,7 @@ class User extends Equatable {
     List<DateTime>? manualAbsences,
     bool? onboardingCompleted,
     bool? explanationsCompleted,
+    bool? isColorBlind,
   }) {
     return User(
       id: id ?? this.id,
@@ -109,6 +115,7 @@ class User extends Equatable {
       onboardingCompleted: onboardingCompleted ?? this.onboardingCompleted,
       explanationsCompleted:
           explanationsCompleted ?? this.explanationsCompleted,
+      isColorBlind: isColorBlind ?? this.isColorBlind,
     );
   }
 
@@ -123,5 +130,6 @@ class User extends Equatable {
         manualAbsences,
         onboardingCompleted,
         explanationsCompleted,
+        isColorBlind,
       ];
 }
