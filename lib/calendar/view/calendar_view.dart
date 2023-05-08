@@ -112,6 +112,7 @@ class _CalendarViewState extends State<CalendarView> {
               _CalendarDays(
                 selectedWeek: selectedWeek,
                 sortedTags: state.sortedTags,
+                user: state.user,
               ),
             ],
           ),
@@ -150,10 +151,12 @@ class _CalendarDays extends StatelessWidget {
   const _CalendarDays({
     required this.selectedWeek,
     required this.sortedTags,
+    required this.user,
   });
 
   final CalendarWeek selectedWeek;
   final List<String> sortedTags;
+  final User? user;
 
   @override
   Widget build(BuildContext context) {
@@ -184,6 +187,7 @@ class _CalendarDays extends StatelessWidget {
                     tags: sortedTags,
                     isBestChoice:
                         selectedWeek.bestChoices.contains(day.date.weekday),
+                    isColorBlind: user?.isColorBlind ?? false,
                   ),
                 );
               }).toList(),
