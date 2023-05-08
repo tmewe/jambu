@@ -24,3 +24,12 @@ class ProfileDeleteTag extends ProfileEvent {
   @override
   List<Object> get props => [tag];
 }
+
+class ProfileUpdateColorBlindness extends ProfileEvent {
+  const ProfileUpdateColorBlindness({required this.isColorBlind});
+
+  final bool isColorBlind;
+
+  @override
+  List<Object> get props => [isColorBlind];
+}

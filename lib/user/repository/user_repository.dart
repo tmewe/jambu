@@ -246,6 +246,18 @@ class UserRepository {
     return updatedUser;
   }
 
+  Future<User?> updateColorBlindness({required bool isColorBlind}) async {
+    final user = currentUser;
+    if (user == null) return null;
+
+    final updatedUser = _firestoreDatasource.updateColorBlindness(
+      isColorBlind: isColorBlind,
+      user: user,
+    );
+
+    return updatedUser;
+  }
+
   List<DateTime> datesFromWeekdays({
     required List<int> weekdays,
     required DateTime today,

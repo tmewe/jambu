@@ -293,6 +293,15 @@ class FirestoreDatasource {
     });
   }
 
+  Future<User?> updateColorBlindness({
+    required bool isColorBlind,
+    required User user,
+  }) async {
+    final updatedUser = user.copyWith(isColorBlind: isColorBlind);
+    await updateUser(updatedUser);
+    return updatedUser;
+  }
+
   Attendance _updateExistingAttendance({
     required Attendance attendance,
     required bool isAttending,
