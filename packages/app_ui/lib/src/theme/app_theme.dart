@@ -21,6 +21,7 @@ class AppTheme {
       dialogTheme: _dialogTheme,
       menuTheme: _menuTheme,
       iconTheme: _iconThemeData,
+      switchTheme: _switchThemeData,
     );
   }
 
@@ -102,5 +103,15 @@ class AppTheme {
 
   IconThemeData get _iconThemeData {
     return const IconThemeData(color: AppColors.outerSpaceGrey);
+  }
+
+  SwitchThemeData get _switchThemeData {
+    return SwitchThemeData(
+      trackColor: MaterialStateProperty.resolveWith((states) {
+        return states.contains(MaterialState.selected)
+            ? AppColors.orange
+            : null;
+      }),
+    );
   }
 }

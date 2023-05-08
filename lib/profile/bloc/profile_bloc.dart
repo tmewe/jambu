@@ -16,11 +16,12 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         super(ProfileState(user: user)) {
     on<ProfileUpdateAttendances>(_onProfileUpdateAttendances);
     on<ProfileDeleteTag>(_onProfileDeleteTag);
+    on<ProfileUpdateColorBlindness>(_onProfileUpdateColorBlindness);
   }
 
   final UserRepository _userRepository;
 
-  FutureOr<void> _onProfileUpdateAttendances(
+  Future<void> _onProfileUpdateAttendances(
     ProfileUpdateAttendances event,
     Emitter<ProfileState> emit,
   ) async {
@@ -28,17 +29,28 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         await _userRepository.updateRegularAttendances(event.weekdays);
 
     if (updatedUser != null) {
-      emit(
-        state.copyWith(user: updatedUser),
-      );
+      emit(state.copyWith(user: updatedUser));
     }
   }
 
-  FutureOr<void> _onProfileDeleteTag(
+  Future<void> _onProfileDeleteTag(
     ProfileDeleteTag event,
     Emitter<ProfileState> emit,
   ) async {
     final updatedUser = await _userRepository.deleteTag(tagName: event.tag);
+
+    if (updatedUser != null) {
+      emit(state.copyWith(user: updatedUser));
+    }
+  }
+
+  Future<void> _onProfileUpdateColorBlindness(
+    ProfileUpdateColorBlindness event,
+    Emitter<ProfileState> emit,
+  ) async {
+    final updatedUser = await _userRepository.updateColorBlindness(
+      isColorBlind: event.isColorBlind,
+    );
 
     if (updatedUser != null) {
       emit(state.copyWith(user: updatedUser));

@@ -55,6 +55,8 @@ class ProfileView extends StatelessWidget {
                   );
                 },
               ),
+              const SizedBox(height: AppSpacing.xxl),
+              _ColorBlindness(isColorBlind: state.user.isColorBlind),
             ],
           ),
         );
@@ -198,6 +200,31 @@ class _Tags extends StatelessWidget {
                   color: AppColors.frenchGrey,
                 ),
           ),
+      ],
+    );
+  }
+}
+
+class _ColorBlindness extends StatelessWidget {
+  const _ColorBlindness({required this.isColorBlind});
+
+  final bool isColorBlind;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const _ProfileSectionHeader(text: 'Hast du eine Rot-Grün-Schwäche?'),
+        const SizedBox(height: AppSpacing.m),
+        Switch(
+          value: isColorBlind,
+          onChanged: (value) {
+            context.read<ProfileBloc>().add(
+                  ProfileUpdateColorBlindness(isColorBlind: value),
+                );
+          },
+        ),
       ],
     );
   }
