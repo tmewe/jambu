@@ -80,10 +80,13 @@ class _CalendarViewState extends State<CalendarView> {
                   padding: const EdgeInsets.symmetric(vertical: 5),
                   tags: state.sortedTags,
                   selectedTags: state.filter.tags,
-                  onSelectTag: (tag, isSelected) {
+                  onSelectTag: ({
+                    required String tagName,
+                    required bool isSelected,
+                  }) {
                     final tags = isSelected
-                        ? [...state.filter.tags, tag]
-                        : state.filter.tags.where((t) => t != tag).toList();
+                        ? [...state.filter.tags, tagName]
+                        : state.filter.tags.where((t) => t != tagName).toList();
 
                     context
                         .read<CalendarBloc>()

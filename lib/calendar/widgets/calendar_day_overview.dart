@@ -61,11 +61,11 @@ class CalendarDayOverview extends StatelessWidget {
             _CheckmarkButton(
               isSelected: isUserAttending,
               isColorBlind: isColorBlind,
-              onTap: (bool value) {
+              onTap: ({required isSelected}) {
                 context.read<CalendarBloc>().add(
                       CalendarAttendanceUpdate(
                         date: day.date.midnight,
-                        isAttending: value,
+                        isAttending: isSelected,
                         reason: day.reason,
                       ),
                     );
@@ -190,7 +190,7 @@ class _CheckmarkButton extends StatelessWidget {
 
   final bool isSelected;
   final bool isColorBlind;
-  final void Function(bool) onTap;
+  final void Function({required bool isSelected}) onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -212,7 +212,7 @@ class _CheckmarkButton extends StatelessWidget {
             color: borderColor,
           ),
         ),
-        onTap: () => onTap(!isSelected),
+        onTap: () => onTap(isSelected: isSelected),
         child: Ink(
           width: 55,
           height: 55,
