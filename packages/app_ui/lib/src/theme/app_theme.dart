@@ -22,6 +22,7 @@ class AppTheme {
       menuTheme: _menuTheme,
       iconTheme: _iconThemeData,
       switchTheme: _switchThemeData,
+      searchBarTheme: _searchBarThemeData,
     );
   }
 
@@ -112,6 +113,14 @@ class AppTheme {
             ? AppColors.orange
             : null;
       }),
+    );
+  }
+
+  SearchBarThemeData get _searchBarThemeData {
+    return SearchBarThemeData(
+      elevation: MaterialStateProperty.all(0),
+      backgroundColor: MaterialStateProperty.all(AppColors.seasaltGrey),
+      constraints: const BoxConstraints(),
     );
   }
 }
