@@ -212,7 +212,7 @@ class _CheckmarkButton extends StatelessWidget {
             color: borderColor,
           ),
         ),
-        onTap: () => onTap(isSelected: isSelected),
+        onTap: () => onTap(isSelected: !isSelected),
         child: Ink(
           width: 55,
           height: 55,
