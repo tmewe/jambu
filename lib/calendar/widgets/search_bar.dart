@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class SearchBar extends StatelessWidget {
-  const SearchBar({
+class AppSearchBar extends StatelessWidget {
+  const AppSearchBar({
     required this.controller,
     required this.onChanged,
     this.padding = EdgeInsets.zero,
