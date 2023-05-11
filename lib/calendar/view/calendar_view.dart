@@ -69,18 +69,12 @@ class _CalendarViewState extends State<CalendarView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _AppBar(user: state.user),
-              AppSearchBar(
-                padding: const EdgeInsets.symmetric(vertical: 5),
+              const SizedBox(height: 5),
+              _SearchBar(
                 controller: _searchTextController,
-                onChanged: (searchText) {
-                  setState(() {});
-                  context.read<CalendarBloc>().add(
-                        CalendarSearchTextUpdate(
-                          searchText: searchText,
-                        ),
-                      );
-                },
+                onChanged: _searchTextChanged,
               ),
+              const SizedBox(height: 5),
               if (state.tags.isNotEmpty)
                 TagFilter(
                   padding: const EdgeInsets.symmetric(vertical: 5),
@@ -120,6 +114,15 @@ class _CalendarViewState extends State<CalendarView> {
       },
     );
   }
+
+  void _searchTextChanged(BuildContext context, String text) {
+    setState(() {});
+    context.read<CalendarBloc>().add(
+          CalendarSearchTextUpdate(
+            searchText: text,
+          ),
+        );
+  }
 }
 
 class _ContentWrapper extends StatelessWidget {
@@ -143,6 +146,42 @@ class _ContentWrapper extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _SearchBar extends StatelessWidget {
+  const _SearchBar({
+    required this.controller,
+    required this.onChanged,
+  });
+
+  final TextEditingController controller;
+  final void Function(BuildContext, String) onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return SearchBar(
+      onChanged: (searchText) {
+        onChanged(context, searchText);
+      },
+      hintText: 'Suche nach jambitees',
+      controller: controller,
+      leading: const Padding(
+        padding: EdgeInsets.only(left: 8),
+        child: Icon(
+          Icons.search,
+        ),
+      ),
+      trailing: [
+        if (controller.text.isNotEmpty)
+          _ClearButton(
+            onTap: () {
+              controller.clear();
+              onChanged(context, '');
+            },
+          ),
+      ],
     );
   }
 }
@@ -478,6 +517,22 @@ class _TagsExplanation extends StatelessWidget {
           ],
         )
       ],
+    );
+  }
+}
+
+class _ClearButton extends StatelessWidget {
+  const _ClearButton({required this.onTap});
+
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      onPressed: onTap,
+      icon: const Icon(
+        Icons.close,
+      ),
     );
   }
 }
