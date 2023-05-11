@@ -8,7 +8,7 @@ import 'package:jambu/calendar/widgets/tag_chip.dart';
 typedef AddTagCallback = void Function(String, String);
 typedef RemoveTagCallback = void Function(String, String);
 typedef UpdateTagNameCallback = void Function(String, String);
-typedef UpdateFavoriteCallback = void Function(bool);
+typedef UpdateFavoriteCallback = void Function({required bool isFavorite});
 
 const _kPadding = 16.0;
 
@@ -143,7 +143,7 @@ class _Header extends StatelessWidget {
   }
 }
 
-typedef FavoriteCallback = void Function(bool);
+typedef FavoriteCallback = void Function({required bool isFavorite});
 
 class _FavoriteButton extends StatefulWidget {
   const _FavoriteButton({
@@ -178,7 +178,7 @@ class _FavoriteButtonState extends State<_FavoriteButton> {
     return IconButton(
       onPressed: () {
         setState(() => _isFavorite = !_isFavorite);
-        widget.onTap(_isFavorite);
+        widget.onTap(isFavorite: _isFavorite);
       },
       icon: const Icon(Icons.favorite),
       color: _isFavorite ? AppColors.orange : AppColors.frenchGrey,

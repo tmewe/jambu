@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
-typedef ChipTapCallback = void Function(String, bool);
+typedef ChipTapCallback = void Function({
+  required String tagName,
+  required bool isSelected,
+});
 
 class TagFilter extends StatelessWidget {
   const TagFilter({
@@ -30,7 +33,10 @@ class TagFilter extends StatelessWidget {
             return FilterChip(
               label: Text(tag),
               selected: selectedTags.contains(tag),
-              onSelected: (isSelected) => onSelectTag(tag, isSelected),
+              onSelected: (isSelected) => onSelectTag(
+                tagName: tag,
+                isSelected: isSelected,
+              ),
             );
           })
         ],

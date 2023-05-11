@@ -59,7 +59,7 @@ class CalendarDayUsersList extends StatelessWidget {
                   ),
                 );
           },
-          onUpdateFavorite: (isFavorite) {
+          onUpdateFavorite: ({required bool isFavorite}) {
             context.read<CalendarBloc>().add(
                   CalenderUpdateFavorite(
                     userId: user.id,
