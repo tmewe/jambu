@@ -69,7 +69,7 @@ class _CalendarViewState extends State<CalendarView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _AppBar(user: state.user),
-              SearchBar(
+              AppSearchBar(
                 padding: const EdgeInsets.symmetric(vertical: 5),
                 controller: _searchTextController,
                 onChanged: (searchText) {
