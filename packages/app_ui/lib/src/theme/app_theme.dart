@@ -121,6 +121,7 @@ class AppTheme {
       elevation: MaterialStateProperty.all(0),
       backgroundColor: MaterialStateProperty.all(AppColors.seasaltGrey),
       constraints: const BoxConstraints(),
+      overlayColor: MaterialStateProperty.all(AppColors.platinumGrey),
     );
   }
 }
