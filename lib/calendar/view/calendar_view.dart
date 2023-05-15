@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:jambu/calendar/bloc/calendar_bloc.dart';
+import 'package:jambu/calendar/model/calendar_day.dart';
 import 'package:jambu/calendar/model/calendar_week.dart';
 import 'package:jambu/calendar/widgets/calendar_day_overview.dart';
 import 'package:jambu/calendar/widgets/tag_filter.dart';
@@ -23,7 +24,6 @@ class CalendarView extends StatefulWidget {
 
 class _CalendarViewState extends State<CalendarView> {
   final _searchTextController = TextEditingController();
-  int _selectedWeekIndex = 0;
   var _explanationsShowing = false;
 
   @override
@@ -34,6 +34,13 @@ class _CalendarViewState extends State<CalendarView> {
 
   @override
   Widget build(BuildContext context) {
+    final screeWidth = MediaQuery.of(context).size.width;
+    // switch (screeWidth) {
+    //   case >= 0 && <= phoneBreakpoint:
+    //     return Text('Mobile');
+    //   default:
+    //     return Text('Desktop');
+    // }
     return BlocConsumer<CalendarBloc, CalendarState>(
       listener: (BuildContext context, CalendarState state) {
         if (state.user != null &&
@@ -59,10 +66,6 @@ class _CalendarViewState extends State<CalendarView> {
         if (state.status != CalendarStatus.success) {
           return _LoadingView(user: state.user);
         }
-
-        final selectedWeek = state.filteredWeeks[_selectedWeekIndex];
-        final startDate = _dateFormat.format(selectedWeek.days.first.date);
-        final endDate = _dateFormat.format(selectedWeek.days.last.date);
 
         return _ContentWrapper(
           child: Column(
@@ -94,23 +97,8 @@ class _CalendarViewState extends State<CalendarView> {
                   },
                 ),
               const SizedBox(height: 40),
-              _WeekSelector(
-                startDate: startDate,
-                endDate: endDate,
-                selectedWeekIndex: _selectedWeekIndex,
-                onPreviousTap: _selectedWeekIndex > 0
-                    ? () => setState(() => _selectedWeekIndex--)
-                    : null,
-                onNextTap: _selectedWeekIndex < state.weeks.length - 1
-                    ? () => setState(() => _selectedWeekIndex++)
-                    : null,
-              ),
-              const SizedBox(height: 20),
-              _CalendarDays(
-                selectedWeek: selectedWeek,
-                sortedTags: state.sortedTags,
-                user: state.user,
-              ),
+              if (screeWidth < phoneBreakpoint) _MobileCalendar(state: state),
+              if (screeWidth > phoneBreakpoint) _DesktopCalendar(state: state),
             ],
           ),
         );
@@ -125,6 +113,98 @@ class _CalendarViewState extends State<CalendarView> {
             searchText: text,
           ),
         );
+  }
+}
+
+class _DesktopCalendar extends StatefulWidget {
+  const _DesktopCalendar({
+    required this.state,
+  });
+
+  final CalendarState state;
+
+  @override
+  State<_DesktopCalendar> createState() => _DesktopCalendarState();
+}
+
+class _DesktopCalendarState extends State<_DesktopCalendar> {
+  int _selectedWeekIndex = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    final selectedWeek = widget.state.filteredWeeks[_selectedWeekIndex];
+    final startDate = _dateFormat.format(selectedWeek.days.first.date);
+    final endDate = _dateFormat.format(selectedWeek.days.last.date);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _WeekSelector(
+          startDate: startDate,
+          endDate: endDate,
+          onPreviousTap: _selectedWeekIndex > 0
+              ? () => setState(() => _selectedWeekIndex--)
+              : null,
+          onNextTap: _selectedWeekIndex < widget.state.weeks.length - 1
+              ? () => setState(() => _selectedWeekIndex++)
+              : null,
+        ),
+        const SizedBox(height: 20),
+        _CalendarDays(
+          selectedWeek: selectedWeek,
+          sortedTags: widget.state.sortedTags,
+          user: widget.state.user,
+        ),
+      ],
+    );
+  }
+}
+
+class _MobileCalendar extends StatefulWidget {
+  const _MobileCalendar({
+    required this.state,
+  });
+
+  final CalendarState state;
+
+  @override
+  State<_MobileCalendar> createState() => _MobileCalendarState();
+}
+
+class _MobileCalendarState extends State<_MobileCalendar> {
+  int _selectedDayIndex = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    final finalDays = widget.state.filteredDays;
+    final selectedDay = finalDays[_selectedDayIndex];
+    const startDate = '1';
+    // _dateFormat.format(selectedWeek.days.first.date);
+    const endDate = '2';
+    // _dateFormat.format(selectedWeek.days.last.date);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _WeekSelector(
+          startDate: startDate,
+          endDate: endDate,
+          onPreviousTap: _selectedDayIndex > 0
+              ? () => setState(() => _selectedDayIndex--)
+              : null,
+          onNextTap: () => setState(() => _selectedDayIndex++),
+          // ? () => setState(() => _selectedDayIndex++)
+          // : null,
+        ),
+        const SizedBox(height: 20),
+        _CalendarDay(
+          day: selectedDay,
+          isBestChoice: false,
+          sortedTags: widget.state.sortedTags,
+          user: widget.state.user,
+        ),
+      ],
+    );
   }
 }
 
@@ -209,13 +289,7 @@ class _CalendarDays extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SelectableText(
-              'Meine Anwesenheit',
-              textAlign: TextAlign.start,
-              style: Theme.of(context).textTheme.labelLarge!.copyWith(
-                    color: AppColors.frenchGrey,
-                  ),
-            ),
+            const _SectionHeader(text: 'Meine Anwesenheit'),
             const SizedBox(height: 15),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -235,12 +309,8 @@ class _CalendarDays extends StatelessWidget {
               }).toList(),
             ),
             const SizedBox(height: 20),
-            SelectableText(
-              'Vorraussichtliche Anwesenheit Kolleg*innen',
-              textAlign: TextAlign.start,
-              style: Theme.of(context).textTheme.labelLarge!.copyWith(
-                    color: AppColors.frenchGrey,
-                  ),
+            const _SectionHeader(
+              text: 'Vorraussichtliche Anwesenheit Kolleg*innen',
             ),
             const SizedBox(height: 15),
             Row(
@@ -263,18 +333,68 @@ class _CalendarDays extends StatelessWidget {
   }
 }
 
+class _CalendarDay extends StatelessWidget {
+  const _CalendarDay({
+    required this.day,
+    required this.isBestChoice,
+    required this.sortedTags,
+    required this.user,
+  });
+
+  final CalendarDay day;
+  final bool isBestChoice;
+  final List<String> sortedTags;
+  final User? user;
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final width = constraints.maxWidth;
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const _SectionHeader(text: 'Meine Anwesenheit'),
+            const SizedBox(height: 15),
+            SizedBox(
+              width: width,
+              height: 170,
+              child: CalendarDayOverview(
+                day: day,
+                tags: sortedTags,
+                isBestChoice: isBestChoice,
+                isColorBlind: user?.isColorBlind ?? false,
+              ),
+            ),
+            const SizedBox(height: 20),
+            const _SectionHeader(
+              text: 'Vorraussichtliche Anwesenheit Kolleg*innen',
+            ),
+            const SizedBox(height: 15),
+            SizedBox(
+              width: width,
+              child: CalendarDayUsersList(
+                day: day,
+                tags: sortedTags,
+              ),
+            )
+          ],
+        );
+      },
+    );
+  }
+}
+
 class _WeekSelector extends StatelessWidget {
   const _WeekSelector({
     required this.startDate,
     required this.endDate,
-    required this.selectedWeekIndex,
     this.onNextTap,
     this.onPreviousTap,
   });
 
   final String startDate;
   final String endDate;
-  final int selectedWeekIndex;
   final VoidCallback? onNextTap;
   final VoidCallback? onPreviousTap;
 
@@ -536,6 +656,25 @@ class _ClearButton extends StatelessWidget {
       icon: const Icon(
         Icons.close,
       ),
+    );
+  }
+}
+
+class _SectionHeader extends StatelessWidget {
+  const _SectionHeader({
+    required this.text,
+  });
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return SelectableText(
+      text,
+      textAlign: TextAlign.start,
+      style: Theme.of(context).textTheme.labelLarge!.copyWith(
+            color: AppColors.frenchGrey,
+          ),
     );
   }
 }
