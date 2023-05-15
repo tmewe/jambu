@@ -20,30 +20,33 @@ class RegularAttendancesSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: alignment,
-      children: WeekFromDate(DateTime.now())
-          .workingDays
-          .map(
-            (date) => Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 5),
-              child: WeekdaySelector(
-                weekday: date.weekdayStringShort,
-                isSelected: selectedWeekdays.contains(date.weekday),
-                onTap: () {
-                  final weekday = date.weekday;
-                  if (selectedWeekdays.contains(weekday)) {
-                    onWeekdayTap(
-                      selectedWeekdays.whereNot((e) => e == weekday).toList(),
-                    );
-                  } else {
-                    onWeekdayTap([...selectedWeekdays, weekday]);
-                  }
-                },
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        mainAxisAlignment: alignment,
+        children: WeekFromDate(DateTime.now())
+            .workingDays
+            .map(
+              (date) => Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 5),
+                child: WeekdaySelector(
+                  weekday: date.weekdayStringShort,
+                  isSelected: selectedWeekdays.contains(date.weekday),
+                  onTap: () {
+                    final weekday = date.weekday;
+                    if (selectedWeekdays.contains(weekday)) {
+                      onWeekdayTap(
+                        selectedWeekdays.whereNot((e) => e == weekday).toList(),
+                      );
+                    } else {
+                      onWeekdayTap([...selectedWeekdays, weekday]);
+                    }
+                  },
+                ),
               ),
-            ),
-          )
-          .toList(),
+            )
+            .toList(),
+      ),
     );
   }
 }
