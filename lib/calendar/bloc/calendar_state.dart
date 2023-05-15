@@ -19,9 +19,6 @@ class CalendarState extends Equatable {
 
   List<CalendarWeek> get filteredWeeks => filter.applyAll(weeks);
 
-  List<CalendarDay> get filteredDays =>
-      filter.applyAll(weeks).map((week) => week.days).expand((e) => e).toList();
-
   List<String> get sortedTags {
     tags.sort();
     return tags;
