@@ -91,7 +91,12 @@ class _FavoritesExplanationState extends State<_FavoritesExplanation> {
             child: VideoPlayer(_videoController),
           )
         else
-          Container(),
+          const Center(
+            child: Padding(
+              padding: EdgeInsets.all(8),
+              child: CircularProgressIndicator(),
+            ),
+          ),
         const SizedBox(height: 20),
         const SelectableText(
           'Mit dem Herz kannst du bestimmte Kolleg*innen '
@@ -166,7 +171,12 @@ class _TagsExplanationState extends State<_TagsExplanation> {
             child: VideoPlayer(_videoController),
           )
         else
-          Container(),
+          const Center(
+            child: Padding(
+              padding: EdgeInsets.all(8),
+              child: CircularProgressIndicator(),
+            ),
+          ),
         const SizedBox(height: 20),
         const SelectableText(
           'Mit dem Plus kannst du bestimmten Kolleg*innen Tägs zuordnen '
