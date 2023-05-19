@@ -1,5 +1,6 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
+import 'package:video_player/video_player.dart';
 
 class ExplanationsAlert extends StatefulWidget {
   const ExplanationsAlert({
@@ -45,12 +46,32 @@ class _ExplanationsAlertState extends State<ExplanationsAlert> {
   }
 }
 
-class _FavoritesExplanation extends StatelessWidget {
+class _FavoritesExplanation extends StatefulWidget {
   const _FavoritesExplanation({
     required this.onCompleteTap,
   });
 
   final VoidCallback onCompleteTap;
+
+  @override
+  State<_FavoritesExplanation> createState() => _FavoritesExplanationState();
+}
+
+class _FavoritesExplanationState extends State<_FavoritesExplanation> {
+  late VideoPlayerController _videoController;
+
+  @override
+  void initState() {
+    super.initState();
+    _videoController =
+        VideoPlayerController.asset('assets/videos/favorites.mp4')
+          ..initialize().then((_) async {
+            setState(() {});
+            await _videoController.setVolume(0);
+            await _videoController.setLooping(true);
+            await _videoController.play();
+          });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +85,13 @@ class _FavoritesExplanation extends StatelessWidget {
           style: Theme.of(context).textTheme.headlineMedium,
         ),
         const SizedBox(height: 20),
-        Image.asset('assets/images/favorites.png'),
+        if (_videoController.value.isInitialized)
+          AspectRatio(
+            aspectRatio: _videoController.value.aspectRatio,
+            child: VideoPlayer(_videoController),
+          )
+        else
+          Container(),
         const SizedBox(height: 20),
         const SelectableText(
           'Mit dem Herz kannst du bestimmte Kolleg*innen '
@@ -83,7 +110,7 @@ class _FavoritesExplanation extends StatelessWidget {
           children: [
             const Spacer(),
             FilledButton(
-              onPressed: onCompleteTap,
+              onPressed: widget.onCompleteTap,
               child: const Text('Nice'),
             ),
           ],
@@ -93,7 +120,7 @@ class _FavoritesExplanation extends StatelessWidget {
   }
 }
 
-class _TagsExplanation extends StatelessWidget {
+class _TagsExplanation extends StatefulWidget {
   const _TagsExplanation({
     required this.onBackTap,
     required this.onCompleteTap,
@@ -101,6 +128,25 @@ class _TagsExplanation extends StatelessWidget {
 
   final VoidCallback onBackTap;
   final VoidCallback onCompleteTap;
+
+  @override
+  State<_TagsExplanation> createState() => _TagsExplanationState();
+}
+
+class _TagsExplanationState extends State<_TagsExplanation> {
+  late VideoPlayerController _videoController;
+
+  @override
+  void initState() {
+    super.initState();
+    _videoController = VideoPlayerController.asset('assets/videos/tags.mp4')
+      ..initialize().then((_) async {
+        setState(() {});
+        await _videoController.setVolume(0);
+        await _videoController.setLooping(true);
+        await _videoController.play();
+      });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -114,7 +160,13 @@ class _TagsExplanation extends StatelessWidget {
           style: Theme.of(context).textTheme.headlineMedium,
         ),
         const SizedBox(height: 20),
-        Image.asset('assets/images/tags.png'),
+        if (_videoController.value.isInitialized)
+          AspectRatio(
+            aspectRatio: _videoController.value.aspectRatio,
+            child: VideoPlayer(_videoController),
+          )
+        else
+          Container(),
         const SizedBox(height: 20),
         const SelectableText(
           'Mit dem Plus kannst du bestimmten Kolleg*innen Tägs zuordnen '
@@ -138,12 +190,12 @@ class _TagsExplanation extends StatelessWidget {
           children: [
             const Spacer(),
             TextButton(
-              onPressed: onBackTap,
+              onPressed: widget.onBackTap,
               child: const Text('Zurück'),
             ),
             const SizedBox(width: 10),
             FilledButton(
-              onPressed: onCompleteTap,
+              onPressed: widget.onCompleteTap,
               child: const Text('Fertig'),
             ),
           ],

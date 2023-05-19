@@ -31,6 +31,7 @@ dependencies:
   quiver: ^3.2.1
   rxdart: ^0.27.7
   shared_preferences: ^2.0.18
+  video_player: ^2.6.1
 
 dev_dependencies:
   bloc_test: ^9.1.1
@@ -48,3 +49,4 @@ flutter:
   assets:
     - assets/holidays.json
     - assets/images/
+    - assets/videos/
