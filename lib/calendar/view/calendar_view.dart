@@ -10,8 +10,10 @@ import 'package:jambu/calendar/model/calendar_week.dart';
 import 'package:jambu/calendar/widgets/calendar_day_overview.dart';
 import 'package:jambu/calendar/widgets/tag_filter.dart';
 import 'package:jambu/calendar/widgets/widgets.dart';
+import 'package:jambu/constants.dart';
 import 'package:jambu/model/model.dart';
 import 'package:jambu/user/user.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 final _dateFormat = DateFormat('dd.MM');
 
@@ -34,7 +36,7 @@ class _CalendarViewState extends State<CalendarView> {
 
   @override
   Widget build(BuildContext context) {
-    final screeWidth = MediaQuery.of(context).size.width;
+    final screenWidth = MediaQuery.of(context).size.width;
     return BlocConsumer<CalendarBloc, CalendarState>(
       listener: (BuildContext context, CalendarState state) {
         if (state.user != null &&
@@ -91,8 +93,8 @@ class _CalendarViewState extends State<CalendarView> {
                   },
                 ),
               const SizedBox(height: 40),
-              if (screeWidth < phoneBreakpoint) _MobileCalendar(state: state),
-              if (screeWidth > phoneBreakpoint) _DesktopCalendar(state: state),
+              if (screenWidth < phoneBreakpoint) _MobileCalendar(state: state),
+              if (screenWidth > phoneBreakpoint) _DesktopCalendar(state: state),
             ],
           ),
         );
@@ -454,6 +456,10 @@ class _AppBar extends StatelessWidget {
                     ),
                   );
               },
+            ),
+            MenuItemButton(
+              child: const Text('Feedback'),
+              onPressed: () => launchUrlString(Constants.feedbackUrl),
             ),
             MenuItemButton(
               trailingIcon: const Icon(
