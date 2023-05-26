@@ -34,11 +34,11 @@ class NotificationsOnboarding extends StatelessWidget {
         ),
         const SizedBox(height: 30),
         const Text(
-            'Darf jambu dir 1x pro Woche eine Benachrichtigung schicken, '
+            'Darf jambu dir Montags eine Benachrichtigung schicken, '
             'um dich daran zu errinern, deine Anwesenheit zu aktualisieren?'),
         const SizedBox(height: 10),
         const Text(
-          'Bitte überprüfe auch ob dein Browser '
+          'Bitte überprüfe auch, ob dein Browser '
           'dir Benachrichtigungen schicken darf.',
         ),
         const SizedBox(height: 60),
