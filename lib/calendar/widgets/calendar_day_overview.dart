@@ -125,7 +125,7 @@ class _BestChoiceText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SelectableText(
-      isBestChoice ? 'Optimaler Tag' : '',
+      isBestChoice ? 'Guter Tag' : '',
       style: Theme.of(context).textTheme.titleSmall!.copyWith(
             color: AppColors.slateGrey,
           ),
