@@ -29,7 +29,7 @@ class RegularAttendancesOnboarding extends StatelessWidget {
             const Icon(Icons.calendar_month, size: 40),
             const SizedBox(width: 10),
             SelectableText(
-              'Regeltermine',
+              'Regelmäßige Anwesenheit',
               style: Theme.of(context).textTheme.headlineLarge,
             ),
           ],
