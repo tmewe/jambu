@@ -36,19 +36,12 @@ Future<void> bootstrap(AppBuilder builder) async {
 
   Bloc.observer = AppBlocObserver();
 
-  await runZonedGuarded<Future<void>>(
-    () async {
-      runApp(
-        await builder(
-          FirebaseMessaging.instance,
-          FirebaseAuth.instance,
-          FirebaseFirestore.instance,
-          FirebaseStorage.instance,
-        ),
-      );
-    },
-    (error, stacktrace) {
-      debugPrint('An error occured: $error');
-    },
+  runApp(
+    await builder(
+      FirebaseMessaging.instance,
+      FirebaseAuth.instance,
+      FirebaseFirestore.instance,
+      FirebaseStorage.instance,
+    ),
   );
 }

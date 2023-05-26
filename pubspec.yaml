@@ -9,39 +9,39 @@ environment:
 dependencies:
   app_ui:
     path: packages/app_ui
-  bloc: ^8.1.1
-  chopper: ^6.1.1
-  cloud_firestore: ^4.4.3
+  bloc: ^8.1.2
+  chopper: ^6.1.2
+  cloud_firestore: ^4.7.1
   collection: ^1.17.1
   cupertino_icons: ^1.0.2
   equatable: ^2.0.5
   firebase_auth: 4.2.2
-  firebase_core: ^2.5.0
-  firebase_messaging: ^14.2.2
-  firebase_storage: ^11.0.15
+  firebase_core: ^2.13.0
+  firebase_messaging: ^14.6.1
+  firebase_storage: ^11.2.1
   flutter:
     sdk: flutter
-  flutter_bloc: ^8.1.2
+  flutter_bloc: ^8.1.3
   flutter_secure_storage: ^8.0.0
-  flutter_svg: ^2.0.5
-  go_router: ^6.2.0
+  flutter_svg: ^2.0.6
+  go_router: ^6.5.9
   intl: 0.17.0
-  json_annotation: ^4.8.0
+  json_annotation: ^4.8.1
   meta: ^1.9.0
   quiver: ^3.2.1
   rxdart: ^0.27.7
-  shared_preferences: ^2.0.18
+  shared_preferences: ^2.1.1
   url_launcher: ^6.1.11
   video_player: ^2.6.1
 
 dev_dependencies:
-  bloc_test: ^9.1.1
-  build_runner: ^2.3.3
-  chopper_generator: ^6.0.0
+  bloc_test: ^9.1.2
+  build_runner: ^2.4.4
+  chopper_generator: ^6.0.1
   flutter_lints: ^2.0.0
   flutter_test:
     sdk: flutter
-  json_serializable: ^6.6.1
+  json_serializable: ^6.7.0
   mocktail: ^0.3.0
   very_good_analysis: ^4.0.0
 
