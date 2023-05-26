@@ -35,6 +35,7 @@ class MergeRegularAttendances {
               Presence(
                 date: date.midnight,
                 isPresent: true,
+                reason: 'Regelmäßige Anwesenheit',
               ),
             );
           }
