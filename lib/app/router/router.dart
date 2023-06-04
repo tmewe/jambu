@@ -58,7 +58,7 @@ GoRouter getRouter({
 String? _redirect(BuildContext context, GoRouterState state) {
   final user = context.read<UserRepository>().currentUser;
   final isLoggedIn = user != null;
-  final isLoggingIn = state.subloc == '/login';
+  final isLoggingIn = state.matchedLocation == '/login';
 
   if (!isLoggedIn && !isLoggingIn) {
     return '/login';
@@ -67,7 +67,7 @@ String? _redirect(BuildContext context, GoRouterState state) {
   } else if (isLoggedIn && !user.onboardingCompleted) {
     return '/onboarding';
   }
-  return state.subloc;
+  return state.matchedLocation;
 }
 
 class _ErrorPage extends StatelessWidget {
