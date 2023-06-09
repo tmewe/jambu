@@ -20,6 +20,7 @@ class _ExplanationsAlertState extends State<ExplanationsAlert> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      scrollable: true,
       content: ConstrainedBox(
         constraints: BoxConstraints.tight(const Size(550, 650)),
         child: PageView(
