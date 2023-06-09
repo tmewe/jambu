@@ -310,7 +310,7 @@ class _CalendarDays extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             const _SectionHeader(
-              text: 'Vorraussichtliche Anwesenheit Kolleg*innen',
+              text: 'Vorraussichtliche Anwesenheit der Kolleg*innen',
             ),
             const SizedBox(height: 15),
             Row(
