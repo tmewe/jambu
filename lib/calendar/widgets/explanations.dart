@@ -182,14 +182,15 @@ class _TagsExplanationState extends State<_TagsExplanation> {
         const SelectableText(
           'Mit dem Plus kannst du bestimmten Kolleg*innen Tägs zuordnen '
           "und auf diese Art und Weise gruppieren. Mit dem 'X' wird der Täg "
-          'von der Nutzer*in entfernt. Wenn du einen Täg komplett '
+          'von dem jambitee entfernt. Wenn du einen Täg komplett '
           'löschen möchtest, geht das über dein Profil. Tägs umbennen kannst '
           'du einfach per Klick auf den Täg.',
         ),
         const SizedBox(height: 5),
         const SelectableText(
-          'Sowohl deine Favoriten, als auch deine Tägs sind personalisiert '
-          'und somit nur für dich einsehbar.',
+          'Favoriten und Tägs sind sind für dich personalisiert. '
+          'Andere jambitees können nicht sehen welche '
+          'Tägs du vergeben hast und wen du favorisiert hast.',
         ),
         const SizedBox(height: 5),
         const SelectableText(
