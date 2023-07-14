@@ -1,16 +1,6 @@
 # jambu
 
-A new Flutter project.
+jambu is an office attendance planning tool. It simplifies the process of managing and tracking employee presence in the office. It provides features such as visibility of colleagues' presence, grouping people with tags and tagging colleagues as favourites. jambu integrates with Azure Active Directory and Microsoft Outlook to sync attendance with the calendar.
 
-## Getting Started
+With jambu, employees can easily see the days their colleagues are expected to be in the office, enabling better collaboration and planning. The tool is designed to increase productivity and streamline the office attendance management process.
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
