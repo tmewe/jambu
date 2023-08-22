@@ -32,13 +32,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     switch (event.authState) {
       case AuthenticationState.undefiend:
         emit(const LoginState.unknown());
-        break;
       case AuthenticationState.loggedIn:
         emit(const LoginState.loggedIn());
-        break;
       case AuthenticationState.loggedOut:
         emit(const LoginState.loggedOut());
-        break;
     }
   }
 
