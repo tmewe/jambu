@@ -19,7 +19,7 @@ void main() {
         // arrange
         final week = CalendarWeek(
           days: [
-            CalendarDay(date: date, isUserAttending: true, users: [user])
+            CalendarDay(date: date, isUserAttending: true, users: [user]),
           ],
         );
 
@@ -46,7 +46,7 @@ void main() {
               date: date,
               isUserAttending: false,
               users: const [CalendarUser(id: '0', name: 'Test')],
-            )
+            ),
           ],
         );
 
@@ -72,7 +72,7 @@ void main() {
             CalendarDay(
               date: date,
               isUserAttending: false,
-            )
+            ),
           ],
         );
 
@@ -189,7 +189,7 @@ void main() {
               date: date,
               isUserAttending: false,
               users: const [CalendarUser(id: '0', name: 'Test')],
-            )
+            ),
           ],
         );
 

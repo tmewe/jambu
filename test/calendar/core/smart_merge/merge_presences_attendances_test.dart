@@ -22,7 +22,7 @@ void main() {
         'when presences are empty', () async {
       // arrange
       final attendances = [
-        Attendance.attending(date: date, userIds: const ['1'])
+        Attendance.attending(date: date, userIds: const ['1']),
       ];
       final merge = MergePresencesAttendances(
         presences: [],

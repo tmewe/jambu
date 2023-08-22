@@ -76,7 +76,7 @@ class CalendarDayOverview extends StatelessWidget {
               child: Center(
                 child: _HolidayText(reason: reason),
               ),
-            )
+            ),
         ],
       ),
     );
@@ -175,7 +175,7 @@ class _DateAndReason extends StatelessWidget {
                     : AppColors.frenchGrey,
               ),
             ),
-          )
+          ),
       ],
     );
   }

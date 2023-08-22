@@ -63,7 +63,7 @@ class MergePresencesAttendances {
         Entry(userId: currentUser.id, reason: presence.reason),
       }.toList();
       final updatedAbsent = {
-        ...attendanceAtDate.absent.where((e) => e.userId != currentUser.id)
+        ...attendanceAtDate.absent.where((e) => e.userId != currentUser.id),
       }.toList();
 
       final updatedAttendance = attendanceAtDate.copyWith(
@@ -96,7 +96,7 @@ class MergePresencesAttendances {
       resultAttendances.remove(attendanceAtDate);
 
       final updatedPresent = {
-        ...attendanceAtDate.present.where((e) => e.userId != currentUser.id)
+        ...attendanceAtDate.present.where((e) => e.userId != currentUser.id),
       }.toList();
 
       final updatedAbsent = {
@@ -127,7 +127,7 @@ class MergePresencesAttendances {
               userId: currentUser.id,
               reason: presence.reason,
               isHoliday: presence.isHoliday,
-            )
+            ),
           ],
         ),
       );

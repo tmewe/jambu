@@ -93,7 +93,7 @@ class _CalendarViewState extends State<CalendarView> {
                   },
                 ),
               const SizedBox(height: 40),
-              if (screenWidth < phoneBreakpoint) _MobileCalendar(state: state),
+              if (screenWidth <= phoneBreakpoint) _MobileCalendar(state: state),
               if (screenWidth > phoneBreakpoint) _DesktopCalendar(state: state),
             ],
           ),
@@ -377,7 +377,7 @@ class _CalendarDay extends StatelessWidget {
                 day: day,
                 tags: sortedTags,
               ),
-            )
+            ),
           ],
         );
       },

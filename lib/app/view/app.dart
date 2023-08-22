@@ -57,12 +57,12 @@ class AppView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authState = context.read<UserRepository>().currentUserStream;
+    final userStream = context.read<UserRepository>().currentUserStream;
     return MaterialApp.router(
       title: 'jambu',
       theme: const AppTheme().themeData,
       debugShowCheckedModeBanner: false,
-      routerConfig: getRouter(userStream: authState),
+      routerConfig: getRouter(userStream: userStream),
     );
   }
 }

@@ -15,7 +15,7 @@ void main() {
           'Mittwoch',
           'Donnerstag',
           'Freitag',
-          '-'
+          '-',
         ];
 
         // act

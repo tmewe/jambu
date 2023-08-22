@@ -270,7 +270,7 @@ class _TagButton extends StatelessWidget {
                     ],
                   ),
                 ),
-              )
+              ),
         ];
       },
     );
