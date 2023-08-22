@@ -11,7 +11,7 @@ dependencies:
     path: packages/app_ui
   bloc: ^8.1.2
   chopper: ^7.0.5
-  cloud_firestore: ^4.7.1
+  cloud_firestore: ^4.8.5
   collection: ^1.17.1
   cupertino_icons: ^1.0.2
   equatable: ^2.0.5
