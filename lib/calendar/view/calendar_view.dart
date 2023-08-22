@@ -251,7 +251,7 @@ class _SearchBar extends StatelessWidget {
       hintText: 'Suche nach jambitees',
       controller: controller,
       leading: const Padding(
-        padding: EdgeInsets.only(left: 8),
+        padding: EdgeInsets.fromLTRB(8, 12, 0, 12),
         child: Icon(
           Icons.search,
         ),
