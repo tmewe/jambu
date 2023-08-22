@@ -19,7 +19,7 @@ void main() {
         weeks = [
           CalendarWeek(
             days: [
-              CalendarDay(date: date, isUserAttending: false, users: [user])
+              CalendarDay(date: date, isUserAttending: false, users: [user]),
             ],
           ),
         ];
@@ -42,7 +42,7 @@ void main() {
                 date: date,
                 isUserAttending: false,
                 users: [user.copyWith(isFavorite: true)],
-              )
+              ),
             ],
           ),
         ];
@@ -63,7 +63,7 @@ void main() {
         weeks = [
           CalendarWeek(
             days: [
-              CalendarDay(date: date, isUserAttending: false, users: [user])
+              CalendarDay(date: date, isUserAttending: false, users: [user]),
             ],
           ),
         ];
@@ -86,7 +86,7 @@ void main() {
                 date: date,
                 isUserAttending: false,
                 users: [user.copyWith(isFavorite: false)],
-              )
+              ),
             ],
           ),
         ];

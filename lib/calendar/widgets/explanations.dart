@@ -211,7 +211,7 @@ class _TagsExplanationState extends State<_TagsExplanation> {
               child: const Text('Fertig'),
             ),
           ],
-        )
+        ),
       ],
     );
   }

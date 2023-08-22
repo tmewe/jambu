@@ -38,7 +38,7 @@ class TagFilter extends StatelessWidget {
                 isSelected: isSelected,
               ),
             );
-          })
+          }),
         ],
       ),
     );

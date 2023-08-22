@@ -9,6 +9,7 @@ class LoginView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final loginStatus = context.select((LoginBloc bloc) => bloc.state.status);
+
     switch (loginStatus) {
       case LoginStatus.loggedIn:
       case LoginStatus.unknown:
@@ -98,7 +99,7 @@ class _LoadingView extends StatelessWidget {
           'Ggf. muss die Seite nochmal neu geladen werden.',
           style: Theme.of(context).textTheme.labelMedium,
           textAlign: TextAlign.center,
-        )
+        ),
       ],
     );
   }

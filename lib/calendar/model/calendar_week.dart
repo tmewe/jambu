@@ -14,7 +14,7 @@ class CalendarWeek extends Equatable {
   List<int> get bestChoices {
     final map = {
       for (final day in days)
-        day.date.weekday: day.users.where((u) => u.isFavorite).length
+        day.date.weekday: day.users.where((u) => u.isFavorite).length,
     };
     return map.maxValues;
   }
