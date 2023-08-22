@@ -446,15 +446,14 @@ class _AppBar extends StatelessWidget {
             MenuItemButton(
               child: const Text('Mein Profil'),
               onPressed: () {
-                final router = GoRouter.of(context);
-                router
-                  ..goNamed('profile', extra: user)
-                  ..addListener(
-                    () => _routerListener(
-                      router: router,
-                      context: context,
-                    ),
-                  );
+                final router = GoRouter.of(context)
+                  ..goNamed('profile', extra: user);
+                router.routerDelegate.addListener(
+                  () => _routerListener(
+                    router: router,
+                    context: context,
+                  ),
+                );
               },
             ),
             MenuItemButton(
@@ -488,10 +487,10 @@ class _AppBar extends StatelessWidget {
     required GoRouter router,
     required BuildContext context,
   }) {
-    if (!GoRouter.of(context).location.contains('profile')) {
+    if (!GoRouterState.of(context).uri.toString().contains('profile')) {
       context.read<CalendarBloc>().add(CalendarRefresh());
     }
-    router.removeListener(
+    router.routerDelegate.removeListener(
       () => _routerListener(router: router, context: context),
     );
   }
